@@ -2,7 +2,7 @@
 layout: post
 title:  "一些基本概念"
 date:   2023-09-25 20:14:08 -0700
-categories: [Fault Tolerant Message Passing Distributed Systems]
+categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
 + 分布式系统由一组分布式计算单元（抽象为process）以及它们之间的通信介质（communication medium）构成。本书中，processes集合是静态的。
