@@ -5,6 +5,11 @@ date:   2023-09-25 20:14:08 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}
+
 + 分布式系统由一组分布式计算单元（抽象为process）以及它们之间的通信介质（communication medium）构成。本书中，processes集合是静态的。
 + **process**之间通过在**channel**上发送、接受消息来通信。channel可以是：
   + **reliable**：消息没有丢失、被创建、改动、重复
