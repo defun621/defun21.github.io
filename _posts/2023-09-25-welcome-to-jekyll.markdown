@@ -1,31 +1,33 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "一些基本概念"
 date:   2023-09-25 20:14:08 -0700
-categories: jekyll update
+categories: [Fault Tolerant Message Passing Distributed Systems]
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
-Jekyll requires blog post files to be named according to the following format:
-
-`YEAR-MONTH-DAY-title.MARKUP`
-
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
-
-test
++ 分布式系统由一组分布式计算单元（抽象为process）以及它们之间的通信介质（communication medium）构成。本书中，processes集合是静态的。
++ **process**之间通过在**channel**上发送、接受消息来通信。channel可以是：
+  + **reliable**：消息没有丢失、被创建、改动、重复
+  + 非**reliable**
+  + **synchronous**： 消息的传输延时有上限
+  + **asynchronous**： 消息传输延时无上限
+  + 满足其他性质：例如*FIFO*
++ 分布式算法由n个自动机（automata）构成，每个自动机可以*send*, *receive*。约定每个process一次只处理一条message。分布式算法可以：
+  + **synchronous**：存在一个外部全局时钟*R*，来抽象代表轮。每轮中发出的message必须在同一轮中被接受。
+  + **asynchronous**：不存在全局时钟，process的progress由自身以及收到的消息来得到。
++ **event**: 分布式系统中某个process的某一步
++ **execution**： 由**event**集合形成的偏序关系
++ 分布式系统中进程会出错：
+  + **crash failure**: process突然崩溃或停止响应
+  + **byzantine failure**: process以没有按照预定的方式执行造成的失败
++ 分布式系统问题如何定义：
+  + **liveness property** 和 **termination property**： make sure something happen
+  + **other properties(validity, integrity)**: make sure nothing bad happen
++ 本书中主要分布式计算模型（n是process的个数，t是可能出错的process的个数的上限：
+  |  | crash failure model | byzantine failure model |
+  |---|---|---|
+  | asynchronous model | CAMP<sub>n,t</sub> | BAMP<sub>n,t</sub> |
+  | synchronous model | CSMP<sub>n,t</sub> | BSMP<sub>n,t</sub> |
++ 计算模型还能加减条件，比如：
+  + CAMP<sub>n,t</sub>[t &lt; n/2]（系统中永远不会有超过半数的节点crash）
+  + CAMP<sub>n,t</sub>[-FC]（channel不再是reliable而只是fair channel）
