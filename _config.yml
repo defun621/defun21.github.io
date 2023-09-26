@@ -27,7 +27,7 @@ url: "https://defun21.github.io" # the base hostname & protocol for your site, e
 github_username:  defun21
 
 # Build settings
-theme: just-the-docs
+theme: minima
 plugins:
   - jekyll-feed
 
