@@ -27,9 +27,12 @@ url: "https://defun621.github.io" # the base hostname & protocol for your site, 
 github_username:  defun621
 
 # Build settings
-remote_theme: sighingnow/jekyll-gitbook
+theme: minima
+
 plugins:
   - jekyll-feed
+
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
