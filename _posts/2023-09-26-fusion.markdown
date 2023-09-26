@@ -21,7 +21,7 @@ categories: [Algorithm-design-with-Haskell]
   foldr f e . map g = foldr (f . g) e
   ```
 
-+ foldr: 对于所有的非无限长list _xs_, 如果有对于任意_x_, _y_成立：
++ foldr: 对于所有的非无限长list _xs_, 如果有对于任意 _x_ , _y_ 成立：
   ```haskell
   h (f x y) = g x (h y)
   ```
