@@ -1,0 +1,91 @@
+---
+layout: post
+title:  "fusion law"
+date:   2023-09-26 11:14:08 -0700
+categories: [Algorithm-design-with-Haskell]
+---
+
+一些重要的fusion law：
++ map
+  ```haskell
+  map f . map g = map (f . g)
+  ```
+
++ concatMap after map
+  ```haskell
+  concatMap f . map g = concatMap (f . g)
+  ```
+
++ foldr after map
+  ```haskell
+  foldr f e . map g = foldr (f . g) e
+  ```
+
++ foldr: 对于所有的非无限长list _xs_, 如果有对于任意_x_, _y_成立：
+  ```haskell
+  h (f x y) = g x (h y)
+  ```
+  ，则有
+  ```haskell
+  h (foldr f e xs) = foldr g (h e) xs
+  ```
+  证明：
+  
+  + 如果xs为空：
+    ```haskell
+    h (foldr f e [])
+    = h e
+    = foldr g (h e) []
+    ```
+
+  + 如果xs不为空且假设foldr fusion law 在xs上正确：
+    ```haskell
+    h (foldr f e (x:xs))
+    = h (f x (foldr f e xs))
+    = g x (h (foldr f e xs))
+    = g x (foldr g (h e) xs)
+    = foldr g (h e) (x:xs)
+    ```
+
++ foldl: 对于任意有限长的list _xs_, 如果对于任意 _x_ , _y_ 成立
+  ```haskell
+  h (f y x) = g (h y) x
+  ```
+  ,则有
+  ```haskell
+  h (foldl f e xs) = foldl g (h e) xs
+  ```
+  证明：
+  
+  + 如果xs为空
+    ```haskell
+    h (foldl f e [])
+    = h e
+    = foldl g (h e) []
+    ```
+  + 如果xs不为空
+    ```haskell
+    h (foldl f e (x:xs))
+    = h (f (foldl f e xs) x)
+    = g (h (foldl f e xs)) x
+    = g (foldl g (h e) xs) x
+    = foldl g (h e) x:xs
+    ```
+
+还有其它一些fusion law
++ scan:
+  ```haskell
+  map (foldl f a) . inits = scanl f a
+  ```
+
++ filter map :
+  ```haskell
+  filter p . map f = map f . filter (p . f)
+  ```
+
+
+
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}
