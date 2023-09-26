@@ -24,10 +24,12 @@ categories: [Fault Tolerant Message Passing Distributed Systems]
   + **liveness property** 和 **termination property**： make sure something happen
   + **other properties(validity, integrity)**: make sure nothing bad happen
 + 本书中主要分布式计算模型（n是process的个数，t是可能出错的process的个数的上限：
+  
   |  | crash failure model | byzantine failure model |
   |---|---|---|
   | asynchronous model | CAMP<sub>n,t</sub> | BAMP<sub>n,t</sub> |
   | synchronous model | CSMP<sub>n,t</sub> | BSMP<sub>n,t</sub> |
+
 + 计算模型还能加减条件，比如：
   + CAMP<sub>n,t</sub>[t &lt; n/2]（系统中永远不会有超过半数的节点crash）
   + CAMP<sub>n,t</sub>[-FC]（channel不再是reliable而只是fair channel）
