@@ -5,6 +5,8 @@ date:   2023-09-27 10:31:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
+教科书链接：<https://link.springer.com/book/10.1007/978-3-319-94141-7>
+
 + 各种广播**抽象**(Broadcast)
   
   我们的分布式算法实现了一个“中间层”, 它利用底层的收发消息的api来向上层app层提供2个高层API：

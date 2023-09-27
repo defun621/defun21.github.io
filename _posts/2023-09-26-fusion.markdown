@@ -5,6 +5,8 @@ date:   2023-09-26 11:14:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
 
+教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
+
 一些重要的fusion law：
 + map
   ```haskell
