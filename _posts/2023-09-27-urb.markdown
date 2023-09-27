@@ -1,0 +1,115 @@
+---
+layout: post
+title:  在CAMP[∅]中的可靠广播
+date:   2023-09-27 10:31:00 -0700
+categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
+---
+
++ 各种广播**抽象**(Broadcast)
+  
+  我们的分布式算法实现了一个“中间层”, 它利用底层的收发消息的api来向上层app层提供2个高层API：
+  + broadcast(m)
+  
+    来广播m给所有process
+  + deliver(m)
+    
+    来从底层拿取自己或者别的process曾经broadcast过的m
+
++ **best effort**广播
+  
+  for each j ∈ {1,2,3,...,n} do send m to p<sub>j</sub> end for
+  
+  + 如果p<sub>i</sub>正常，则每个正常的其他process都能收到m
+  + 如果p<sub>i</sub>出错，则只有process集合的某个任意子集收到m
+
++ **URB(uniform reliable broadcast)** uniform 可靠广播
+  + **validity**: 如果一个process urb-deliver了m，则m被urb-broadcast过
+  + **integrity**：一个process最多urb-deliver同一条message一次
+  + **URB-termination-1**：如果一个Non-Faulty(一直没挂) process broadcast了msg-m, 那么所有Non-Faulty process都肯定最终可以deliver(拿到)这个msg-m
+  + **URB-termination-2**. 任何process(注意这里没说是挂了还是没挂的), 只要它曾经deliver过某msg-m, 那么所有其他Non-Faulty process都肯定最终可以deliver这个msg-m 
+
+  validity要求了message没有被凭空创造或者改动
+
+  integrity要求了message没有被duplicate
+
+  termination-1 和 termination-2 要求了没挂的process会deliver同一组消息A，而挂掉的process会受到A的某个子集
+
++ CAMP<sub>n,t</sub>[∅]中的URB实现简述
+  + boardcast
+  
+    给所有process包括自身发送m
+
+  + deliver
+  
+    第一次收到从其他process来的某个message时，转发给其他所有process，然后deliver该message到上层
+
++ **FIFO-URB**
+  
+  msg delivery的顺序一定要尊重消息的本地broadcast顺序, 即同一个process A所broadcast的2个信息m和m', 所有delivery了这两个msg的process必须按A的broadcast顺序来delivery这两个信息
+
+  对于挂掉的process而言，它urb-deliver的从p<sub>i</sub>发出的message是p<sub>i</sub> FIFO-broadcast的message序列的一个前缀。
+
++ **FIFO-URB** 实现简述
+  + broadcast
+    
+    标注message的本地sequence number，然后调用urb_braodcast(m)
+  + deliver
+    
+    当m被urb_deliver之后，不妨令该message的sender是p<sub>j</sub>。
+    + 如果m的sequence number是本地next[j]，则FIFO-deliver该message，更新next[j] (next[j] = next[j] + 1)。然后把缓存的msg_set中可以被FIFO-deliver（sequence number等于next[j]）的message都发送到上层。
+    + 否则把m加入到缓存msg_set中。
+
++ **Local Order** 
+  
+  如果process-A delivery了m, 然后broadcast了m', 那么可以理解为m'在因果关系上依赖于m, 那么所有process在deliver m'之前必须deliver m
+
++ **Causal Order**
+  
+  ```
+  Causal Order = FIFO + Local Order
+  ```
+
++ 基于**FIFO-broadcast**的**CO-broadcast** 实现简述
+  
+  每个process维护一个list变量im_causal_past, 包含该process自上一次CO-broadcast之后所有CO-deliver的message。
+
+  + broadcast
+    把message m append到im_causal_past，然后调用FIFO-broadcast。完成FIFO-broadcast重置im_causal_past。
+
+  + deliver
+    从FIFO-deliver中收到message之后，对于message 中个每个m，如果之前没有CO-deliver过，则CO-deliver该条消息，然后把消息加到本地im_causal_past列表。
+
++ 基于**URB**的**CO-broadcast** 实现简述
+
+  每个process维护一个vector causal_past 来记录自己已经delivery了多少个别的process的msg。
+  
+  如果消息里的causal_past中的每个值都小于等于本地causal_past的值时，该消息可以被deliver。
+
+  此外每个process维护一个缓存msg_set，用来存放暂时不满足co-deliver条件的消息。
+  
+  + broadcast
+
+    把本地的vector causal_past 加到消息里，然后调用URB-broadcast。等到本地process co-deliver该消息后，CO-broadcast结束。
+
+  + deliver
+    
+    + 如果从URB-deliver中收到消息满足可以CO-deliver的条件，则CO-deliver该消息，然后更新本地 causal_past vector。
+      
+      然后CO-deliver msg_set中的每条满足CO-deliver条件的消息，更新causal_past和msg_set。
+
+    + 否则把消息加到msg_set中。
+
++ **Total Order**
+
+  光靠在消息中加入local信息不能实现total order。
+
+值得注意的是：本章中的**FIFO-broadcast**和**CO-broadcast**完全基于其底层的URB。
+
+所以只要有对应不同分布式计算模型的URB，我们就可以得到相应的**FIFO-broadcast**和**CO-broadcast**。
+
+
+---
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}

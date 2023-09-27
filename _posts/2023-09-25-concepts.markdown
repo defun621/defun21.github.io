@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "一些基本概念"
+title:  一些基本概念
 date:   2023-09-25 20:14:08 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
@@ -34,7 +34,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
   + CAMP<sub>n,t</sub>[t &lt; n/2]（系统中永远不会有超过半数的节点crash）
   + CAMP<sub>n,t</sub>[-FC]（channel不再是reliable而只是fair channel）
 
-
+---
 本文章属于以下分类：
 {% for category in page.categories %}
 - {{ category }}
