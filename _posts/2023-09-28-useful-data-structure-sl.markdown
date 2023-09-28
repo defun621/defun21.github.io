@@ -15,7 +15,7 @@ categories: [Algorithm-design-with-Haskell]
   ```
 
 + invariant
-  + 如果pair里有一个为空，则另一个最多只有一个element
+  + 如果pair里有一个为空，则另一个最多只有一个element，就是因为维护了这个variant，所以才能使得时间复杂度得到优化。
     ```haskell
     null xs => null ys || single ys
     null ys => null xs || single xs
