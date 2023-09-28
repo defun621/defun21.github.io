@@ -122,3 +122,10 @@ categories: [Algorithm-design-with-Haskell]
   ```haskell
   inits = map reverse . scanl (flip (:)) []
   ```
+
+
+---
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}
