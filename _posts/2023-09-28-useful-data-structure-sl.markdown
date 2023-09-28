@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Useful Data structure - Symmetric List
+title:  Symmetric List
 date:   2023-09-28 10:54:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
