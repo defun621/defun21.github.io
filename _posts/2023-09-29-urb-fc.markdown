@@ -76,7 +76,11 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
     + **注意**： 在该实现中会有很多个不同的Diffuse task同时执行，Diffuse(m<sub1</sub>)、Diffuse(m<sub>2</sub>)、……。此外，很明显由于Diffuse的实现，它会无限的发送消息。
 
-+ **不存在**算法可以在CAMP<sub>n,t</sub>[-FC, t &geq; n/2]上实现URB。
++ **不存在**算法可以在CAMP<sub>n,t</sub>[-FC, t &ge; n/2]上实现URB。
+===
+
++ abc
+
 ---
 本文章属于以下分类：
 {% for category in page.categories %}
