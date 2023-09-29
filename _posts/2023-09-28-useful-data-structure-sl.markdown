@@ -7,7 +7,7 @@ categories: [Algorithm-design-with-Haskell]
 
 教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
 
-+ list在cons, head, tail上的时间复杂度是O(1)，但snoc,last,init的时间复杂度是O(n)。而Symmetric List可以使两端操作都能达到均摊O(1)。
++ list在cons, head, tail上的时间复杂度是O(1)，但snoc, last, init的时间复杂度是O(n)。而Symmetric List可以使两端操作都能达到均摊O(1)。
   
 + 定义：
   ```scala
