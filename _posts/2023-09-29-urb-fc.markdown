@@ -1,0 +1,84 @@
+---
+layout: post
+title:  在CAMP[-FC]中的可靠广播
+date:   2023-09-29 15:45:00 -0700
+categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
+---
+
+教科书链接：<https://link.springer.com/book/10.1007/978-3-319-94141-7>
+
++ **μ-message**
+  
+  代指类型为μ的protocol message
+
++ p<sub>i</sub>和p<sub>j</sub>之间的信道满足**fair with respect to msg type μ**，当
+
+  + **μ-validity**：如果p<sub>j</sub>收到μ-msg，则p<sub>i</sub>向p<sub>j</sub>发送了μ-msg。
+
+    对于type μ的msg，channel不会凭空新建或改动。
+  + **μ-integrity**：如果p<sub>j</sub>收到无限多μ-msg，则p<sub>i</sub>发送了无限多μ-msg。
+
+    对于type μ的msg，信道不会无限重复该msg。
+  + **μ-termination**：如果p<sub>i</sub>发了无限多μ-msg并且p<sub>j</sub>调用receive无限多次，则p<sub>j</sub>会收到μ-msg无限多次。
+
+    这个表明了在什么条件下p<sub>i</sub>，p<sub>j</sub>之间的信道会最终传输这条μ-msg。只要发送足够多次，μ-msg中的某些总能被收到。
+
++ **Fair channel**，该channel对channel中的所有message type都fair。具体定义为：
+  
+  + **FC-validity**：如果p<sub>j</sub>收到某msg，则p<sub>i</sub>向p<sub>j</sub>发送过了该msg。
+
+  + **FC-integrity**: 对于任意msg，如果p<sub>j</sub>收到无限多该msg，则p<sub>i</sub>发送了无限多该msg。
+
+  + **FC-termination**: 对于任意msg，如果p<sub>i</sub>发了无限多该msg并且p<sub>j</sub>调用receive无限多次，则p<sub>j</sub>会收到该msg无限多次。
+
++ **Fair lossy channel**，当channel中所有message都属于同一种类型
+  
+  + **FFL-validity**： 如果p<sub>j</sub>收到某msg，则p<sub>i</sub>向p<sub>j</sub>发送过了该msg。
+  
+  + **FFL-integrity**：如果p<sub>j</sub>收到无限多msg，则p<sub>i</sub>发送了无限多msg。
+  
+  + **FFL-termination**： 如果p<sub>i</sub>发了无限多msg并且p<sub>j</sub>调用receive无限多次，则p<sub>j</sub>会收到msg无限多次。
+
++ **Fair channel** 和 **Fair lossy channel** 的区别
+
+  注意到在**FFL-integrity**和**FFL-termination**中，并没有*对于任意一条msg*。这有着本质的不同。
+
+  + 例子1：假设p<sub>i</sub>往p<sub>j</sub>发送自然数1，2，3，4……序列。
+
+    + 如果p<sub>i</sub>和p<sub>j</sub>之间的信道是**Fair lossy channel**的话，
+      由于**FFL-termination**，p<sub>j</sub>肯定会收到一个无限长的自然数序列
+
+    + 如果该信道是**Fair channel**的话，则有可能p<j>一条都收不到，因为没有一个自然数被发送了无限多次。
+
+  + 例子2：假设p<sub>i</sub>往p<sub>j</sub>发送自然数1，2，1，2，……序列。
+
+    + 如果p<sub>i</sub>和p<sub>j</sub>之间的信道是**Fair lossy channel**的话，有可能p<sub>j</sub>只收到无限多个1而从没收到过2。
+
+    + 如果该信道是**Fair Channel**，则因为1，2都被发送了无限多次，则p<sub>j</sub>会收到一个由无限多1和无限多2构成的自然数序列
+
++ 在CAMP<sub>n,t</sub>[-FC, t &lt; n/2]上的URB实现简述
+
+    每个process需要维护一个数据结构rec_by，rec_by[m]表示在该process的认知中已经确认收到某条msg *m*的所有process的集合。
+
+    + broadcast：把msg发给包括自身在内的所有process
+
+    + deliver
+
+        + 如果是第一次收到该msg，则更新rec_by[m]（把自己和发送方加进去），调用任务diffuse(m)
+
+        + 否则仅更新rec_by[m]
+
+        当且仅当rec_by[m]集合的大小超过t时，urb-deliver该message。
+
+    + Diffuse(m)
+
+        diffuse(m)是一个额外的本地task，它负责把消息m继续广播给所有process
+
+    + **注意**： 在该实现中会有很多个不同的Diffuse task同时执行，Diffuse(m<sub1</sub>)、Diffuse(m<sub>2</sub>)、……。此外，很明显由于Diffuse的实现，它会无限的发送消息。
+
++ **不存在**算法可以在CAMP<sub>n,t</sub>[-FC, t &geq; n/2]上实现URB。
+---
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}
