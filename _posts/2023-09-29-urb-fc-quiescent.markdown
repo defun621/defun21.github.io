@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  在CAMP[-FC]中的可靠广播
-date:   2023-09-29 15:45:00 -0700
+title:  在CAMP[-FC]和用了failure detector中的可靠广播
+date:   2023-09-29 22:59:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
