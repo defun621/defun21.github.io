@@ -79,7 +79,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 + **不存在**算法可以在CAMP<sub>n,t</sub>[-FC, t &ge; n/2]上实现URB。
 ===
 
-+ abc
+
 
 ---
 本文章属于以下分类：
