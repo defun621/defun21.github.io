@@ -169,6 +169,12 @@ categories: [Algorithm-design-with-Haskell]
                 case One(t) :: xs => if k < size(t) then One(updateT(k)(x)(t)) :: xs else One(t) :: updateRA(k - size(t))(x)(xs)
         ```
 
+    - toRA
+        ```scala
+            val toRA: [A] => List[A] => RAList[A] = [A] => (l: List[A]) => 
+                val step: (A, RAList[A]) => RAList[A] = (a, acc) => consRA(a)(acc)
+                l.foldRight(nilRA)(step)
+        ```
 
 ---
 本文章属于以下分类：
