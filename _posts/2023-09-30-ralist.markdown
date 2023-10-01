@@ -1,0 +1,170 @@
+---
+layout: post
+title:  Random access list
+date:   2023-09-30 21:54:08 -0700
+categories: [Algorithm-design-with-Haskell]
+---
+
+教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
+
+- 对于list而言，*!!*的时间复杂度为O(n)。Random access list这个data structure可以把 *!!* 的时间复杂度降为O(lgn)，代价是head，cons，tail的时间复杂度也一并变成O(lgn).
+
+- Random access list是一个基于二叉树的数据结构。因此我们先给出Tree的ADT定义
+    ```scala
+    enum Tree[+A]:
+        case Leaf(a: A)
+        case Node(size: Int, l: Tree[A], r: Tree[A])
+    ```
+
+    - 有了这个定义，*size: Tree[A] => Int* 的时间复杂度就是O(1)
+
+        ```scala
+            val size: [A] => Tree[A] => Int = [A] => (t: Tree[A]) => t match
+                case Leaf(_) => 1
+                case Node(t, _, _) => t
+        ```
+
+    - merge两个tree
+
+        ```scala
+            val mkTree: [A] => Tree[A] => Tree[A] => Tree[A] = [A] => (l: Tree[A]) => r => Node(size(l) + size(r), l, r)
+        ```
+
+    - 先序序列化Tree
+
+        ```scala
+            val fromT: [A] => Tree[A] => List[A] = [A] => (t: Tree[A]) => t match
+                case Leaf(x) => List(x)
+                case Node(_, l, r) => fromT(l) ++ fromT(r)
+        ```
+
+        这是一个很不效率的实现，因为每次concatenate都要再走一遍已经convert完的list。
+        
+        可以用递推式算一下时间复杂度，假设树的高度为h，树为满二叉树
+
+        T(h) = 2T(h - 1) + &Theta;(2<sup>h-1</sup>)，可得T(h) = &Theta;(h<sup>2<sup>h</sup></sup>)
+
+        优化的思路也很简单，也就是将concat操作延后。书后习题给的路径是引入函数 *fromTs*。
+        
+        ```scala
+            val fromTs: [A] => List[Tree[A]] => List[A] = [A] => (l: List[Tree[A]]) => l match
+                case Nil => Nil
+                case Leaf(x) :: ts => x :: fromTs(ts)
+                case Node(_, l, r) :: ts => fromTs(l :: r :: ts)
+
+            val fromT: [A] => Tree[A] => List[A] = [A] => (t: Tree[A]) => fromTs(List(t))
+        ```
+
+        这样就可以由后往前构造list，从而避免了之前由于concatenate引入的额外操作。
+
+- 为了实现random access list，我们要将list的长度变成二进制（最小位在最先），比如6<sub>dec</sub> -> 011<sub>bin</sub>。
+
+    这样的话，一个list就是一组满二叉树。
+
+    举例："abcdef" 就是
+    ```scala
+    List(Zero,
+        One(
+            Node(2, 
+                Leaf('a'), 
+                Leaf('b'))),
+        One(
+            Node(4, 
+                Node(2, 
+                    Leaf('c'),
+                    Leaf('d')),
+                Node(2,
+                    Leaf('e'),
+                    Leaf('f'))))
+    ```
+
+- 综上，Random access list的可以定义为：
+
+    ```scala
+        enum Digit[+A]:
+            case Zero
+            case One(t: Tree[A])
+
+        type RAList[A] = List[Digit[A]]
+    ```
+
+- 一些基本函数：
+
+    - fromRA
+        ```scala
+        val fromDigit: [A] => Digit[A] => List[A] = [A] => (d: Digit[A]) => d match 
+            case Zero => Nil
+            case One(t) => fromT(t)
+
+
+        val fromRA: [A] => RAList[A] => List[A] = [A] => (ra: RAList[A]) => ra.flatMap(fromDigit(_))
+        ```
+
+    - nilRA
+        ```scala
+            def nilRA[A]: RAList[A] = Nil
+        ```
+
+    - nullRA
+        ```scala
+            val nullRA: [A] => RAList[A] => Boolean = [A] => (ra: RAList[A]) => ra.isEmpty
+        ```
+
+    - consRA
+        ```scala
+            val consT: [A] => Tree[A] => RAList[A] => RAList[A] = [A] => (t: Tree[A]) => ra => ra match
+                case Nil => List(One(t))
+                case Zero :: xs => One(t) :: xs
+                case One(u) :: xs => Zero :: consT(mkTree(t)(u))(xs)
+
+
+            val consRA: [A] => A => RAList[A] => RAList[A] = [A] => (a: A) => ra => consT(Leaf(a))(ra)
+        ```
+
+    - unconsRA
+        ```scala
+            val unconsT: [A] => RAList[A] => (Tree[A], RAList[A]) = [A] => (ra: RAList[A]) => ra match 
+                case Nil => throw new RuntimeException
+                case One(t) :: xs => if xs.isEmpty then (t, Nil) else (t, Zero :: xs)
+                case Zero :: xs => 
+                    val (_@Node(_, l, r), ys) = unconsT(xs)
+                    (l, One(r) :: ys)
+
+            val unconsRA: [A] => RAList[A] => (A, RAList[A]) = [A] => (ra: RAList[A]) => 
+                val (_@Leaf(a), xs) = unconsT(ra)
+                (a, xs)
+        ```
+
+    - 有了unconsRA，我们可以直接在其之上定义headRA和tailRA
+        ```scala
+            val headRA: [A] => RAList[A] => A = [A] => (r: RAList[A]) => unconsRA(r)._1
+
+            val tailRA: [A] => RAList[A] => RAList[A] = [A] => (r: RAList[A]) => unconsRA(r)._2
+        ```
+
+    - fetchRA
+        ```scala
+            val fetchT: [A] => Int => Tree[A] => A = [A] => (i: Int) => t => (i, t) match
+                case (0, Leaf(x)) => x
+                case (_, Leaf(_)) => throw new RuntimeException
+                case (_, Node(s, l, r)) => if i < s / 2 then fetchT(i)(l) else fetch(i - s/2)(r) //和s/2进行比较是因为在RAList里都是满二叉树
+
+    
+            val fetchRA: [A] => Int => RAList[A] => A = [A] => (i: Int) => ra => ra match 
+                case Nil => throw new RuntimeException
+                case Zero :: xs => fetchRA(i)(xs)
+                case One(t) :: xs => if i < size(t) then fetchT(i)(t) else fetchRA(i - size(t))(xs)
+        ```
+
+    - updateRA
+        ```scala
+            val updateT: [A] => Int => A => Tree[A] => Tree[A] = [A] => (k: Int) => x => t => (k, t) match 
+                case (0, Leaf(_)) => Leaf(x)
+                case (_, Leaf(_)) => throw new RuntimeException
+                case (_, Node(s, l, r)) => if k < s / 2 then Node(s, updateT(k)(x)(l), r) else Node(s, l, update(k - s / 2)(x)(r))
+
+            val updateRA: [A] => Int => A => RAList[A] => RAList[A] = [A] => (k: Int) => x => ra => ra match 
+                case Nil => throw new RuntimeException
+                case Zero :: xs => Zero :: updateRA(k)(x)(xs)
+                case One(t) :: xs => if k < size(t) then One(updateT(k)(x)(t)) :: xs else One(t) :: updateRA(k - size(t))(x)(xs)
+        ```
