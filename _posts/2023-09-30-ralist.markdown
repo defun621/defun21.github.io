@@ -168,3 +168,10 @@ categories: [Algorithm-design-with-Haskell]
                 case Zero :: xs => Zero :: updateRA(k)(x)(xs)
                 case One(t) :: xs => if k < size(t) then One(updateT(k)(x)(t)) :: xs else One(t) :: updateRA(k - size(t))(x)(xs)
         ```
+
+
+---
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}
