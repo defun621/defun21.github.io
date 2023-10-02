@@ -1,13 +1,23 @@
 ---
 title: List of reading notes on each book
-layout: basic
+layout: page
 permalink: /lists/
 ---
 
-<p>These are the categories for all blog posts:</p>
-<ul>
-{% for category in site.categories %}
-<li><a href="{{ site.url }}/jekyll/category/{{ category | first | url_encode }}/index.html">{{ category | first }}</a></li>
-{% endfor %}
-</ul>
-<p>They link to the corresponding index pages!</p>
+<div id="archives">
+    {% for category in site.categories %}
+      <div class="archive-group">
+        {% capture category_name %}{{ category | first }}{% endcapture %}
+        <div id="#{{ category_name | slugize }}"></div>
+        <p></p>
+    
+        <h3 class="category-head">{{ category_name }}</h3>
+        <a name="{{ category_name | slugize }}"></a>
+        {% for post in site.categories[category_name] limit:10 %}
+        <article class="archive-item">
+          <h4><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a></h4>
+        </article>
+        {% endfor %}
+      </div>
+    {% endfor %}
+</div>
