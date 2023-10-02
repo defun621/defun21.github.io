@@ -27,9 +27,9 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
     regular寄存器读操作返回的值定义为：
 
-        - 一个读如果不和任何写是concurrent关系, 则读需要读到寄存器当前的内容(即, 上一个成功完成的写入的值)
+    - 一个读如果不和任何写是concurrent关系, 则读需要读到寄存器当前的内容(即, 上一个成功完成的写入的值)
 
-        - 一个读如果和多个写操作是concurrent关系, 那么这个读可以返回这多个写的值里的任意一个, 或者寄存器在这些写发生前的值
+    - 一个读如果和多个写操作是concurrent关系, 那么这个读可以返回这多个写的值里的任意一个, 或者寄存器在这些写发生前的值
 
 - **new/old inversion**
 
@@ -73,9 +73,9 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
             - H&#770; = (H, &lt;<sub>H</sub>)，其中H是所有process发生的event所构成的集合，&lt;<sub>H</sub>是在这些events上的全序关系。
 
-            - **local history**，H&#770;|p<sub>i</sub>，是只有p<sub>i</sub>发起的event构成的H&#770;的一个子序列。
+            - **local history**，H&#770;\|p<sub>i</sub>，是只有p<sub>i</sub>发起的event构成的H&#770;的一个子序列。
 
-            - 如果 &forall; p<sub>i</sub>: H&#770;|p<sub>i</sub> = H&#770;'|p<sub>i</sub>，则H&#770;和H&#770;'是等价的。
+            - 如果 &forall; p<sub>i</sub>: H&#770;\|p<sub>i</sub> = H&#770;'\|p<sub>i</sub>，则H&#770;和H&#770;'是等价的。
 
             - 本文中只考虑well-formed history（即invocation后面是reply，然后再接invocation……）
 
@@ -95,9 +95,9 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
             即一个非sequential的history。
 
-        - **S&#770;|R**，即在sequential history *S&#770;* 上，只由寄存器R相关的事件构成的子序列。
+        - **S&#770;\|R**，即在sequential history *S&#770;* 上，只由寄存器R相关的事件构成的子序列。
 
-        - **legal history**: 在**S&#770;|R**，每个read都只返回它之前最近的write的值。
+        - **legal history**: 在**S&#770;\|R**，每个read都只返回它之前最近的write的值。
 
     - **Atomicity**: 一个history H&#770;是Atomic的条件是
 
