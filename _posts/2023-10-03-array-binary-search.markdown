@@ -119,7 +119,7 @@ categories: [Algorithm-design-with-Haskell]
                 else
                     val z = f(x, y)
                     if z < t then searchIn(x + 1, y)
-                    else if z == t then（x, y) :: searchIn(x + 1, y - 1)
+                    else if z == t then (x, y) :: searchIn(x + 1, y - 1)
                     else searchIn(x, y - 1)
      ```
         Saddleback search 的时间复杂度为&Theta;(m + n) + &Theta;(t)。
