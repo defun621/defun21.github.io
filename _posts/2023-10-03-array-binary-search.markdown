@@ -39,7 +39,7 @@ categories: [Algorithm-design-with-Haskell]
         val bound: (Int => Int) => Int => (Int, Int) = 
             (f: Int => Int) => 
                 t => 
-                    val until: [A] => (A => Boolean) => (A => A) => A => A = [A] => (p: A => Boolean) => f => x => if p(x) then x else until(p)(f)(f(x))
+                    def until(p: A => Boolean)(f: A => A)(x: A): A = if p(x) then x else until(p)(f)(f(x))
                     val b: Int = until(x => t <= f(x))(x => x * 2)(1)
                     if t <= f(0) then (-1, 0) else (b / 2, b)
     ```
