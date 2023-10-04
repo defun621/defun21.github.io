@@ -111,7 +111,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
         一个history H&#770;是Sequentially consistency的条件是
 
-        - 存在这么一个由H&#770;里的事件的排列构成的序列S&#770，即H&#770;和S&#770;等价
+        - 存在这么一个由H&#770;里的事件的排列构成的序列S&#770;，即H&#770;和S&#770;等价
         - S&#770;是sequential并且legal
 
 - 一些重要结论：

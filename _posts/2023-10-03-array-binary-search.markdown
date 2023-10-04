@@ -84,29 +84,33 @@ categories: [Algorithm-design-with-Haskell]
 
   1. 从矩阵的top-left而不是bottom-left开始搜索
 
-  ```scala
-    val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = (f: (Int, Int) => Int) => t => 
-        for {
-            x <- (0 to t).toList
-            y <- t to 0 by -1
-            if f(x, y) == t
-        } yield (x, y)
-  ```
+    ```scala
+        val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = (f: (Int, Int) => Int) => t => 
+            for {
+                x <- (0 to t).toList
+                y <- t to 0 by -1
+                if f(x, y) == t
+            } yield (x, y)
+    ```
 
   2. make search interval explicit
-  ```scala
-    val searchIn: (Int, Int) => ((Int, Int) => Int) => Int => List[(Int, Int)] => (a: Int, b: Int) => f => t => 
-        for {
-            x <- (a to t).toList
-            y <- b to 0 by -1
-            if f(x, y) == t
-        } yield (x, y)
-  ```
 
-  3. saddleback search显然有：
-     - 如果f(a, b) < t, 则a + 1
-     - 如果f(a, b) > t, 则b - 1
-     - 如果f(a, b) == t， 则a + 1, b - 1
+    ```scala
+        val searchIn: (Int, Int) => ((Int, Int) => Int) => Int => List[(Int, Int)] => (a: Int, b: Int) => f => t => 
+            for {
+                x <- (a to t).toList
+                y <- b to 0 by -1
+                if f(x, y) == t
+            } yield (x, y)
+    ```
+
+  3. saddleback search
+  
+        显然有：
+
+        - 如果f(a, b) < t, 则a + 1
+        - 如果f(a, b) > t, 则b - 1
+        - 如果f(a, b) == t， 则a + 1, b - 1
 
      ```scala
         val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = f => t =>
@@ -118,15 +122,13 @@ categories: [Algorithm-design-with-Haskell]
                     else if z == t then（x, y) :: searchIn(x + 1, y - 1)
                     else searchIn(x, y - 1)
      ```
+        Saddleback search 的时间复杂度为&Theta;(m + n) + &Theta;(t)。
+        search里的起点(t,0)，（t,0)选的不好，如果将
+        
+        - p定义为 smallest (-1, t) (&lambda;y.f(0,y)) t
+        - q定义为 smallest (-1, t) (&lambda;x.f(x,0)) t
 
-    Saddleback search 的时间复杂度为&Theta;(m + n) + &Theta;(t)。
-
-    search里的起点(t,0)，（t,0)选的不好，如果将
-    
-    - p定义为 smallest (-1, t) (&lambda;y.f(0,y)) t
-    - q定义为 smallest (-1, t) (&lambda;x.f(x,0)) t
-
-    则此时saddleback search 的时间复杂度为&Theta;(logt) + &Theta; (p + q)。
+        则此时saddleback search 的时间复杂度为&Theta;(logt) + &Theta; (p + q)。
 
     下一篇讲书里怎么定义在二维上正确的进行binary search。
 
