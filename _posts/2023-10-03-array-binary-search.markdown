@@ -83,27 +83,23 @@ categories: [Algorithm-design-with-Haskell]
   我们来一步一步优化：
 
   1. 从矩阵的top-left而不是bottom-left开始搜索
-
-    ```scala
-        val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = (f: (Int, Int) => Int) => t => 
-            for {
-                x <- (0 to t).toList
-                y <- t to 0 by -1
-                if f(x, y) == t
-            } yield (x, y)
-    ```
-
+        ```scala
+            val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = (f: (Int, Int) => Int) => t => 
+                for {
+                    x <- (0 to t).toList
+                    y <- t to 0 by -1
+                    if f(x, y) == t
+                } yield (x, y)
+        ```
   2. make search interval explicit
-
-    ```scala
-        val searchIn: (Int, Int) => ((Int, Int) => Int) => Int => List[(Int, Int)] => (a: Int, b: Int) => f => t => 
-            for {
-                x <- (a to t).toList
-                y <- b to 0 by -1
-                if f(x, y) == t
-            } yield (x, y)
-    ```
-
+        ```scala
+            val searchIn: (Int, Int) => ((Int, Int) => Int) => Int => List[(Int, Int)] => (a: Int, b: Int) => f => t => 
+                for {
+                    x <- (a to t).toList
+                    y <- b to 0 by -1
+                    if f(x, y) == t
+                } yield (x, y)
+        ```
   3. saddleback search
   
         显然有：
