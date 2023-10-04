@@ -117,6 +117,8 @@ categories: [Algorithm-design-with-Haskell]
                     if z < t then searchIn(x + 1, y)
                     else if z == t then (x, y) :: searchIn(x + 1, y - 1)
                     else searchIn(x, y - 1)
+            
+            searchIn(0, t)
      ```
         Saddleback search 的时间复杂度为&Theta;(m + n) + &Theta;(t)。
         search里的起点(t,0)，（t,0)选的不好，如果将
