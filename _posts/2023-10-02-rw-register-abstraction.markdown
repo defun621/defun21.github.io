@@ -5,6 +5,8 @@ date:   2023-10-02 12:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
+教科书链接：<https://link.springer.com/book/10.1007/978-3-319-94141-7>
+
 - **concurrent object**: 
 
     能同时被多个sequential process访问的object
