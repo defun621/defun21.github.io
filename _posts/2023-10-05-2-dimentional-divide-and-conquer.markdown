@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  二维里的二分
-date:   2023-10-03 21:54:08 -0700
+date:   2023-10-05 20:54:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
 
