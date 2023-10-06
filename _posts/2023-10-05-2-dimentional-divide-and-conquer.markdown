@@ -68,6 +68,8 @@ categories: [Algorithm-design-with-Haskell]
     T(m, n) = logn + 2T(m/2, n/2)，最终可以得到一个logT = &Omega;(mlog(1 + n/m) + nlog(1 + m/n))的下界。
 
 - **注意：该下界表明，当m = n时，时间复杂度起码是&Omega;(m + n)，所以当m = n时，saddleback search是最优**
+===
+
 ---
 本文章属于以下分类：
 {% for category in page.categories %}
