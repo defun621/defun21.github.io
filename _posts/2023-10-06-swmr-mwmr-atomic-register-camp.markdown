@@ -5,6 +5,8 @@ date:   2023-10-06 14:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
+教科书链接：<https://link.springer.com/book/10.1007/978-3-319-94141-7>
+
 - **Regular register不能保证atomicity**
 
     比如下面这个例子里，红线表示某次读在各个process的时间点。read1比read2早发生，但read1可以读到新的值，该新值的sequence number是15。而read2能只能读到老的值。
