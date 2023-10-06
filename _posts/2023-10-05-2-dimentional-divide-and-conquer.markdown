@@ -7,7 +7,7 @@ categories: [Algorithm-design-with-Haskell]
 
 教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
 
-上一篇我们讲到了horsesaddle search。这一篇来学习two dimentional divide and conquer。问题还是同一个问题，
+上一篇我们讲到了saddleback search。这一篇来学习two dimentional divide and conquer。问题还是同一个问题，
 
 给定一个函数f, 他接受一对Nat作为参数，返回值为Int。函数f在每个argument 上都严格递增。给定目标t，求所有的(x,y)使得f(x,y) = t。
 
