@@ -63,13 +63,13 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
             reqsn<sub>i</sub>自增1，
             
-            然后process<sub>i</sub>会尝试拿到系统当前状态：
+            - process<sub>i</sub>会尝试拿到系统当前状态：
 
                 - 先广播WRITE_REQ(reqsn<sub>i</sub>)
                 
                 - 等从大多数process处收到ACK_WRITE_REQ(reqsn<sub>i</sub>, msn)之后，找到最大的msn。
 
-            然后更新全局系统状态：
+            - 然后更新全局系统状态：
                 
                 - 广播WRITE(reqsn<sub>i</sub>, v, msn + 1, i)
 
@@ -81,7 +81,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
             reqsn<sub>i</sub>自增1，
 
-            然后process<sub>i</sub>尝试拿到全局系统当前状态：
+            - process<sub>i</sub>尝试拿到全局系统当前状态：
 
                 - 先广播READ_REQ(reqsn<sub>i</sub>)
 
