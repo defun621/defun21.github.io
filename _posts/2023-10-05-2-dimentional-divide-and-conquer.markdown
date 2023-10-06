@@ -39,7 +39,7 @@ categories: [Algorithm-design-with-Haskell]
 
     ```scala
         
-        val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = (f: (Int, Int) => Int) => t
+        val search: ((Int, Int) => Int) => Int => List[(Int, Int)] = (f: (Int, Int) => Int) => t =>
             def from(x1: Int, y1: Int)(x2: Int, y2: Int): List[(Int, Int)] = 
                 val c = (x1 + x2) / 2
                 val r = (y1 + y2) / 2
