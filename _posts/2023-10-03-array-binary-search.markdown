@@ -128,7 +128,7 @@ categories: [Algorithm-design-with-Haskell]
 
         则此时saddleback search 的时间复杂度为&Theta;(logt) + &Theta; (p + q)。
 
-    下一篇讲书里怎么定义在二维上正确的进行binary search。
+    下一篇讲书里怎么定义在二维上进行binary search。
 
 ---
 本文章属于以下分类：
