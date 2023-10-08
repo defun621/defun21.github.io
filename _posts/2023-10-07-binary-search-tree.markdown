@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  binary search tree
+title:  二叉搜索树
 date:   2023-10-07 23:54:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
