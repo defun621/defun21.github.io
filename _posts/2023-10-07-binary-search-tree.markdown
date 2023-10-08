@@ -131,7 +131,7 @@ categories: [Algorithm-design-with-Haskell]
 
             此时我们需要变rl的root为新的root，先做一次左旋再做一次右旋
 
-    - 右子树高的情况与上述对称。
+    - 右子树高的情况与上述对偶。
 
     - 写成scala就是:
 
