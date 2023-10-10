@@ -36,9 +36,9 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
     - 每个挂掉的process都TO-deliver上述序列的某个前缀
 
-- CAMP<sub>n,t</sub>[t &lt; n/2, TO-broadcast]中的MWMR sequentially consistent寄存器实现简述
+- **CAMP<sub>n,t</sub>[t &lt; n/2, TO-broadcast]中的MWMR sequentially consistent寄存器实现简述**
 
-    - with fast read operation
+    - **with fast read operation**
 
         - 任意寄存器X读操作的时候，p<sub>i</sub>直接返回本地的值x<sub>i</sub>
 
@@ -48,7 +48,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
             把本地的x<sub>i</sub>置为v。然后如果i == j，告诉自己可以从写操作返回了。
 
-    - with fast write operation
+    - **with fast write operation**
 
         每个process除了有对应于每个register的本地变量外还有一个计数器nb_write<sub>i</sub>，用来标记从自己这里TO-broadcast但还没有TO-deliver的消息数。
 
@@ -61,7 +61,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
             把本地x<sub>i</sub>置为v，如果该消息是由自己TO-broadcast(i == j)的，则nb_write<sub>i</sub>自减1
 
 
-- 基于logic clock的MWMR sequentially consistent寄存器实现简述
+- **基于logic clock的MWMR sequentially consistent寄存器实现简述**
 
     - 每个process p<sub>i</sub>的本地变量
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-10T00:33:34-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器" /><published>2023-10-09T21:45:00-07:00</published><updated>2023-10-09T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-10T01:29:00-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器" /><published>2023-10-09T21:45:00-07:00</published><updated>2023-10-09T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -48,11 +48,11 @@
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t &amp;lt; n/2, TO-broadcast]中的MWMR sequentially consistent寄存器实现简述&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t &amp;lt; n/2, TO-broadcast]中的MWMR sequentially consistent寄存器实现简述&lt;/strong&gt;&lt;/p&gt;
 
     &lt;ul&gt;
       &lt;li&gt;
-        &lt;p&gt;with fast read operation&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;with fast read operation&lt;/strong&gt;&lt;/p&gt;
 
         &lt;ul&gt;
           &lt;li&gt;
@@ -69,7 +69,7 @@
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;p&gt;with fast write operation&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;with fast write operation&lt;/strong&gt;&lt;/p&gt;
 
         &lt;p&gt;每个process除了有对应于每个register的本地变量外还有一个计数器nb_write&lt;sub&gt;i&lt;/sub&gt;，用来标记从自己这里TO-broadcast但还没有TO-deliver的消息数。&lt;/p&gt;
 
@@ -90,7 +90,7 @@
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;基于logic clock的MWMR sequentially consistent寄存器实现简述&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;基于logic clock的MWMR sequentially consistent寄存器实现简述&lt;/strong&gt;&lt;/p&gt;
 
     &lt;ul&gt;
       &lt;li&gt;
