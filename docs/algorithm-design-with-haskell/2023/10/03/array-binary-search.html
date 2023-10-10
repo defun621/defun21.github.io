@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>array和二分法 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="array和二分法" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<meta property="og:description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<link rel="canonical" href="http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search.html" />
+<meta property="og:url" content="http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-03T21:54:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="array和二分法" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-03T21:54:08-07:00","datePublished":"2023-10-03T21:54:08-07:00","description":"教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52","headline":"array和二分法","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search.html"},"url":"http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">array和二分法</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-03T21:54:08-07:00" itemprop="datePublished">Oct 3, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52">https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</a></p>
+
+<ul>
+  <li>
+    <p>Array
+  在Haskell的Data.Array里，array是immutable的。</p>
+
+    <p>构造函数定义为</p>
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">array</span> <span class="o">::</span> <span class="kt">Ix</span> <span class="n">i</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">e</span><span class="p">)]</span> <span class="o">-&gt;</span> <span class="kt">Array</span> <span class="n">i</span> <span class="n">e</span>
+</code></pre></div>    </div>
+
+    <p>接受一个表示bound的pair，一个由(i,e)构成的association list。</p>
+
+    <p>在Scala里，我们有Array，well，虽然它的Ix类型固定为Nat。</p>
+  </li>
+  <li>
+    <p>一维上的二分法
+  一维上的二分要解决的问题可以抽象为：给定一个严格单调递增的函数f，和目标数t，我们在数域上要找到x，使得f(x) = t。</p>
+
+    <p>对于我们常见的Int数组上的二分，f即<code class="language-plaintext highlighter-rouge">num.apply</code></p>
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="n">search</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Nat</span> <span class="o">-&gt;</span> <span class="kt">Nat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Nat</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Nat</span><span class="p">]</span>
+</code></pre></div>    </div>
+    <p>返回值要么是一个空list，要么是一个singleton。</p>
+
+    <p>线性的搜索的话，search的实现为：</p>
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="k">val</span> <span class="nv">search</span> <span class="k">:</span> <span class="o">(</span><span class="kt">Int</span> <span class="o">=&gt;</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="n">t</span><span class="o">).</span><span class="py">filter</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">f</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">==</span> <span class="n">t</span><span class="o">).</span><span class="py">toList</span>
+</code></pre></div>    </div>
+
+    <p>二分的话，首先因为f单调递增，
+  可以先定义出一个bound函数，通过2的幂次去找p，使得f(2<sup>p - 1</sup>) &lt; t ≤ f(2<sup>p</sup>)</p>
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="k">val</span> <span class="nv">bound</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span> <span class="o">=&gt;</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nc">Int</span><span class="o">,</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=</span> 
+          <span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> 
+              <span class="n">t</span> <span class="k">=&gt;</span> 
+                  <span class="k">def</span> <span class="nf">until</span><span class="o">(</span><span class="n">p</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="k">if</span> <span class="nf">p</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="n">then</span> <span class="n">x</span> <span class="k">else</span> <span class="nf">until</span><span class="o">(</span><span class="n">p</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">))</span>
+                  <span class="k">val</span> <span class="nv">b</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="nf">until</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">))(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)(</span><span class="mi">1</span><span class="o">)</span>
+                  <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="nf">f</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="nf">then</span> <span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="nf">else</span> <span class="o">(</span><span class="n">b</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+</code></pre></div>    </div>
+    <p>然后
+  在定义smallest函数，通过二分去找到该bound中最小的值x，使得t ≤ f(x)。</p>
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="k">val</span> <span class="nv">smallest</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">f</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> 
+          <span class="k">if</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">b</span> <span class="n">then</span> <span class="n">b</span>
+          <span class="k">else</span> 
+              <span class="k">val</span> <span class="nv">m</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span>
+              <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="nf">f</span><span class="o">(</span><span class="n">m</span><span class="o">)</span> <span class="n">then</span> <span class="nf">smallest</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">m</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="n">t</span><span class="o">)</span>
+              <span class="k">else</span> <span class="nf">smallest</span><span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">b</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="n">t</span><span class="o">)</span>
+</code></pre></div>    </div>
+
+    <p>有了这两个之后，我们可以定义search为：</p>
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="k">val</span> <span class="nv">search</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span> <span class="o">=&gt;</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> 
+          <span class="nf">val</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="k">=</span> <span class="nf">bound</span><span class="o">(</span><span class="n">f</span><span class="o">)(</span><span class="n">t</span><span class="o">)</span>
+          <span class="k">val</span> <span class="nv">x</span> <span class="k">=</span> <span class="nf">smallest</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="n">t</span><span class="o">)</span>
+          <span class="k">if</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">==</span> <span class="n">t</span> <span class="n">then</span> <span class="nc">List</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="k">else</span> <span class="nc">Nil</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在二维上的二分</p>
+
+    <p>二维上的二分要解决的问题可以抽象为</p>
+
+    <p>给定一个函数f, 他接受一对Nat作为参数，返回值为Int。函数f在每个argument 上都严格递增。给定目标t，求所有的(x,y)使得f(x,y) = t。</p>
+
+    <p>Θ(n<sup>2</sup>)的实现很简单：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">search</span><span class="k">:</span> <span class="o">((</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">)]</span> <span class="k">=</span> <span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> 
+      <span class="k">for</span> <span class="o">{</span>
+          <span class="n">x</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="n">t</span><span class="o">).</span><span class="py">toList</span>
+          <span class="n">y</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">to</span> <span class="n">t</span>
+          <span class="k">if</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">==</span> <span class="n">t</span>
+      <span class="o">}</span> <span class="nf">yield</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+        
+</code></pre></div>    </div>
+
+    <p>我们来一步一步优化：</p>
+
+    <ol>
+      <li>从矩阵的top-left而不是bottom-left开始搜索
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       <span class="k">val</span> <span class="nv">search</span><span class="k">:</span> <span class="o">((</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">)]</span> <span class="k">=</span> <span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> 
+           <span class="k">for</span> <span class="o">{</span>
+               <span class="n">x</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="n">t</span><span class="o">).</span><span class="py">toList</span>
+               <span class="n">y</span> <span class="k">&lt;-</span> <span class="n">t</span> <span class="n">to</span> <span class="mi">0</span> <span class="n">by</span> <span class="o">-</span><span class="mi">1</span>
+               <span class="k">if</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">==</span> <span class="n">t</span>
+           <span class="o">}</span> <span class="nf">yield</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>make search interval explicit
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       <span class="k">val</span> <span class="nv">searchIn</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">((</span><span class="nc">Int</span><span class="o">,</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">)]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">f</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> 
+           <span class="k">for</span> <span class="o">{</span>
+               <span class="n">x</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="n">a</span> <span class="n">to</span> <span class="n">t</span><span class="o">).</span><span class="py">toList</span>
+               <span class="n">y</span> <span class="k">&lt;-</span> <span class="n">b</span> <span class="n">to</span> <span class="mi">0</span> <span class="n">by</span> <span class="o">-</span><span class="mi">1</span>
+               <span class="k">if</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">==</span> <span class="n">t</span>
+           <span class="o">}</span> <span class="nf">yield</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>saddleback search</p>
+
+        <p>显然有：</p>
+
+        <ul>
+          <li>如果f(a, b) &lt; t, 则a + 1</li>
+          <li>如果f(a, b) &gt; t, 则b - 1</li>
+          <li>如果f(a, b) == t， 则a + 1, b - 1</li>
+        </ul>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="k">val</span> <span class="nv">search</span><span class="k">:</span> <span class="o">((</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">)]</span> <span class="k">=</span> <span class="n">f</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span>
+       <span class="k">def</span> <span class="nf">searchIn</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[(</span><span class="kt">Int</span>, <span class="kt">Int</span><span class="o">)]</span> <span class="k">=</span> 
+           <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">t</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="n">then</span> <span class="nc">Nil</span>
+           <span class="k">else</span>
+               <span class="k">val</span> <span class="nv">z</span> <span class="k">=</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+               <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="n">t</span> <span class="n">then</span> <span class="nf">searchIn</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+               <span class="k">else</span> <span class="k">if</span> <span class="n">z</span> <span class="o">==</span> <span class="n">t</span> <span class="nf">then</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">::</span> <span class="nf">searchIn</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+               <span class="k">else</span> <span class="nf">searchIn</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+            
+       <span class="nf">searchIn</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span>
+</code></pre></div>        </div>
+        <p>Saddleback search 的时间复杂度为Θ(m + n) + Θ(t)。
+   search里的起点(t,0)，（t,0)选的不好，如果将</p>
+
+        <ul>
+          <li>p定义为 smallest (-1, t) (λy.f(0,y)) t</li>
+          <li>q定义为 smallest (-1, t) (λx.f(x,0)) t</li>
+        </ul>
+
+        <p>则此时saddleback search 的时间复杂度为Θ(logt) + Θ (p + q)。</p>
+      </li>
+    </ol>
+
+    <p>下一篇讲书里怎么定义在二维上进行binary search。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/10/03/array-binary-search.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

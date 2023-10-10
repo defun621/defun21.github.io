@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>读写寄存器抽象 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="读写寄存器抽象" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html" />
+<meta property="og:url" content="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-02T12:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="读写寄存器抽象" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-02T12:45:00-07:00","datePublished":"2023-10-02T12:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"读写寄存器抽象","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html"},"url":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">读写寄存器抽象</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-02T12:45:00-07:00" itemprop="datePublished">Oct 2, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p><strong>concurrent object</strong>:</p>
+
+    <p>能同时被多个sequential process访问的object</p>
+  </li>
+  <li>
+    <p><strong>register</strong>:</p>
+
+    <p>（shared register object，in short， register）寄存器R是一种抽象，可以代表一个字节，或者一个shared disk。</p>
+
+    <p>R提供两种操作：R.read()和R.write()。</p>
+
+    <p>第五章主要定义以下两类register：</p>
+
+    <ul>
+      <li>
+        <p>regular read/write register</p>
+      </li>
+      <li>
+        <p>atomic register</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>regular R/W register</strong></p>
+
+    <p>regular R/W register是一种（SWMR）寄存器（单写多读）。</p>
+
+    <p>regular寄存器读操作返回的值定义为：</p>
+
+    <ul>
+      <li>
+        <p>一个读如果不和任何写是concurrent关系, 则读需要读到寄存器当前的内容(即, 上一个成功完成的写入的值)</p>
+      </li>
+      <li>
+        <p>一个读如果和多个写操作是concurrent关系, 那么这个读可以返回这多个写的值里的任意一个, 或者寄存器在这些写发生前的值</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>new/old inversion</strong></p>
+
+    <p>register上读到的值序列不一定是写入时候序列，也就是说可以先读到一个后被写入的值再读到一个老的值。</p>
+  </li>
+  <li>
+    <p><strong>atomic register</strong></p>
+
+    <p>atomic register与regular register不同，它可以是MWMR，在atomic register上不会出现new/old inversion。</p>
+
+    <p>atomic寄存器读操作返回的值定义为：</p>
+
+    <ul>
+      <li>
+        <p>所有的读和写操作看起来就像它们按照顺序执行一样，这个序列不妨称其为<em>S</em></p>
+      </li>
+      <li>
+        <p>如果op<sub>1</sub>在op<sub>2</sub>开始前结束，则op<sub>1</sub>在S序列里出现在op<sub>2</sub>之前。也即S遵守时间序。</p>
+      </li>
+      <li>
+        <p>atomic寄存器上每个读操作返回在S序列上在他之前最近的写操作写入的值</p>
+      </li>
+    </ul>
+
+    <p><em>S</em>被称为寄存器执行的线性化。（一个register execution可以存在多个linearization）。</p>
+  </li>
+  <li>
+    <p><strong>sequentially consistency register</strong></p>
+
+    <p>它是atomic register的一种弱化形式。它满足一下性质：</p>
+
+    <ul>
+      <li>
+        <p>所有的读和写操作看起来就像它们按照顺序执行一样，这个序列不妨称其为<em>S</em></p>
+      </li>
+      <li>
+        <p>如果process p<sub>i</sub>先执行op<sub>1</sub>再执行op<sub>2</sub>，则在序列S中op<sub>1</sub>必须出现在op<sub>2</sub>之前。也即S遵守进程顺序关系。</p>
+      </li>
+      <li>
+        <p>每个读操作返回在S序列上在他之前最近的写操作写入的值</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>注意：atomic寄存器要求遵守全局时间序，而sequentially consistency register只要求操作需要遵守进程顺序关系</strong></p>
+  </li>
+  <li>
+    <p>如何形式化定义<strong>Atomicity</strong>和<strong>Sequentially consistency</strong></p>
+
+    <ul>
+      <li>
+        <p>预备概念：</p>
+
+        <ul>
+          <li>
+            <p><strong>R.op(arg)(res)</strong>，表示寄存器R上参数为arg，返回值为res的操作op，可以是写也可以是读</p>
+          </li>
+          <li>
+            <p>每个<strong>R.op(arg)(res)</strong>有两个相应的<strong>event</strong>，invocation <em>inv[R.op(arg) by p<sub>i</sub>]</em> 和reply <em>resp[R.op(res) by p<sub>i</sub>]</em>.</p>
+          </li>
+          <li>
+            <p><strong>History</strong>:</p>
+
+            <ul>
+              <li>
+                <p>Ĥ = (H, &lt;<sub>H</sub>)，其中H是所有process发生的event所构成的集合，&lt;<sub>H</sub>是在这些events上的全序关系。</p>
+              </li>
+              <li>
+                <p><strong>local history</strong>，Ĥ|p<sub>i</sub>，是只有p<sub>i</sub>发起的event构成的Ĥ的一个子序列。</p>
+              </li>
+              <li>
+                <p>如果 ∀ p<sub>i</sub>: Ĥ|p<sub>i</sub> = Ĥ’|p<sub>i</sub>，则Ĥ和Ĥ‘是等价的。</p>
+              </li>
+              <li>
+                <p>本文中只考虑well-formed history（即invocation后面是reply，然后再接invocation……）</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>operation上的偏序关系</strong></p>
+
+            <p>（op →<sub>H</sub> op’) ≝ (resp[op] &lt;<sub>H</sub> inv[op’])</p>
+
+            <p>如果既没有（op →<sub>H</sub> op’) 也没有（op’ →<sub>H</sub> op) ，则op与op’ overlap。</p>
+          </li>
+          <li>
+            <p><strong>sequential history</strong></p>
+
+            <p>当Ĥ的第一个事件是一个invocation，并且</p>
+            <ol>
+              <li>每个invocation之后紧跟着它对应的reply；</li>
+              <li>每个reply之后跟着一个invocation；则Ĥ是一个sequential history</li>
+            </ol>
+          </li>
+          <li>
+            <p><strong>concurrent history</strong></p>
+
+            <p>即一个非sequential的history。</p>
+          </li>
+          <li>
+            <p><strong>Ŝ|R</strong>，即在sequential history <em>Ŝ</em> 上，只由寄存器R相关的事件构成的子序列。</p>
+          </li>
+          <li>
+            <p><strong>legal history</strong>: 在<strong>Ŝ|R</strong>，每个read都只返回它之前最近的write的值。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>Atomicity</strong>: 一个history Ĥ是Atomic的条件是</p>
+
+        <ul>
+          <li>存在这么一个由Ĥ里的事件的排列构成的序列S&amp;#770，即Ĥ和Ŝ等价</li>
+          <li>Ŝ是sequential并且legal</li>
+          <li>→<sub>H</sub> ⊆ →<sub>S</sub></li>
+        </ul>
+
+        <p>Ŝ就是Ĥ的一个线性化。</p>
+      </li>
+      <li>
+        <p><strong>Sequentially consistency</strong></p>
+
+        <p>一个history Ĥ是Sequentially consistency的条件是</p>
+
+        <ul>
+          <li>存在这么一个由Ĥ里的事件的排列构成的序列Ŝ，即Ĥ和Ŝ等价</li>
+          <li>Ŝ是sequential并且legal</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>一些重要结论：</p>
+
+    <ul>
+      <li>
+        <p><strong>atomicity是composable的而Sequentially consistency不是</strong></p>
+      </li>
+      <li>
+        <p><strong>在CAMP<sub>n,t</sub>[t ≥ n/2]里构造不出atomic寄存器</strong></p>
+      </li>
+      <li>
+        <p><strong>在CAMP<sub>n,t</sub>[t ≥ n/2]里构造不出两个或更多Sequentially consistency寄存器</strong></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

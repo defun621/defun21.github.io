@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>二叉搜索树 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="二叉搜索树" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<meta property="og:description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<link rel="canonical" href="http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html" />
+<meta property="og:url" content="http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-07T23:54:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="二叉搜索树" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-07T23:54:08-07:00","datePublished":"2023-10-07T23:54:08-07:00","description":"教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52","headline":"二叉搜索树","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html"},"url":"http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">二叉搜索树</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-07T23:54:08-07:00" itemprop="datePublished">Oct 7, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52">https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</a></p>
+
+<ul>
+  <li>
+    <p>BST里Tree的ADT定义和之前RAList不同。第一版BST的Tree的ADT定义为</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="n">enum</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span><span class="k">:</span>
+          <span class="kt">case</span> <span class="kt">Null</span>
+          <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">v</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+</code></pre></div>    </div>
+
+    <p>为什么说这是第一版，因为到后面我们发现在Node里光有这些信息不够使其保持平衡。</p>
+  </li>
+  <li>
+    <p>一些基本工具函数</p>
+
+    <ul>
+      <li>
+        <p>size</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">size</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="nf">size</span><span class="o">(</span><span class="n">l</span><span class="o">)</span> <span class="o">+</span> <span class="nf">size</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>flatten</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">flatten</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+      <span class="k">case</span> <span class="nf">node</span><span class="o">(</span><span class="n">v</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=</span> <span class="nf">flatten</span><span class="o">(</span><span class="n">l</span><span class="o">)</span> <span class="o">++</span> <span class="o">(</span><span class="n">v</span> <span class="o">::</span> <span class="nf">flatten</span><span class="o">(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>        </div>
+
+        <p>注意：这个算法的时间复杂度很糟糕，因为因为每次都要++的关系。</p>
+
+        <p>像之前RAList的toList一样，我们可以引入一个函数来优化时间复杂度。</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">flatcat</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">l</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="n">l</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">v</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">flatcat</span><span class="o">(</span><span class="n">left</span><span class="o">)(</span><span class="n">v</span> <span class="o">::</span> <span class="nf">flatcat</span><span class="o">(</span><span class="n">right</span><span class="o">)(</span><span class="n">l</span><span class="o">))</span>
+</code></pre></div>        </div>
+
+        <p>通过flatcat，通过递归消除了++。flatten就可以定义为：</p>
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">flatten</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nf">flatcat</span><span class="o">(</span><span class="n">t</span><span class="o">)(</span><span class="nc">Nil</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>height</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">height</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span> 
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">v</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="nv">Math</span><span class="o">.</span><span class="py">max</span><span class="o">(</span><span class="nf">height</span><span class="o">(</span><span class="n">l</span><span class="o">),</span> <span class="nf">height</span><span class="o">(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>一种通用的抽象是认为Tree[A]里的A是一种record，每个record有其对应的unique key。这样的话可以给出search的定义</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">search</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">K</span><span class="o">](</span><span class="n">key</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">K</span><span class="o">)(</span><span class="n">k</span><span class="k">:</span> <span class="kt">K</span><span class="o">)(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">K</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">t</span> <span class="k">match</span> 
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="nc">None</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">v</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> 
+          <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="nf">key</span><span class="o">(</span><span class="n">v</span><span class="o">),</span> <span class="n">k</span><span class="o">)</span> <span class="k">match</span>
+              <span class="k">case</span> <span class="mi">0</span> <span class="k">=&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">v</span><span class="o">)</span>
+              <span class="k">case</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">=&gt;</span> <span class="nf">search</span><span class="o">(</span><span class="n">key</span><span class="o">)(</span><span class="n">k</span><span class="o">)(</span><span class="n">l</span><span class="o">)</span>
+              <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="nf">search</span><span class="o">(</span><span class="n">key</span><span class="o">)(</span><span class="n">k</span><span class="o">)(</span><span class="n">r</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>显然为了让binary search tree搜索时间最优，我们要让binary search tree平衡，所以构造函数List[A] =&gt; Tree[A]要尽可能的把list平均二分。</p>
+
+    <p>为了达到这个目的，我们需要稍微修改一下我们的Tree ADT。</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">enum</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span><span class="k">:</span>
+      <span class="kt">case</span> <span class="kt">Null</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">height</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+</code></pre></div>    </div>
+
+    <p>引入height是为了在构造的时候更方便做平衡。</p>
+  </li>
+  <li>
+    <p>在新ADT的基础上，height是一个O(1)的函数。</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">height</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="k">_</span><span class="o">,</span> <span class="k">_</span><span class="o">,</span> <span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">h</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>一颗平衡的BST可以这么构造：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">mkTree</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> 
+      <span class="k">val</span> <span class="nv">step</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nf">insert</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">t</span><span class="o">)</span>
+      <span class="nv">xs</span><span class="o">.</span><span class="py">foldRight</span><span class="o">(</span><span class="nc">Null</span><span class="o">)(</span><span class="n">step</span><span class="o">)</span>
+</code></pre></div>    </div>
+
+    <p>insert定义为：</p>
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">insert</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="nc">Null</span><span class="o">,</span> <span class="nc">Null</span><span class="o">)</span> <span class="c1">//这里Tree是一个smart constructor，等于Node(1 + Math.max(height(l), height(r)), a, l, r)</span>
+      <span class="k">case</span> <span class="n">n</span> <span class="k">@</span> <span class="nc">Node</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span>
+          <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span> <span class="k">match</span>
+              <span class="k">case</span> <span class="mi">0</span>          <span class="k">=&gt;</span> <span class="n">n</span>
+              <span class="k">case</span> <span class="n">i</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">=&gt;</span> <span class="nf">balance</span><span class="o">(</span><span class="nf">insert</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">l</span><span class="o">))(</span><span class="n">x</span><span class="o">)(</span><span class="n">r</span><span class="o">)</span>
+              <span class="k">case</span> <span class="k">_</span>          <span class="k">=&gt;</span> <span class="nf">balance</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">x</span><span class="o">)(</span><span class="nf">insert</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>    </div>
+
+    <p>问题在于balance 函数的定义，这里就和AVL树一样了，需要旋转。</p>
+  </li>
+  <li>
+    <p>balance函数</p>
+
+    <ul>
+      <li>
+        <p>如果左子树和右子树高度差不超过1，则Node(1 + Math.max(height(l), height(r)), x, l, r)</p>
+      </li>
+      <li>
+        <p>如果左子树高度比右子树高2，则</p>
+
+        <ul>
+          <li>
+            <p>如果左子树l的左子树ll的高度不小于l的右子树rl，则我们有</p>
+
+            <p>height r = height l - 2 = height ll - 1 ≤ height rl ≤ height ll</p>
+
+            <p>此时我们只需要变左子树的root为新的root，做一次右旋</p>
+          </li>
+          <li>
+            <p>如果ll的高度小于rl，则我们有：</p>
+
+            <p>height r = height l - 2 = height rl - 1 = = height ll = max(height lrl, height rrl)</p>
+
+            <p>,其中lrl为rl的左子树，rrl为rl的右子树</p>
+
+            <p>此时我们需要变rl的root为新的root，先做一次左旋再做一次右旋</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>右子树高的情况与上述对偶。</p>
+      </li>
+      <li>
+        <p>写成scala就是:</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">bias</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="k">_</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">height</span><span class="o">(</span><span class="n">l</span><span class="o">)</span> <span class="o">-</span> <span class="nf">height</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="nv">rotr</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">match</span>
+      <span class="nc">Node</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="nc">Node</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">ll</span><span class="o">,</span> <span class="n">rl</span><span class="o">),</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">ll</span><span class="o">,</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">rl</span><span class="o">,</span> <span class="n">r</span><span class="o">))</span>
+
+  <span class="k">val</span> <span class="nv">rotl</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Node</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">match</span>
+      <span class="nc">Node</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">ll</span><span class="o">,</span> <span class="nc">Node</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">z</span><span class="o">,</span> <span class="n">lrl</span><span class="o">,</span> <span class="n">rrl</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">z</span><span class="o">,</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">ll</span><span class="o">,</span> <span class="n">lrl</span><span class="o">),</span> <span class="n">rrl</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="nv">rotateR</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="n">A</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="k">=&gt;</span> <span class="n">r</span> <span class="k">=&gt;</span>
+      <span class="k">if</span> <span class="nf">bias</span><span class="o">(</span><span class="n">l</span><span class="o">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="n">then</span> <span class="nf">rotr</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">))</span>
+      <span class="k">else</span> <span class="nf">rotr</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="nf">rotl</span><span class="o">(</span><span class="n">t1</span><span class="o">),</span> <span class="n">r</span><span class="o">))</span>
+
+  <span class="k">val</span> <span class="nv">rotateL</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="n">A</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="k">=&gt;</span> <span class="n">r</span> <span class="k">=&gt;</span>
+      <span class="k">if</span> <span class="nf">bias</span><span class="o">(</span><span class="n">r</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">then</span> <span class="nf">rotl</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">))</span>
+      <span class="k">else</span> <span class="nf">rotl</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="nf">rotr</span><span class="o">(</span><span class="n">r</span><span class="o">)))</span>
+
+  <span class="k">val</span> <span class="nv">balance</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="n">A</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="k">=&gt;</span> <span class="n">r</span> <span class="k">=&gt;</span> 
+      <span class="k">val</span> <span class="nv">h1</span> <span class="k">=</span> <span class="nf">height</span><span class="o">(</span><span class="n">l</span><span class="o">)</span>
+      <span class="k">val</span> <span class="nv">h2</span> <span class="k">=</span> <span class="nf">height</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
+      <span class="k">if</span> <span class="nv">Math</span><span class="o">.</span><span class="py">abs</span><span class="o">(</span><span class="n">h1</span> <span class="o">-</span> <span class="n">h2</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="n">then</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="n">h1</span> <span class="o">==</span> <span class="n">h2</span> <span class="o">+</span> <span class="mi">2</span> <span class="n">then</span> <span class="nf">rotateR</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">a</span><span class="o">)(</span><span class="n">r</span><span class="o">)</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="n">h2</span> <span class="o">==</span> <span class="n">h1</span> <span class="o">+</span> <span class="mi">2</span> <span class="n">then</span> <span class="nf">rorateL</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">a</span><span class="o">)(</span><span class="n">r</span><span class="o">)</span>
+      <span class="k">else</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

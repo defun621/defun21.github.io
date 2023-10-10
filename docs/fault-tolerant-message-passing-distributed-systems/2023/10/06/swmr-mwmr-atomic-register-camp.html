@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>在CAMP[t &lt; n/2]中实现SWMR以及MWMR的atomic寄存器 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="在CAMP[t &lt; n/2]中实现SWMR以及MWMR的atomic寄存器" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html" />
+<meta property="og:url" content="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-06T14:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在CAMP[t &lt; n/2]中实现SWMR以及MWMR的atomic寄存器" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-06T14:45:00-07:00","datePublished":"2023-10-06T14:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"在CAMP[t &lt; n/2]中实现SWMR以及MWMR的atomic寄存器","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html"},"url":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">在CAMP[t &lt; n/2]中实现SWMR以及MWMR的atomic寄存器</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-06T14:45:00-07:00" itemprop="datePublished">Oct 6, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p><strong>Regular register不能保证atomicity</strong></p>
+
+    <p>比如下面这个例子里，红线表示某次读在各个process的时间点。read1比read2早发生，但read1可以读到新的值，该新值的sequence number是15。而read2能只能读到老的值。
+  这就发生了new/old inversion.</p>
+
+    <p><img src="/assets/images/regularity_not_atomicity.png" alt="例子" /></p>
+  </li>
+  <li>
+    <p>如何防止new/old inversion</p>
+
+    <p>光是在读的时候让process从大多数process中收ACK_READ_REQ是不够的。还需要额外的步骤。</p>
+
+    <p>假设&lt;v, wsn&gt;是p<sub>i</sub>从ACK_READ_REQ里收到的所有元组里sequence number最高的一个元组。</p>
+
+    <p>为了达到atomicity，我们还需要让p<sub>i</sub>在发起一次write请求。</p>
+
+    <p>这保证了当读操作完成时，别的大多数process在本地也能有至少像那样“新”的值。</p>
+  </li>
+  <li>
+    <p><strong>CAMP<sub>n,t</sub>[t &lt; n/2]中SWMR的atomic寄存器实现简述</strong></p>
+
+    <ul>
+      <li>
+        <p><em>REG.read()</em></p>
+
+        <p>reqsn<sub>i</sub>加1，广播READ_REQ(reqsn<sub>i</sub>)。</p>
+
+        <p>等从大多数process中收到ACK_READ_REQ(reqsn<sub>i</sub>, _, _)，从中选取最大的(v, wsn)。</p>
+
+        <p>广播WRITE(v, wsn)。</p>
+
+        <p>等从大多数process中收到ACK_WRITE(wsn)之后才返回值v</p>
+      </li>
+      <li>
+        <p><em>REG.write()</em> 和SWMR的regular寄存器一样</p>
+      </li>
+      <li>
+        <p>收到<em>WRITE(v, wsn)</em>消息时，和SWMR的regular寄存器的实现大致一样。</p>
+
+        <p>唯一要注意的区别</p>
+
+        <ul>
+          <li>
+            <p>在于SWMR的regular寄存器只有一个p<sub>w</sub>在广播WRITE消息；</p>
+          </li>
+          <li>
+            <p>而在CAMP<sub>n,t</sub>[t &lt; n/2]中SWMR的atomic寄存器实现中，每个process都会广播WRITE消息。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>收到READ_REQ(reqsn)消息时，和SWMR的regular寄存器的实现一样</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>在CAMP<sub>n,t</sub>[t &lt; n/2]上，从SWMR的atomic寄存器到MWMR的atomic寄存器 （<strong>ABD算法</strong>）</p>
+
+    <ul>
+      <li>
+        <p><strong>timestamp</strong>，一个timestamp是一个元组&lt;sn, i&gt;，其中sn是逻辑时戳，i是process identity。</p>
+      </li>
+      <li>
+        <p>timestamp上可以定义一个<strong>全序关系</strong>：&lt;sn1, i&gt; &lt; &lt;sn2, j&gt; ≡ ((sn1 &lt; sn2) ⋁ (sn1 = sn2 ⋀ i &lt; j))</p>
+      </li>
+      <li>
+        <p><strong>ABD算法实现简述</strong></p>
+
+        <ul>
+          <li>
+            <p>相比SWMR的atomic寄存器，每个process需要维护的新的本地变量</p>
+
+            <p>-lw：用来记录哪个process发出的写操作最近写入了本地reg<sub>i</sub>中的值</p>
+          </li>
+          <li>
+            <p><em>REG.write(v)</em>时：</p>
+
+            <p>reqsn<sub>i</sub>自增1，</p>
+
+            <ul>
+              <li>
+                <p>process<sub>i</sub>会尝试拿到系统当前状态：</p>
+
+                <ul>
+                  <li>
+                    <p>先广播WRITE_REQ(reqsn<sub>i</sub>)</p>
+                  </li>
+                  <li>
+                    <p>等从大多数process处收到ACK_WRITE_REQ(reqsn<sub>i</sub>, msn)之后，找到最大的msn。</p>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <p>然后更新全局系统状态：</p>
+
+                <ul>
+                  <li>
+                    <p>广播WRITE(reqsn<sub>i</sub>, v, msn + 1, i)</p>
+                  </li>
+                  <li>
+                    <p>等从大多数process处收到ACK_WRITE(reqsn<sub>i</sub>)</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <p>最后返回</p>
+          </li>
+          <li>
+            <p><em>REG.read()</em>时：</p>
+
+            <p>reqsn<sub>i</sub>自增1，</p>
+
+            <ul>
+              <li>
+                <p>process<sub>i</sub>尝试拿到全局系统当前状态：</p>
+
+                <ul>
+                  <li>
+                    <p>先广播READ_REQ(reqsn<sub>i</sub>)</p>
+                  </li>
+                  <li>
+                    <p>等从大多数process处收到ACK_READ_REQ(reqsn<sub>i</sub>, msn, mlw, v)之后，找到拥有最大的timestamp&lt;msn, mlw&gt;的那个消息里的值v</p>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <p>更新全局系统状态</p>
+
+                <ul>
+                  <li>
+                    <p>广播WRITE(reqsn<sub>i</sub>, v, msn, mlw)</p>
+                  </li>
+                  <li>
+                    <p>等从大多数process处收到ACK_WRITE(reqsn<sub>i</sub>)</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <p>最后返回v</p>
+          </li>
+          <li>
+            <p>收到WRITE(reqsn, v, sn, lw)时：</p>
+
+            <p>如果(sn, lw) ≥ (wsn<sub>i</sub>, lw<sub>i</sub>)，则更新reg<sub>i</sub>，wsn<sub>i</sub>，lw<sub>i</sub></p>
+          </li>
+          <li>
+            <p>收到READ_REQ(reqsn)时</p>
+
+            <p>回复ACK_READ_REQ(rsn, wsn<sub>i</sub>, lw<sub>i</sub>, reg<sub>i</sub>)给发送方</p>
+          </li>
+          <li>
+            <p>收到WRITE_REQ(reqsn)时</p>
+
+            <p>回复ACK_WRITE_REQ(rsn, wsn<sub>i</sub>)给发送方</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>可以看到ABD算法在write和read的时候都分为两步：先尝试获取系统状态，在更新系统状态。拥有这样的算法structure的算法，叫做<em>two-phase algorithms</em>。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

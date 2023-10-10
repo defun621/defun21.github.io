@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>在CAMP[-FC]中的Quiescent可靠广播 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="在CAMP[-FC]中的Quiescent可靠广播" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html" />
+<meta property="og:url" content="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-29T22:59:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在CAMP[-FC]中的Quiescent可靠广播" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-09-29T22:59:00-07:00","datePublished":"2023-09-29T22:59:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"在CAMP[-FC]中的Quiescent可靠广播","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html"},"url":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">在CAMP[-FC]中的Quiescent可靠广播</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-09-29T22:59:00-07:00" itemprop="datePublished">Sep 29, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>引入failure detector 的意义</p>
+
+    <p>t&lt;N/2这个假设很强, 也很不灵活, 而如果能提供必要的信息供系统使用, 就可以隔离关于系统模型的假设； 对于failure detector来说, 算法只要依赖于failure detector提供的关于failure的信息就可以解决问题的话, 对于任意failure detector的实现, 只要能满足它定义的属性, 它们实现的细节是分布式算法不用关心的. 即分布式算法只依赖于这些属性, 而不依赖于具体实现和具体环境的细节. 这就使得算法和系统设计更加模块化。</p>
+
+    <p>同时, 使用failure detector可以可以使我们直接研究一个系统需要对 failure 的观察”准确和全面”到何等程度, “最少”需要多少对于failure的信息, 一个分布式系统的问题才能被解决. 这是学术上的failure detector的意义所在。</p>
+  </li>
+  <li>
+    <p>failure detector 正式定义</p>
+
+    <ul>
+      <li>
+        <p><strong>Failure pattern</strong>数学上，Failure pattern是一个映射<em>F : N -&gt; 2<sup>Π</sup></em>，其中</p>
+
+        <ul>
+          <li>
+            <p>N是自然数集（代表时间</p>
+          </li>
+          <li>
+            <p>2<sup>Π</sup>代表所有process的幂集</p>
+          </li>
+        </ul>
+
+        <p>那么，<em>F(τ)</em> 就是在τ时刻，CAMP模型中，挂掉process的集合。</p>
+      </li>
+      <li>
+        <p><strong>Faulty(F)</strong> 和 <strong>Non-Faulty(F)</strong>：表示在某次execution中，按照Failure pattern <em>F</em>挂掉的process的集合。</p>
+
+        <p>则有<em>Faulty(F) = F(τ<sub>max</sub>)</em>，τ<sub>max</sub>代表了该次执行的结束时间。</p>
+
+        <p>显然，<em>Faulty(F) = ∪<sub>1 ≤ τ &lt; +∞</sub>F(τ) = lim<sub>τ → +∞</sub>F(τ)</em></p>
+
+        <p>而<em>Non-Faulty(F) = Π - Faulty(F)</em>，Non-Faulty(F)在本书中也被称为Correct(F)</p>
+      </li>
+      <li>
+        <p><strong>Failure detector history with range R</strong>：<em>R</em>表示failure detector提供给process的某类信息。</p>
+
+        <p><em>failure detector history</em>是一个函数<em>H: Π × N → R</em>，</p>
+
+        <p><em>H(p<sub>i</sub>, τ)</em> 代表了failure detector在τ时刻给p<sub>i</sub>的信息。</p>
+      </li>
+      <li>
+        <p><strong>Failure detector class FD with range R</strong>: FD是一个将Failure pattern F映射到某个failure detector history with range R集合上的函数。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>CAMP<sub>n,t</sub>[-FC, Θ]上的URB</p>
+
+    <ul>
+      <li>
+        <p>failure detector <em>Θ</em> 的定义</p>
+
+        <ul>
+          <li>
+            <p><strong>accuracy</strong>：∀ i ∈ Π: ∀ τ ∈ N: (trusted<sub>i</sub><sup>τ</sup> ∩ Correct(F)) ≠ ∅</p>
+
+            <p>这代表着在任何时间，任何trusted<sub>i</sub>至少包含一个正常运行的process。</p>
+          </li>
+          <li>
+            <p><strong>Liveness</strong>: ∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F): trusted<sub>i</sub><sup>τ’</sup> ⊆ Correct(F)</p>
+
+            <p>这表示在某个时间点之后，任何正常运行的process上的trusted集合里只包括正常运行的process。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>CAMP<sub>n,t</sub>[-FC, t &lt; n/2]上构造Failure detector Θ</strong> 实现简述</p>
+
+        <ul>
+          <li>
+            <p>初始化：构造队列queue，队列包含乱序的所有集合，trusted集合中可以包含任意⌈(n+1)/2⌉个process。</p>
+          </li>
+          <li>
+            <p>运行时：</p>
+            <ul>
+              <li>广播alive消息</li>
+              <li>当收到从别的process过来的alive消息时，把pk移到队列queue头，把队列中前 ⌈(n+1)/2⌉ 个process加入到trusted。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>在 <strong>CAMP<sub>n,t</sub>[-FC, Θ]</strong> 上的URB实现简述</p>
+
+        <p>和之前 <strong>CAMP<sub>n,t</sub>[-FC]</strong> 的URB一样，唯一的区别在于urb-deliver的条件</p>
+
+        <ul>
+          <li>
+            <p><strong>CAMP<sub>n,t</sub>[-FC]</strong> 上的条件是 rec_by[m]中process的数量大于等于t + 1</p>
+          </li>
+          <li>
+            <p><strong>CAMP<sub>n,t</sub>[-FC, Θ]</strong> 上的条件变成 trusted<sub>i</sub> ⊆ rec_by[m]</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>引入failure detector Θ的<strong>意义</strong>：</p>
+
+        <p>有了 <strong>Θ</strong>， 即使是t ≥ n/2，也可以实现URB。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>quiescent uniform reliable broadcast</p>
+
+    <p>之前所有的在CAMP[-FC]上的URB实现中，Diffuse(m)都需要无限broadcast消息。</p>
+
+    <p>原因就是在于无法区分一个process是死了, 还是消息丢失了, 所以只要有一个process没有ack之前就死了, 其他process就需要一直向其发送msg, 永不停止。</p>
+
+    <ul>
+      <li>
+        <p><strong>quiescent 属性</strong></p>
+
+        <p>是指算法为了发送一条msg只需要有限次消息传递即可。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>3种达成Quiescent的方法</p>
+
+    <ul>
+      <li>
+        <p>基于<strong>perfect failure detector P</strong>的URB</p>
+
+        <p>perfect failure detector P维护的集合是suspected<sub>i</sub>,其中包含了p<sub>i</sub>认为已经挂掉的process。</p>
+
+        <ul>
+          <li>
+            <p><strong>perfect failure detector P</strong> 定义</p>
+
+            <ul>
+              <li>
+                <p><strong>Completeness</strong>: ∀ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F), ∀ j ∈ Faulty(F): j ∈ suspected<sub>i</sub><sup>τ’</sup></p>
+
+                <p>这表示总有某个时刻τ，在其之后，所有的挂掉的process都已经进到了每个正常的process的suspected集合里去。</p>
+              </li>
+              <li>
+                <p><strong>Strong accuracy</strong>: ∀ τ ∈ N: ∀ i, j ∈ Alive(τ): j ∉ suspected<sub>i</sub></p>
+
+                <p>其中Alive(τ) = Π \ F(τ)。</p>
+
+                <p>这表示任何时候，活着的process都不会出现在suspected集合中。</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>在 <strong>CAMP<sub>n,t</sub>[-FC, Θ, P]</strong> 上的URB实现简述</p>
+
+            <p>P提供suspected, 则Θ 的trusted即为 Π \ suspected.</p>
+
+            <ul>
+              <li>
+                <p><strong>broadcast</strong>：发送给包括自己在内的所有process</p>
+              </li>
+              <li>
+                <p><strong>收到从p<sub>k</sub>发来的msg时</strong>：</p>
+
+                <ul>
+                  <li>如果是第一次收到：初始化rec_by[m]，启动Diffuse(m) 任务</li>
+                  <li>否则更新rec_by[m]</li>
+                </ul>
+
+                <p>然后发送ack(m)给p<sub>k</sub>。</p>
+              </li>
+              <li>
+                <p><strong>收到p<sub>k</sub>发来的ack(m)时</strong>，更新rec_by[m]。</p>
+              </li>
+              <li>
+                <p><strong>Diffuse(m)</strong>: 直到 rec_by<sub>i</sub>[m] ∪ suspected<sub>i</sub> = Π 为止都执行循环：对于不在rec_by且不在suspected中的每个process，发送m。</p>
+              </li>
+              <li>
+                <p><strong>urb-deliver条件</strong>：</p>
+
+                <p>同 <strong>CAMP<sub>n,t</sub>[-FC, Θ]</strong> 上的URB：</p>
+
+                <p>(trusted<sub>i</sub> ⊆ rec_by<sub>i</sub>[m]) ∧ (p<sub>i</sub> has not yet urb-delivered m)</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>注意：因为可以完美检测错误, 那么被检测到crash的不用再发信息就好了, 而没crash的好的process一定会最终ack, 所以不但可以实现Quiescent, 算法也可以终止</strong></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>基于<strong>eventually perfect failure detector ◇P</strong>的URB</p>
+
+        <ul>
+          <li>
+            <p><strong>定义</strong></p>
+
+            <ul>
+              <li>
+                <p><strong>completeness</strong>：∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F), ∀ j ∈ Faulty(F): j ∈ suspected<sub>i</sub><sup>τ’</sup></p>
+
+                <p>这和perfect failure detector P一样。</p>
+              </li>
+              <li>
+                <p><strong>Eventual strong accuracy</strong>：∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i, j ∈ Alive(τ’): j ∉ suspected<sub>i</sub><sup>τ’</sup></p>
+
+                <p>注意这里和和perfect failure detector P的区别，这里的条件更弱，只需要某个时刻之后就可以。</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>在CAMP<sub>n,t</sub>[-FC, Θ, ◇P]上URB</strong>的实现简述：</p>
+
+            <p>与 <strong>CAMP<sub>n,t</sub>[-FC, Θ, P]上的URB</strong> 实现唯一不同的在于Diffuse(m)的循环终止条件： rec_by<sub>i</sub>[m] = Π</p>
+          </li>
+          <li>
+            <p><strong>注意：算法无法停止(需要不断观察◇P的检测结果变化), 但是至少可以达成Quiescent效果(由于可以检测到crash, 所以不会向一个已经crash的process发无限的msg)</strong></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>基于<strong>heartbeat failure detector HB</strong>的URB</p>
+
+        <ul>
+          <li>
+            <p><strong>heartbeat failure detector HB 定义</strong></p>
+
+            <p>failure detector HB维护一个数据结构HB<sub>i</sub>[1,…,n]</p>
+
+            <ul>
+              <li>
+                <p><strong>Completeness</strong>： ∀ i ∈ Correct(F), ∀ j ∈ Faulty(F): ∃ K: ∀ τ ∈ N: HB<sub>i</sub><sup>τ</sup>[j] &lt; K</p>
+
+                <p>这表示p<sub>i</sub>的HB计数器中对应挂掉的process的值不会增长</p>
+              </li>
+              <li>
+                <p><strong>Liveness</strong></p>
+
+                <ol>
+                  <li>∀ i, j ∈ Π ∀ τ ∈ N: HB<sub>i</sub><sup>τ</sup>[j] ≤ HB<sub>i</sub><sup>τ+1</sup>[j]</li>
+                  <li>∀ i,j ∈ Correct(F): ∀ K: ∃ τ ∈ N: HB<sub>i</sub><sup>τ</sup>[j] &gt; K</li>
+                </ol>
+
+                <p>这两条表明HB单调递增，且如果p<sub>i</sub>,p<sub>j</sub>都正常，它的值HB<sub>i</sub>[j]就会一直增长。</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>在CAMP<sub>n,t</sub>[-FC, Θ, HB]上URB</strong>的实现简述：</p>
+
+            <ul>
+              <li>
+                <p><strong>broadcast</strong>：把msg发送给包括自己在内的所有process</p>
+              </li>
+              <li>
+                <p><strong>收到从p<sub>k</sub>发来的msg时</strong>：</p>
+
+                <ul>
+                  <li>如果是第一次收到：初始化并更新rec_by[m], prev_hb[m]和cur_hb[m]，启动任务Diffuse(m)</li>
+                  <li>否则就更新rec_by[m]</li>
+                </ul>
+
+                <p>最后向p<sub>k</sub>发送ack</p>
+              </li>
+              <li>
+                <p><strong>收到p<sub>k</sub>发来的ack(m)时</strong>，更新rec_by[m]</p>
+              </li>
+              <li>
+                <p><strong>Diffuse(m)</strong>: 直到 rec_by<sub>i</sub>[m] = Π 为止都执行循环：将当前HB的值赋给cur_hb[m]，只对不在rec_by[m]并且prev_hb[m][j] &lt; cur_hb[m][j]的process<sub>j</sub>发送m，最后把cur_hb[m]赋给prev_hb[m]。</p>
+              </li>
+              <li>
+                <p><strong>urb-deliver条件</strong>：(trusted<sub>i</sub> ⊆ rec_by<sub>i</sub>[m]) ∧ (p<sub>i</sub> has not yet urb-delivered m)</p>
+              </li>
+              <li>
+                <p><strong>注意:由于不知道什么时候有”die”的process会重新发来heartbeat, 所以算法无法终止, 但是真的crash了的process不会再发来heartbeat, 所以不会再向其发msg(可以达成Quiescent)</strong></p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

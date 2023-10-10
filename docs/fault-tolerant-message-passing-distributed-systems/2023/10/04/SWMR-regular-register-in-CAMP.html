@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>在CAMP[t &lt; n/2]中实现SWMR的regular寄存器 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="在CAMP[t &lt; n/2]中实现SWMR的regular寄存器" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html" />
+<meta property="og:url" content="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-04T21:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在CAMP[t &lt; n/2]中实现SWMR的regular寄存器" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-04T21:45:00-07:00","datePublished":"2023-10-04T21:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"在CAMP[t &lt; n/2]中实现SWMR的regular寄存器","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html"},"url":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">在CAMP[t &lt; n/2]中实现SWMR的regular寄存器</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-04T21:45:00-07:00" itemprop="datePublished">Oct 4, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>所有实现shared read/write register <em>REG</em>的在构成架构上都是相同的。组成部分包括：</p>
+
+    <ul>
+      <li>
+        <p>n 个process，每个process相互之间发送、接收消息；并且每个process维护自己本地的数据结构</p>
+
+        <p>本地的数据结构包括：</p>
+
+        <ul>
+          <li>
+            <p>一个本地的reg<sub>i</sub>，用来存放p<sub>i</sub>已知的上一次写入<em>REG</em>的值</p>
+          </li>
+          <li>
+            <p>一组控制变量，用来保证p<sub>i</sub>调用<em>REG.read()</em>的时候能读到正确的值。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>每个process既担任client（实现 <em>REG.read()和REG.write()</em>的本地算法部分），又担任server（负责处理收到的消息）。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>回顾regular寄存器的定义</p>
+
+    <p>regular寄存器由以下性质定义：</p>
+
+    <ul>
+      <li>
+        <p><strong>Safety</strong>:</p>
+
+        <ul>
+          <li>
+            <p>如果<em>REG.read()</em>执行完成并且该次读操作没有和任何写操作concurrent，则它返回最近被写入<em>REG</em>中的值。</p>
+          </li>
+          <li>
+            <p>如果该次读操作与某些写操作concurrent，则它可以返回这些写操作要写入的值或者这些写操作之前最近被写入<em>REG</em>中的值。</p>
+          </li>
+        </ul>
+
+        <p>这两条在上一篇中有给出，这里回顾一下，并且告诉我们regular寄存器可能返回什么样的值。</p>
+      </li>
+      <li>
+        <p><strong>Liveness</strong></p>
+
+        <p>无论操作是<em>REG.read()</em>还是<em>REG.write()</em>， 如果调用它的process p<sub>i</sub>没有挂，则该操作总能完成。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>在CAMP<sub>n,t</sub>[n &lt; n/2]中实现一个SWMR regular寄存器</p>
+
+    <ul>
+      <li>
+        <p>实现思路简述（不妨令p<sub>w</sub>是那一个写的process）：</p>
+
+        <p>一方面，p<sub>w</sub>给每个写操作都赋一个sequence number，并且广播该pair（新写入的值和它对应的sequence number）。</p>
+
+        <p>另一方面，每个其他process p<sub>i</sub>都把sequence number最高的那个pair记在本地。</p>
+      </li>
+      <li>
+        <p><strong>local variables</strong>: 每个p<sub>i</sub>都维护以下本地变量：</p>
+
+        <ul>
+          <li>
+            <p>reg<sub>i</sub>，用来存p<sub>i</sub>已知的<em>REG</em>的值</p>
+          </li>
+          <li>
+            <p>wsn<sub>i</sub>，用来存reg<sub>i</sub>里的值对应的sequence number</p>
+          </li>
+          <li>
+            <p>reqsn<sub>i</sub>，用来存放p<sub>i</sub>最近一次读到<em>REG</em>值时对应的sequence number</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>实现简述:</p>
+
+        <ul>
+          <li>
+            <p><strong>REG.write(v)</strong> (因为是SWMR，所以只有p<sub>w</sub>会调用<em>REG.write()</em>)</p>
+
+            <p>wsn<sub>i</sub>加一，然后广播pair <em>&lt;v, wsn&gt;</em>，等到从多数process那里都收到<em>ack_write(wsn<sub>w</sub>)</em>的时候从方法中返回</p>
+          </li>
+          <li>
+            <p><strong>REG.read()</strong></p>
+
+            <p>reqsn<sub>i</sub>加一，广播READ_REQ(reqsn<sub>i</sub>)。</p>
+
+            <p>如果别的process p<sub>j</sub>收到READ_REQ(reqsn<sub>i</sub>)时，p<sub>j</sub>会返回ACK_READ_REQ(reqsn<sub>i</sub>, wsn<sub>j</sub>, reg<sub>j</sub>)给p<sub>i</sub></p>
+
+            <p>当p<sub>i</sub>从大多数process那里收到reqsn<sub>i</sub>对应的ACK_READ_REQ之后，他从中挑选wsn最大的那个值 <em>v</em> ，并将 <em>v</em> 值返回。</p>
+          </li>
+          <li>
+            <p>当process<sub>i</sub> <strong>收到write(val, wsn)</strong> 时</p>
+
+            <p>process<sub>i</sub>会对比wsn是否比本地wsn大，如果比本地wsn<sub>i</sub>的值大，则把val存进<em>reg<sub>i</sub></em>中。</p>
+
+            <p>然后总是发送ack_write(wsn)给p<sub>w</sub>。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>cost</strong></p>
+
+        <p>一次read或者write，会产生2 × n 条message。</p>
+      </li>
+      <li>
+        <p><strong>注意：该实现假定process之间能互通，构成完全图，并且process之间channel时reliable</strong></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>如果write process 挂了：</p>
+
+    <ul>
+      <li>
+        <p>如果p<sub>w</sub>当没在写时挂掉，没影响，别的进程能读到最近写的值。</p>
+      </li>
+      <li>
+        <p>如果p<sub>w</sub>在执行写操作时挂掉，可能部分process能读到新值，部分process读到老值。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>如果read process挂掉：对其他process没影响。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

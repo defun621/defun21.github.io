@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>在CAMP[∅]中的可靠广播 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="在CAMP[∅]中的可靠广播" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/27/urb.html" />
+<meta property="og:url" content="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/27/urb.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-27T10:31:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在CAMP[∅]中的可靠广播" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-09-27T10:31:00-07:00","datePublished":"2023-09-27T10:31:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"在CAMP[∅]中的可靠广播","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/27/urb.html"},"url":"http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/27/urb.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/lists/">Most recent reading notes on each book</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">在CAMP[∅]中的可靠广播</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-09-27T10:31:00-07:00" itemprop="datePublished">Sep 27, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>各种广播<strong>抽象</strong>(Broadcast)</p>
+
+    <p>我们的分布式算法实现了一个“中间层”, 它利用底层的收发消息的api来向上层app层提供2个高层API：</p>
+    <ul>
+      <li>
+        <p>broadcast(m)</p>
+
+        <p>来广播m给所有process</p>
+      </li>
+      <li>
+        <p>deliver(m)</p>
+
+        <p>来从底层拿取自己或者别的process曾经broadcast过的m</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>best effort</strong>广播</p>
+
+    <p>for each j ∈ {1,2,3,…,n} do send m to p<sub>j</sub> end for</p>
+
+    <ul>
+      <li>如果p<sub>i</sub>正常，则每个正常的其他process都能收到m</li>
+      <li>如果p<sub>i</sub>出错，则只有process集合的某个任意子集收到m</li>
+    </ul>
+  </li>
+  <li><strong>URB(uniform reliable broadcast)</strong> uniform 可靠广播
+    <ul>
+      <li><strong>validity</strong>: 如果一个process urb-deliver了m，则m被urb-broadcast过</li>
+      <li><strong>integrity</strong>：一个process最多urb-deliver同一条message一次</li>
+      <li><strong>URB-termination-1</strong>：如果一个Non-Faulty(一直没挂) process broadcast了msg-m, 那么所有Non-Faulty process都肯定最终可以deliver(拿到)这个msg-m</li>
+      <li><strong>URB-termination-2</strong>. 任何process(注意这里没说是挂了还是没挂的), 只要它曾经deliver过某msg-m, 那么所有其他Non-Faulty process都肯定最终可以deliver这个msg-m</li>
+    </ul>
+
+    <p>validity要求了message没有被凭空创造或者改动</p>
+
+    <p>integrity要求了message没有被duplicate</p>
+
+    <p>termination-1 和 termination-2 要求了没挂的process会deliver同一组消息A，而挂掉的process会受到A的某个子集</p>
+  </li>
+  <li>CAMP<sub>n,t</sub>[∅]中的URB实现简述
+    <ul>
+      <li>
+        <p>boardcast</p>
+
+        <p>给所有process包括自身发送m</p>
+      </li>
+      <li>
+        <p>deliver</p>
+
+        <p>第一次收到从其他process来的某个message时，转发给其他所有process，然后deliver该message到上层</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>FIFO-URB</strong></p>
+
+    <p>msg delivery的顺序一定要尊重消息的本地broadcast顺序, 即同一个process A所broadcast的2个信息m和m’, 所有delivery了这两个msg的process必须按A的broadcast顺序来delivery这两个信息</p>
+
+    <p>对于挂掉的process而言，它urb-deliver的从p<sub>i</sub>发出的message是p<sub>i</sub> FIFO-broadcast的message序列的一个前缀。</p>
+  </li>
+  <li><strong>FIFO-URB</strong> 实现简述
+    <ul>
+      <li>
+        <p>broadcast</p>
+
+        <p>标注message的本地sequence number，然后调用urb_braodcast(m)</p>
+      </li>
+      <li>
+        <p>deliver</p>
+
+        <p>当m被urb_deliver之后，不妨令该message的sender是p<sub>j</sub>。</p>
+        <ul>
+          <li>如果m的sequence number是本地next[j]，则FIFO-deliver该message，更新next[j] (next[j] = next[j] + 1)。然后把缓存的msg_set中可以被FIFO-deliver（sequence number等于next[j]）的message都发送到上层。</li>
+          <li>否则把m加入到缓存msg_set中。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Local Order</strong></p>
+
+    <p>如果process-A delivery了m, 然后broadcast了m’, 那么可以理解为m’在因果关系上依赖于m, 那么所有process在deliver m’之前必须deliver m</p>
+  </li>
+  <li>
+    <p><strong>Causal Order</strong></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Causal Order = FIFO + Local Order
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>基于<strong>FIFO-broadcast</strong>的<strong>CO-broadcast</strong> 实现简述</p>
+
+    <p>每个process维护一个list变量im_causal_past, 包含该process自上一次CO-broadcast之后所有CO-deliver的message。</p>
+
+    <ul>
+      <li>
+        <p>broadcast
+把message m append到im_causal_past，然后调用FIFO-broadcast。完成FIFO-broadcast重置im_causal_past。</p>
+      </li>
+      <li>
+        <p>deliver
+从FIFO-deliver中收到message之后，对于message 中个每个m，如果之前没有CO-deliver过，则CO-deliver该条消息，然后把消息加到本地im_causal_past列表。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>基于<strong>URB</strong>的<strong>CO-broadcast</strong> 实现简述</p>
+
+    <p>每个process维护一个vector causal_past 来记录自己已经delivery了多少个别的process的msg。</p>
+
+    <p>如果消息里的causal_past中的每个值都小于等于本地causal_past的值时，该消息可以被deliver。</p>
+
+    <p>此外每个process维护一个缓存msg_set，用来存放暂时不满足co-deliver条件的消息。</p>
+
+    <ul>
+      <li>
+        <p>broadcast</p>
+
+        <p>把本地的vector causal_past 加到消息里，然后调用URB-broadcast。等到本地process co-deliver该消息后，CO-broadcast结束。</p>
+      </li>
+      <li>
+        <p>deliver</p>
+
+        <ul>
+          <li>
+            <p>如果从URB-deliver中收到消息满足可以CO-deliver的条件，则CO-deliver该消息，然后更新本地 causal_past vector。</p>
+
+            <p>然后CO-deliver msg_set中的每条满足CO-deliver条件的消息，更新causal_past和msg_set。</p>
+          </li>
+          <li>
+            <p>否则把消息加到msg_set中。</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Total Order</strong></p>
+
+    <p>光靠在消息中加入local信息不能实现total order。</p>
+  </li>
+</ul>
+
+<p>值得注意的是：本章中的<strong>FIFO-broadcast</strong>和<strong>CO-broadcast</strong>完全基于其底层的URB。</p>
+
+<p>所以只要有对应不同分布式计算模型的URB，我们就可以得到相应的<strong>FIFO-broadcast</strong>和<strong>CO-broadcast</strong>。</p>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/09/27/urb.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
