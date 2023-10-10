@@ -2,7 +2,7 @@
 layout: post
 title:  在CAMP[t < n/2]中实现MWMR的sequentially consistent寄存器
 date:   2023-10-09 21:45:00 -0700
-categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
+categories: [Fault-Tolerant-Message-Passing-Distributed-Systems,a,b,c,d,e,f,g,h,i]
 ---
 
 教科书链接：<https://link.springer.com/book/10.1007/978-3-319-94141-7>

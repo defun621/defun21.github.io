@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-10T00:08:42-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器</title><link href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器" /><published>2023-10-09T21:45:00-07:00</published><updated>2023-10-09T21:45:00-07:00</updated><id>http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp</id><content type="html" xml:base="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/09/mwmr-sequentially-consistent-register-camp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-10T00:30:12-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/a/b/c/d/e/f/g/h/i/2023/10/09/mwmr-sequentially-consistent-register-camp.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现MWMR的sequentially consistent寄存器" /><published>2023-10-09T21:45:00-07:00</published><updated>2023-10-09T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/a/b/c/d/e/f/g/h/i/2023/10/09/mwmr-sequentially-consistent-register-camp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/a/b/c/d/e/f/g/h/i/2023/10/09/mwmr-sequentially-consistent-register-camp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -183,8 +183,37 @@
 &lt;p&gt;本文章属于以下分类：&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">二叉搜索树</title><link href="http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html" rel="alternate" type="text/html" title="二叉搜索树" /><published>2023-10-07T23:54:08-07:00</published><updated>2023-10-07T23:54:08-07:00</updated><id>http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree</id><content type="html" xml:base="http://localhost:4000/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;a&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;b&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;c&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;d&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;e&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;f&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;g&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;h&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;i&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><category term="a" /><category term="b" /><category term="c" /><category term="d" /><category term="e" /><category term="f" /><category term="g" /><category term="h" /><category term="i" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">二叉搜索树</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html" rel="alternate" type="text/html" title="二叉搜索树" /><published>2023-10-07T23:54:08-07:00</published><updated>2023-10-07T23:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/07/binary-search-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/07/binary-search-tree.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -363,7 +392,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现SWMR以及MWMR的atomic寄存器</title><link href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现SWMR以及MWMR的atomic寄存器" /><published>2023-10-06T14:45:00-07:00</published><updated>2023-10-06T14:45:00-07:00</updated><id>http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp</id><content type="html" xml:base="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现SWMR以及MWMR的atomic寄存器</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现SWMR以及MWMR的atomic寄存器" /><published>2023-10-06T14:45:00-07:00</published><updated>2023-10-06T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/06/swmr-mwmr-atomic-register-camp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -538,7 +567,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">二维里的二分</title><link href="http://localhost:4000/algorithm-design-with-haskell/2023/10/05/2-dimentional-divide-and-conquer.html" rel="alternate" type="text/html" title="二维里的二分" /><published>2023-10-05T20:54:08-07:00</published><updated>2023-10-05T20:54:08-07:00</updated><id>http://localhost:4000/algorithm-design-with-haskell/2023/10/05/2-dimentional-divide-and-conquer</id><content type="html" xml:base="http://localhost:4000/algorithm-design-with-haskell/2023/10/05/2-dimentional-divide-and-conquer.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">二维里的二分</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/05/2-dimentional-divide-and-conquer.html" rel="alternate" type="text/html" title="二维里的二分" /><published>2023-10-05T20:54:08-07:00</published><updated>2023-10-05T20:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/05/2-dimentional-divide-and-conquer</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/05/2-dimentional-divide-and-conquer.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;上一篇我们讲到了saddleback search。这一篇来学习two dimentional divide and conquer。问题还是同一个问题，&lt;/p&gt;
 
@@ -611,7 +640,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现SWMR的regular寄存器</title><link href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现SWMR的regular寄存器" /><published>2023-10-04T21:45:00-07:00</published><updated>2023-10-04T21:45:00-07:00</updated><id>http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP</id><content type="html" xml:base="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现SWMR的regular寄存器</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现SWMR的regular寄存器" /><published>2023-10-04T21:45:00-07:00</published><updated>2023-10-04T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -749,7 +778,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">array和二分法</title><link href="http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search.html" rel="alternate" type="text/html" title="array和二分法" /><published>2023-10-03T21:54:08-07:00</published><updated>2023-10-03T21:54:08-07:00</updated><id>http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search</id><content type="html" xml:base="http://localhost:4000/algorithm-design-with-haskell/2023/10/03/array-binary-search.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">array和二分法</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/03/array-binary-search.html" rel="alternate" type="text/html" title="array和二分法" /><published>2023-10-03T21:54:08-07:00</published><updated>2023-10-03T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/03/array-binary-search</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/03/array-binary-search.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -885,7 +914,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">读写寄存器抽象</title><link href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html" rel="alternate" type="text/html" title="读写寄存器抽象" /><published>2023-10-02T12:45:00-07:00</published><updated>2023-10-02T12:45:00-07:00</updated><id>http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction</id><content type="html" xml:base="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">读写寄存器抽象</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html" rel="alternate" type="text/html" title="读写寄存器抽象" /><published>2023-10-02T12:45:00-07:00</published><updated>2023-10-02T12:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1079,7 +1108,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">Random access list</title><link href="http://localhost:4000/algorithm-design-with-haskell/2023/09/30/ralist.html" rel="alternate" type="text/html" title="Random access list" /><published>2023-09-30T21:54:08-07:00</published><updated>2023-09-30T21:54:08-07:00</updated><id>http://localhost:4000/algorithm-design-with-haskell/2023/09/30/ralist</id><content type="html" xml:base="http://localhost:4000/algorithm-design-with-haskell/2023/09/30/ralist.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">Random access list</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/09/30/ralist.html" rel="alternate" type="text/html" title="Random access list" /><published>2023-09-30T21:54:08-07:00</published><updated>2023-09-30T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/09/30/ralist</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/09/30/ralist.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1255,7 +1284,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[-FC]中的Quiescent可靠广播</title><link href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html" rel="alternate" type="text/html" title="在CAMP[-FC]中的Quiescent可靠广播" /><published>2023-09-29T22:59:00-07:00</published><updated>2023-09-29T22:59:00-07:00</updated><id>http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent</id><content type="html" xml:base="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[-FC]中的Quiescent可靠广播</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html" rel="alternate" type="text/html" title="在CAMP[-FC]中的Quiescent可靠广播" /><published>2023-09-29T22:59:00-07:00</published><updated>2023-09-29T22:59:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1542,7 +1571,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">在CAMP[-FC]中的可靠广播</title><link href="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc.html" rel="alternate" type="text/html" title="在CAMP[-FC]中的可靠广播" /><published>2023-09-29T15:45:00-07:00</published><updated>2023-09-29T15:45:00-07:00</updated><id>http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc</id><content type="html" xml:base="http://localhost:4000/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">在CAMP[-FC]中的可靠广播</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc.html" rel="alternate" type="text/html" title="在CAMP[-FC]中的可靠广播" /><published>2023-09-29T15:45:00-07:00</published><updated>2023-09-29T15:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;

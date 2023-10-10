@@ -62,3 +62,6 @@ jekyll-archives:
   layout: archive
   permalinks:
     category: '/category/:name/'
+
+
+destination: docs/
