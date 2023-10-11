@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FP for mortals 读书笔记（3） | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="FP for mortals 读书笔记（3）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Functionality Pure functions are typically defined as methods on an object." />
+<meta property="og:description" content="Functionality Pure functions are typically defined as methods on an object." />
+<link rel="canonical" href="https://defun621.github.io/fpformortals/2019/02/11/fpmortals03.html" />
+<meta property="og:url" content="https://defun621.github.io/fpformortals/2019/02/11/fpmortals03.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-02-11T01:04:30-08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FP for mortals 读书笔记（3）" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2019-02-11T01:04:30-08:00","datePublished":"2019-02-11T01:04:30-08:00","description":"Functionality Pure functions are typically defined as methods on an object.","headline":"FP for mortals 读书笔记（3）","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fpformortals/2019/02/11/fpmortals03.html"},"url":"https://defun621.github.io/fpformortals/2019/02/11/fpmortals03.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">FP for mortals 读书笔记（3）</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-02-11T01:04:30-08:00" itemprop="datePublished">Feb 11, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="functionality">Functionality</h1>
+<p>Pure functions are typically defined as methods on an object.</p>
+
+<p><strong>To put methods on a trait, requiring users to mix it with the cake pattern is not encouraged.</strong> It leaks internal implementation detail to public APIs, bloats bytecode, makes binary compatibility basically impossible, and confuses IDE autocompleters.</p>
+
+<p>Use implicit class instead.</p>
+
+<h2 id="typeclasses">typeclasses</h2>
+<p>A typeclass is a trait that:</p>
+<ul>
+  <li>holds no state</li>
+  <li>has a type parameter</li>
+  <li>has at least one abstract method (primitive combinators)</li>
+  <li>may contain generalised methods (derived combinators)</li>
+  <li>may extend other typeclasses</li>
+</ul>
+
+<p>There can only be one implementation of a typeclass for any given type parameter, a property known as <strong>typeclass coherence</strong>. 
+Typeclass coherence is</p>
+<ul>
+  <li>primarily about consistency, and the consistency gives us the confidence to use implicit parameters.</li>
+  <li>Additionally, typeclass coherence allows us to globally cache implicits at runtime and save memory allocations, gaining performance improvements from reduced pressure on the garbage collector.</li>
+</ul>
+
+<p>With typeclass, We are no longer dependent on the OOP hierarchy of our input types, we don’t demand that our input <strong>“is a”</strong>, but instead we require type <strong>“have a”</strong> typeclass.</p>
+
+<p>https://github.com/mpilquist/simulacrum provides a @typeclass macro annotation that automatically generates the apply and ops.</p>
+
+<h3 id="context-bound">context bound</h3>
+<p>A context bound requires a parameterized type, such as Ordered[A], but unlike String. A context bound describes an implicit value. It is used to declare that for some type A, there is an implicit value of type B[A] available. The syntax goes like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="o">[</span><span class="kt">A</span> <span class="kt">:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">n</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="instances">instances</h2>
+<p>Instances of typeclass are defined as an implicit val that extends the typeclass, and can provide optimised implementations for the generalised methods</p>
+
+<h2 id="implicit">implicit</h2>
+<ul>
+  <li>
+    <p>implicit parameters
+Implicit parameters are when a method requests that a unique instance of a particular type is in the implicit scope of the caller, with special syntax for typeclass instances.</p>
+  </li>
+  <li>Implicit conversion is when an implicit def exists.
+    <ul>
+      <li>When the compiler is resolving a call to a method, it
+        <ol>
+          <li>first checks if the method exists on the type,</li>
+          <li>then its ancestors (Java-like rules).</li>
+          <li>If it fails to find a match, it will search the implicit scope for conversions to other types,</li>
+          <li>then search for methods on those types.</li>
+        </ol>
+      </li>
+      <li>Another use for implicit conversions is typeclass derivation.</li>
+    </ul>
+  </li>
+  <li>implicit resolution
+    <ol>
+      <li>First, the normal variable scope is searched for implicits, in order:
+        <ol>
+          <li>local scope, including scoped imports (e.g. the block or method)</li>
+          <li>outer scope, including scoped imports (e.g. members in the class)</li>
+          <li>ancestors (e.g. members in the super class)</li>
+          <li>the current package object</li>
+          <li>ancestor package objects (when using nested packages)</li>
+          <li>the file’s imports</li>
+        </ol>
+      </li>
+      <li>If that fails to find a match, search in order:
+        <ol>
+          <li>implicit instances inside a type’s companion,</li>
+          <li>its package object</li>
+          <li>outer objects (if nested),</li>
+          <li>and then repeated for ancestors. 
+ Note: This is performed, in order,</li>
+          <li>given parameter type</li>
+          <li>expected parameter type</li>
+          <li>type parameter (if there is one)</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p>Implicits are often defined on a trait, which is then extended by an object.</p>
+
+<p><strong>rule of thumbs</strong>: prefer implicit val over implicit object despite the temptation of less typing.</p>
+
+<ul>
+  <li>common pitfalls
+    <ul>
+      <li>Implicit resolution falls short when there is a hierarchy of typeclasses</li>
+      <li>Implicit resolution is particularly hit-or-miss if type aliases are used</li>
+    </ul>
+  </li>
+</ul>
+
+  </div><a class="u-url" href="/fpformortals/2019/02/11/fpmortals03.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

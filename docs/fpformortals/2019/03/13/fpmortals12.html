@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FP for mortals 读书笔记（12） | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="FP for mortals 读书笔记（12）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Advanced Monad" />
+<meta property="og:description" content="Advanced Monad" />
+<link rel="canonical" href="https://defun621.github.io/fpformortals/2019/03/13/fpmortals12.html" />
+<meta property="og:url" content="https://defun621.github.io/fpformortals/2019/03/13/fpmortals12.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-13T21:42:30-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FP for mortals 读书笔记（12）" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2019-03-13T21:42:30-07:00","datePublished":"2019-03-13T21:42:30-07:00","description":"Advanced Monad","headline":"FP for mortals 读书笔记（12）","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fpformortals/2019/03/13/fpmortals12.html"},"url":"https://defun621.github.io/fpformortals/2019/03/13/fpmortals12.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">FP for mortals 读书笔记（12）</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-03-13T21:42:30-07:00" itemprop="datePublished">Mar 13, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="advanced-monad">Advanced Monad</h1>
+
+<p>problem with Future</p>
+
+<ul>
+  <li>
+    <p>eagerly schedules work during construction</p>
+  </li>
+  <li>
+    <p>bad from a performance perspective</p>
+
+    <ul>
+      <li>every time .flatMap is called, a closure is submitted to an Executor, resulting in unnecessary thread scheduling and context switching</li>
+    </ul>
+  </li>
+  <li>
+    <p>eager evaluation and executor submission means that it is impossible to know when a job started, when it finished, or the sub-tasks that were spawned to calculate the final result</p>
+  </li>
+  <li>
+    <p>Future.flatMap requires an ExecutionContext to be in implicit scope: users are forced to think about business logic and execution semantics at the same time</p>
+  </li>
+</ul>
+
+<h2 id="effects-and-side-effects">Effects and Side Effects</h2>
+
+<p>Wrap side-effecting methods in a Monad that delays execution until it is interpreted at the application’s entrypoint.</p>
+
+<p>The simplest implementation of such a Monad is IO</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">final</span> <span class="k">class</span> <span class="nc">IO</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="k">val</span> <span class="nv">interpret</span><span class="k">:</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span> 
+<span class="k">object</span> <span class="nc">IO</span> <span class="o">{</span> 
+  <span class="k">def</span> <span class="nf">apply</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">IO</span><span class="o">(()</span> <span class="k">=&gt;</span> <span class="n">a</span><span class="o">)</span>
+  
+  <span class="k">implicit</span> <span class="k">val</span> <span class="nv">monad</span><span class="k">:</span> <span class="kt">Monad</span><span class="o">[</span><span class="kt">IO</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">IO</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="nf">point</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">IO</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> 
+    <span class="k">def</span> <span class="nf">bind</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">IO</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="nc">IO</span><span class="o">(</span><span class="nf">f</span><span class="o">(</span><span class="nv">fa</span><span class="o">.</span><span class="py">interpret</span><span class="o">()).</span><span class="py">interpret</span><span class="o">())</span> 
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>However, there are two big problems with this simple IO:</p>
+<ul>
+  <li>
+    <p>stack overflow</p>
+  </li>
+  <li>
+    <p>it doesn’t support parallel computations</p>
+  </li>
+</ul>
+
+<h2 id="stack-safety">Stack Safety</h2>
+
+<h3 id="free-monad">Free monad</h3>
+
+<p>Fundamentally, a monad describes a sequential program where every step depends on the previous one.</p>
+
+<p>Free is the data structure representation of a Monad and is defined by three members:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Free</span><span class="o">[</span><span class="kt">S</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">]</span> <span class="o">{</span> 
+  <span class="k">def</span> <span class="nf">mapSuspension</span><span class="o">[</span><span class="kt">T</span><span class="o">[</span><span class="k">_</span><span class="o">]](</span><span class="n">f</span><span class="k">:</span> <span class="kt">S</span> <span class="kt">~&gt;</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">Free</span><span class="o">[</span><span class="kt">T</span>, <span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span> 
+  <span class="k">def</span> <span class="nf">foldMap</span><span class="o">[</span><span class="kt">M</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">S</span> <span class="kt">~&gt;</span> <span class="kt">M</span><span class="o">)</span><span class="k">:</span> <span class="kt">M</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span> 
+  <span class="o">...</span> 
+<span class="o">}</span> 
+<span class="k">object</span> <span class="nc">Free</span> <span class="o">{</span> 
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">monad</span><span class="o">[</span><span class="kt">S</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">Monad</span><span class="o">[</span><span class="kt">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="k">private</span> <span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Suspend</span><span class="o">[</span><span class="kt">S</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">S</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span><span class="o">]</span> 
+  <span class="k">private</span> <span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Return</span><span class="o">[</span><span class="kt">S</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span><span class="o">]</span> 
+  <span class="k">private</span> <span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Gosub</span><span class="o">[</span><span class="kt">S</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A0</span>, <span class="kt">B</span><span class="o">](</span> <span class="n">a</span><span class="k">:</span> <span class="kt">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A0</span><span class="o">],</span> <span class="n">f</span><span class="k">:</span> <span class="kt">A0</span> <span class="o">=&gt;</span> <span class="nc">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">)</span> <span class="k">extends</span> <span class="nc">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">A0</span> <span class="o">}</span>
+  <span class="k">def</span> <span class="nf">liftF</span><span class="o">[</span><span class="kt">S</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">S</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Free</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Suspend</span><span class="o">(</span><span class="n">value</span><span class="o">)</span> <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>where,</p>
+
+<ul>
+  <li>
+    <p>Suspend represents a program that has not yet been interpreted</p>
+  </li>
+  <li>
+    <p>Return is .pure</p>
+  </li>
+  <li>
+    <p>Gosub is .bind</p>
+  </li>
+</ul>
+
+<p>A Free[S, A] can be freely generated for any algebra S.</p>
+
+<p>steps:</p>
+
+<ul>
+  <li>
+    <p>creating an ADT with a data type for each element of the algebra, Each data type has the same input parameters as its corresponding element, is parameterised over the return type, and has the same name</p>
+
+    <ul>
+      <li>The ADT defines an Abstract Syntax Tree(AST) because each member is representing a computation in a program.</li>
+    </ul>
+  </li>
+  <li>
+    <p>we then define <em>.liftF</em> with Free[Ast, ?] as the context.Every method simply delegates to Free.liftT to create a Suspend</p>
+  </li>
+  <li>
+    <p>When we construct our program, parameterised over a Free, we run it by providing an interpreter (anaturaltransformation Ast ∼&gt; M) to the .foldMap method</p>
+  </li>
+</ul>
+
+<h3 id="coyoneda-functor">Coyoneda (Functor)</h3>
+
+<p>we can freely generate a Functor data structure for any algebra S[_], with Coyoneda</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Coyoneda</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">]</span> <span class="o">{</span> 
+  <span class="k">def</span> <span class="nf">run</span><span class="o">(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span> 
+  <span class="k">def</span> <span class="nf">trans</span><span class="o">[</span><span class="kt">G</span><span class="o">[</span><span class="k">_</span><span class="o">]](</span><span class="n">f</span><span class="k">:</span> <span class="kt">F</span> <span class="kt">~&gt;</span> <span class="kt">G</span><span class="o">)</span><span class="k">:</span> <span class="kt">Coyoneda</span><span class="o">[</span><span class="kt">G</span>, <span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span> 
+  <span class="o">...</span> 
+<span class="o">}</span> 
+<span class="k">object</span> <span class="nc">Coyoneda</span> <span class="o">{</span> 
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">Coyoneda</span><span class="o">[</span><span class="kt">F</span>, <span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">...</span>
+
+  <span class="k">private</span> <span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Coyoneda</span><span class="o">[</span><span class="kt">F</span>, <span class="kt">A</span><span class="o">]</span> 
+  
+  <span class="k">def</span> <span class="nf">apply</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">sa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">F</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">sa</span><span class="o">,</span> <span class="n">f</span><span class="o">)</span> 
+  <span class="k">def</span> <span class="nf">lift</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">sa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">F</span>, <span class="kt">A</span>, <span class="kt">A</span><span class="o">](</span><span class="n">sa</span><span class="o">,</span> <span class="n">identity</span><span class="o">)</span> 
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Coyo can be a useful utility if we want to .map, and we know that we can convert into a data type that has a Functor</p>
+
+<p><strong>Note</strong>:
+<a href="https://underscore.io/blog/posts/2015/04/14/free-monads-are-simple.html">Great blog on Free monad by Noel Welsh</a></p>
+
+
+  </div><a class="u-url" href="/fpformortals/2019/03/13/fpmortals12.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

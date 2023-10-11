@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FP for mortals 读书笔记（8） | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="FP for mortals 读书笔记（8）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="scalaz typeclass Plus Plus is Semigroup but for type constructors, and PlusEmpty is the equivalent of Monoid. whereas IsEmpty is novel and allows us to query if an F[A] is empty @typeclass trait Plus[F[_]] { @op(&quot;&lt;+&gt;&quot;) def plus[A](a: F[A], b: =&gt;F[A]): F[A] } @typeclass trait PlusEmpty[F[_]] extends Plus[F] { def empty[A]: F[A] } @typeclass trait IsEmpty[F[_]] extends PlusEmpty[F] { def isEmpty[A](fa: F[A]): Boolean }" />
+<meta property="og:description" content="scalaz typeclass Plus Plus is Semigroup but for type constructors, and PlusEmpty is the equivalent of Monoid. whereas IsEmpty is novel and allows us to query if an F[A] is empty @typeclass trait Plus[F[_]] { @op(&quot;&lt;+&gt;&quot;) def plus[A](a: F[A], b: =&gt;F[A]): F[A] } @typeclass trait PlusEmpty[F[_]] extends Plus[F] { def empty[A]: F[A] } @typeclass trait IsEmpty[F[_]] extends PlusEmpty[F] { def isEmpty[A](fa: F[A]): Boolean }" />
+<link rel="canonical" href="https://defun621.github.io/fpformortals/2019/02/25/fpmortals08.html" />
+<meta property="og:url" content="https://defun621.github.io/fpformortals/2019/02/25/fpmortals08.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-02-25T22:02:30-08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FP for mortals 读书笔记（8）" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2019-02-25T22:02:30-08:00","datePublished":"2019-02-25T22:02:30-08:00","description":"scalaz typeclass Plus Plus is Semigroup but for type constructors, and PlusEmpty is the equivalent of Monoid. whereas IsEmpty is novel and allows us to query if an F[A] is empty @typeclass trait Plus[F[_]] { @op(&quot;&lt;+&gt;&quot;) def plus[A](a: F[A], b: =&gt;F[A]): F[A] } @typeclass trait PlusEmpty[F[_]] extends Plus[F] { def empty[A]: F[A] } @typeclass trait IsEmpty[F[_]] extends PlusEmpty[F] { def isEmpty[A](fa: F[A]): Boolean }","headline":"FP for mortals 读书笔记（8）","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fpformortals/2019/02/25/fpmortals08.html"},"url":"https://defun621.github.io/fpformortals/2019/02/25/fpmortals08.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">FP for mortals 读书笔记（8）</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-02-25T22:02:30-08:00" itemprop="datePublished">Feb 25, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="scalaz-typeclass">scalaz typeclass</h1>
+<h2 id="plus">Plus</h2>
+<p>Plus is Semigroup but for type constructors, and PlusEmpty is the equivalent of Monoid. whereas IsEmpty is novel and allows us to query if an F[A] is empty</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@typeclass</span> <span class="k">trait</span> <span class="nc">Plus</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="nd">@op</span><span class="o">(</span><span class="s">"&lt;+&gt;"</span><span class="o">)</span> <span class="k">def</span> <span class="nf">plus</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">b</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="o">}</span>
+<span class="nd">@typeclass</span> <span class="k">trait</span> <span class="nc">PlusEmpty</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Plus</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">empty</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="o">}</span>
+<span class="nd">@typeclass</span> <span class="k">trait</span> <span class="nc">IsEmpty</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">PlusEmpty</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">isEmpty</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Boolean</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>it is best to think of it as operating only at the F[_] level, never looking into the contents. 
+Plus has the convention that it should ignore failures and “pick the first winner”. 
+&lt;+&gt; can therefore be used as a mechanism for early exit (losing information) and failure-handling via fallbacks</p>
+
+<h2 id="zip">Zip</h2>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@typeclass</span> <span class="k">trait</span> <span class="nc">Zip</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">zip</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">b</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span>
+  <span class="k">def</span> <span class="nf">zipWith</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">C</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">)</span>
+  <span class="o">(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">C</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="k">def</span> <span class="nf">ap</span><span class="o">(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span><span class="k">:</span> <span class="kt">Apply</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="nd">@op</span><span class="o">(</span><span class="s">"&lt;*|*&gt;"</span><span class="o">)</span> <span class="k">def</span> <span class="nf">apzip</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">],</span> <span class="n">a</span><span class="k">:</span> <span class="o">=&gt;</span><span class="n">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span> <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>an Apply[F] can be created from a Zip[F] and a Functor[F] by calling ap.</p>
+
+<h1 id="typeclass-cheatsheet">typeclass cheatsheet</h1>
+<p><a href="http://arosien.github.io/scalaz-cheatsheets/typeclasses.pdf">Adam Rosien’s Scalaz Cheatsheet</a></p>
+
+<p><a href="https://twitter.com/ValentinKasas/status/879414703340081156">Valentin Kasas explains how to combine N things</a></p>
+
+<h1 id="scalaz-data-types">Scalaz data types</h1>
+<h2 id="type-variance">Type variance</h2>
+<p>Many of Scalaz’s data types are invariant in their type parameters.</p>
+
+<h3 id="covariance">Covariance</h3>
+<p>The problem with covariant type parameters, such as class List[+A], is that List[A] is a subtype of List[Any] and it is easy to accidentally lose type information.</p>
+
+<p>Similarly, when the compiler infers a type with Product with Serializable it is a strong indicator that accidental widening has occurred due to covariance.</p>
+<h3 id="contravariance">Contravariance</h3>
+<p>On the other hand, contravariant type parameters, such as trait Thing[-A], can expose devastating bugs in the compiler (Implicit resolution flips its definition of “most specific” for contravariant types).</p>
+<h3 id="workaround-on-subtyping-limitation">workaround on subtyping limitation</h3>
+<p>Scala defines infix classes &lt;:&lt; and =:= along with implicit evidence that always creates a witness</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">&lt;:&lt;</span><span class="o">[</span><span class="kt">-From</span>, <span class="kt">+To</span><span class="o">]</span> <span class="nc">extends</span> <span class="o">(</span><span class="nc">From</span> <span class="k">=&gt;</span> <span class="nc">To</span><span class="o">)</span>
+<span class="k">implicit</span> <span class="k">def</span> <span class="nf">conforms</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="k">&lt;:</span><span class="kt">&lt;</span> <span class="kt">A</span> <span class="o">=</span> <span class="k">new</span> <span class="o">&lt;:&lt;[</span><span class="kt">A</span>, <span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span> <span class="o">}</span>
+<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">=:=</span><span class="o">[</span> <span class="kt">From</span>, <span class="kt">To</span><span class="o">]</span> <span class="nc">extends</span> <span class="o">(</span><span class="nc">From</span> <span class="k">=&gt;</span> <span class="nc">To</span><span class="o">)</span>
+<span class="k">implicit</span> <span class="k">def</span> <span class="nf">tpEquals</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=:=</span> <span class="n">A</span> <span class="k">=</span> <span class="k">new</span> <span class="o">=:=[</span><span class="kt">A</span>, <span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>&lt;:&lt; let us require that one type is a subclass the other.</p>
+  </li>
+  <li>
+    <p>=:= let us require that one is equal to the other.</p>
+  </li>
+</ul>
+
+<h3 id="scalaz-improves-on--and--with-liskov-aliased-to--and-leibniz-">Scalaz improves on &lt;:&lt; and =:= with Liskov (aliased to &lt;~&lt;) and Leibniz (===)</h3>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Liskov</span><span class="o">[</span><span class="kt">-A</span>, <span class="kt">+B</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">def</span> <span class="nf">subst</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="kt">-</span><span class="k">_</span><span class="o">]](</span><span class="n">p</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+  <span class="k">def</span> <span class="nf">andThen</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="n">that</span><span class="k">:</span> <span class="kt">Liskov</span><span class="o">[</span><span class="kt">B</span>, <span class="kt">C</span><span class="o">])</span><span class="k">:</span> <span class="kt">Liskov</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">C</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="k">def</span> <span class="nf">onF</span><span class="o">[</span><span class="kt">X</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">...</span>
+<span class="o">...</span>
+<span class="o">}</span>
+<span class="k">object</span> <span class="nc">Liskov</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">&lt;~&lt;</span><span class="err">[</span><span class="kt">-A</span><span class="o">,</span> <span class="o">+</span><span class="n">B</span><span class="err">]</span> <span class="k">=</span> <span class="nc">Liskov</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span>
+  <span class="k">type</span> <span class="kt">&gt;~&gt;</span><span class="err">[</span><span class="kt">+B</span><span class="o">,</span> <span class="o">-</span><span class="n">A</span><span class="err">]</span> <span class="k">=</span> <span class="nc">Liskov</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">refl</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span> <span class="kt">&lt;~&lt;</span> <span class="kt">A</span><span class="o">)</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">isa</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="kt">&lt;~&lt;</span> <span class="kt">B</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">witness</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">lt</span><span class="k">:</span> <span class="kt">A</span> <span class="kt">&lt;~&lt;</span> <span class="kt">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+<span class="c1">// type signatures have been simplified</span>
+<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Leibniz</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">apply</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">def</span> <span class="nf">subst</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]](</span><span class="n">p</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+  <span class="k">def</span> <span class="nf">flip</span><span class="k">:</span> <span class="kt">Leibniz</span><span class="o">[</span><span class="kt">B</span>, <span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="k">def</span> <span class="nf">andThen</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="n">that</span><span class="k">:</span> <span class="kt">Leibniz</span><span class="o">[</span><span class="kt">B</span>, <span class="kt">C</span><span class="o">])</span><span class="k">:</span> <span class="kt">Leibniz</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">C</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="k">def</span> <span class="nf">onF</span><span class="o">[</span><span class="kt">X</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+<span class="k">object</span> <span class="nc">Leibniz</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="o">===[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Leibniz</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">refl</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">Leibniz</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">subst</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">===</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="nf">witness</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">===</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">...</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/fpformortals/2019/02/25/fpmortals08.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
