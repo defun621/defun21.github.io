@@ -72,8 +72,28 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
         回复ACK_READ_REQ(reqsn, wsn<sub>i</sub>, reg<sub>i</sub>)给p<sub>r</sub>
 
 
+- **从SWSR到SWMR**
 
+    参考：[wikipedia: Shared register](https://en.wikipedia.org/wiki/Shared_register)和书 *Concurrent Programming: Algorithms, Principles, and Foundations* : (https://link.springer.com/book/10.1007/978-3-642-32027-9)。
 
+    假设写的process是p<sub>w</sub>。
+
+    我们需要一个额外的数据结构HELP. HELP[i,j]是一个SWSR的atomic寄存器，只由p<sub>i</sub>写，由p<sub>j</sub>读。
+
+    - 当p<sub>w</sub>调用*REG.write(v)*时：
+        wsn自增1
+
+        对于所有的process 标识i，p<sub>w</sub>去写HELP[w, i]
+
+    - 当任意一个process p<sub>i</sub>调用*REG.read()*时：
+
+        从HELP[*, i]中读到所有的(v, wsn)。
+
+        不妨令这其中wsn最大的pair中的wsn的值为wsn<sub>max</sub>, v值为v<sub>max</sub>
+
+        然后把(v<sub>max</sub>, wsn<sub>max</sub>)往HELP[i,*]中去写。
+
+        当完成上述操作时，返回v<sub>max</sub>.
 
 
 ---

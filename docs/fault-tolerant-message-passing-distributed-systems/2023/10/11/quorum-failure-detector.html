@@ -135,6 +135,35 @@
       </li>
     </ul>
   </li>
+  <li>
+    <p><strong>从SWSR到SWMR</strong></p>
+
+    <p>参考：<a href="https://en.wikipedia.org/wiki/Shared_register">wikipedia: Shared register</a>和书 <em>Concurrent Programming: Algorithms, Principles, and Foundations</em> : (https://link.springer.com/book/10.1007/978-3-642-32027-9)。</p>
+
+    <p>假设写的process是p<sub>w</sub>。</p>
+
+    <p>我们需要一个额外的数据结构HELP. HELP[i,j]是一个SWSR的atomic寄存器，只由p<sub>i</sub>写，由p<sub>j</sub>读。</p>
+
+    <ul>
+      <li>
+        <p>当p<sub>w</sub>调用<em>REG.write(v)</em>时：
+  wsn自增1</p>
+
+        <p>对于所有的process 标识i，p<sub>w</sub>去写HELP[w, i]</p>
+      </li>
+      <li>
+        <p>当任意一个process p<sub>i</sub>调用<em>REG.read()</em>时：</p>
+
+        <p>从HELP[*, i]中读到所有的(v, wsn)。</p>
+
+        <p>不妨令这其中wsn最大的pair中的wsn的值为wsn<sub>max</sub>, v值为v<sub>max</sub></p>
+
+        <p>然后把(v<sub>max</sub>, wsn<sub>max</sub>)往HELP[i,*]中去写。</p>
+
+        <p>当完成上述操作时，返回v<sub>max</sub>.</p>
+      </li>
+    </ul>
+  </li>
 </ul>
 
 <hr />

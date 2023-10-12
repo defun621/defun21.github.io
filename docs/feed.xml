@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-11T23:45:29-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">Quorum failure detector Σ</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector.html" rel="alternate" type="text/html" title="Quorum failure detector Σ" /><published>2023-10-11T22:45:00-07:00</published><updated>2023-10-11T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-12T00:39:32-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">Quorum failure detector Σ</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector.html" rel="alternate" type="text/html" title="Quorum failure detector Σ" /><published>2023-10-11T22:45:00-07:00</published><updated>2023-10-11T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -83,6 +83,35 @@
         &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到READ_REQ(reqsn)时：&lt;/p&gt;
 
         &lt;p&gt;回复ACK_READ_REQ(reqsn, wsn&lt;sub&gt;i&lt;/sub&gt;, reg&lt;sub&gt;i&lt;/sub&gt;)给p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;从SWSR到SWMR&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;参考：&lt;a href=&quot;https://en.wikipedia.org/wiki/Shared_register&quot;&gt;wikipedia: Shared register&lt;/a&gt;和书 &lt;em&gt;Concurrent Programming: Algorithms, Principles, and Foundations&lt;/em&gt; : (https://link.springer.com/book/10.1007/978-3-642-32027-9)。&lt;/p&gt;
+
+    &lt;p&gt;假设写的process是p&lt;sub&gt;w&lt;/sub&gt;。&lt;/p&gt;
+
+    &lt;p&gt;我们需要一个额外的数据结构HELP. HELP[i,j]是一个SWSR的atomic寄存器，只由p&lt;sub&gt;i&lt;/sub&gt;写，由p&lt;sub&gt;j&lt;/sub&gt;读。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;w&lt;/sub&gt;调用&lt;em&gt;REG.write(v)&lt;/em&gt;时：
+  wsn自增1&lt;/p&gt;
+
+        &lt;p&gt;对于所有的process 标识i，p&lt;sub&gt;w&lt;/sub&gt;去写HELP[w, i]&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当任意一个process p&lt;sub&gt;i&lt;/sub&gt;调用&lt;em&gt;REG.read()&lt;/em&gt;时：&lt;/p&gt;
+
+        &lt;p&gt;从HELP[*, i]中读到所有的(v, wsn)。&lt;/p&gt;
+
+        &lt;p&gt;不妨令这其中wsn最大的pair中的wsn的值为wsn&lt;sub&gt;max&lt;/sub&gt;, v值为v&lt;sub&gt;max&lt;/sub&gt;&lt;/p&gt;
+
+        &lt;p&gt;然后把(v&lt;sub&gt;max&lt;/sub&gt;, wsn&lt;sub&gt;max&lt;/sub&gt;)往HELP[i,*]中去写。&lt;/p&gt;
+
+        &lt;p&gt;当完成上述操作时，返回v&lt;sub&gt;max&lt;/sub&gt;.&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
