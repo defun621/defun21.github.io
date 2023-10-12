@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-11T15:06:34-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">更多关于二叉搜索树</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html" rel="alternate" type="text/html" title="更多关于二叉搜索树" /><published>2023-10-10T21:54:08-07:00</published><updated>2023-10-10T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-11T23:28:18-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">更多关于二叉搜索树</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html" rel="alternate" type="text/html" title="更多关于二叉搜索树" /><published>2023-10-10T21:54:08-07:00</published><updated>2023-10-10T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -322,6 +322,101 @@
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;&lt;strong&gt;可以观察到，该基于logic clock的MWMR sequentially consistent寄存器实现里的读操作有两阶段，和ABD算法一样；而读操作只有一阶段&lt;/strong&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">Quorum failure detector Σ</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/quorum-failure-detector.html" rel="alternate" type="text/html" title="Quorum failure detector Σ" /><published>2023-10-09T21:45:00-07:00</published><updated>2023-10-09T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/quorum-failure-detector</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/quorum-failure-detector.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;quorum failure detector class Σ&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;Σ给每个process&lt;sub&gt;i&lt;/sub&gt;，提供一个sigma&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+    &lt;p&gt;集合{sigma&lt;sub&gt;i&lt;/sub&gt;}&lt;sub&gt;i ≤ n&lt;/sub&gt;一起使得Σ满足以下性质：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;Intersection&lt;/strong&gt;: ∀ i,j ∈ {1,…,n}: ∀ τ,τ’ ∈ N: sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt; ∩ sigma&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ≠ ∅&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;: ∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F): sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ⊆ Correct(F).&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;其中F表示某次execution对应的failure pattern；
+  Correct(F)表示在该failure pattern里没有挂掉的process集合；
+  sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;表示在τ时刻p&lt;sub&gt;i&lt;/sub&gt;读到的sigma&lt;sub&gt;i&lt;/sub&gt;的值，也就是H(p&lt;sub&gt;i&lt;/sub&gt;, τ)&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;Intersection&lt;/strong&gt;性质表明在任何时刻，任意两个process读到的sigma值总有交集 （可以prevent cluster partitioning）&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;性质表明一段时间之后，没挂掉的process读到的sigma里只有正在运行的process&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t≤n/2]中Σ实现简述&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;初始化： 每个process都有一个queue，里面随机排列所有n个process。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;每个process都广播alive消息&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt;从p&lt;sub&gt;j&lt;/sub&gt;那里收到alive消息时：&lt;/p&gt;
+
+        &lt;p&gt;把j放到队列头，把队列里前⌈(n+1)/2⌉个process形成的set赋值给sigma&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;strong&gt;注意到，该实现与在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t ≤ n/2]中的failure detector Θ的实现一样&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Σ]中SWSR的atomic寄存器的实现简述&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;不妨令在SWSR的atomic寄存器的实现中，写的那个process是p&lt;sub&gt;w&lt;/sub&gt;，读的那个process是p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
+
+    &lt;p&gt;为了实现atomic寄存器，每个process都会参与，每个process p&lt;sub&gt;i&lt;/sub&gt;都有一个REG的本地副本reg&lt;sub&gt;i&lt;/sub&gt;，还有一个本地变量wsn&lt;sub&gt;i&lt;/sub&gt;，目的和之前SWMR的regular寄存器实现中一样。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;w&lt;/sub&gt;调用&lt;em&gt;REG.write(v)&lt;/em&gt;时：&lt;/p&gt;
+
+        &lt;p&gt;wsn&lt;sub&gt;w&lt;/sub&gt; 自增1，广播WRITE(v, wsn&lt;sub&gt;w&lt;/sub&gt;)&lt;/p&gt;
+
+        &lt;p&gt;然后等到在从sigma&lt;sub&gt;w&lt;/sub&gt;中的每个process都收到ACK_WRITE(wsn&lt;sub&gt;w&lt;/sub&gt;)之后，&lt;em&gt;REG.write(v)&lt;/em&gt;完成&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;r&lt;/sub&gt;调用&lt;em&gt;REG.read()&lt;/em&gt;时：&lt;/p&gt;
+
+        &lt;p&gt;reqsn&lt;sub&gt;r&lt;/sub&gt; 自增1，广播READ_REQ(reqsn&lt;sub&gt;r&lt;/sub&gt;)。&lt;/p&gt;
+
+        &lt;p&gt;然后等到在从sigma&lt;sub&gt;r&lt;/sub&gt;中的每个process那里都收到ACK_READ_REQ(rsn, wsn, v)之后，&lt;/p&gt;
+
+        &lt;p&gt;从这些ACK_READ_REQ里挑取wsn最大的那条，不妨令wsn最大的那条ACK_READ_REQ里的v值为x，&lt;/p&gt;
+
+        &lt;p&gt;则如果wsn&lt;sub&gt;r&lt;/sub&gt;小于wsn，则把wsn赋值给wsn&lt;sub&gt;r&lt;/sub&gt;，v赋值给reg&lt;sub&gt;r&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;最后返回reg&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到WRITE(wsn, v)时：&lt;/p&gt;
+
+        &lt;p&gt;如果wsn大于本地的wsn&lt;sub&gt;i&lt;/sub&gt;，则把wsn赋值给wsn&lt;sub&gt;i&lt;/sub&gt;，v赋值给reg&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;无论wsn如何，总是回复ACK_WRITE(wsn)给p&lt;sub&gt;w&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到READ_REQ(reqsn)时：&lt;/p&gt;
+
+        &lt;p&gt;回复ACK_READ_REQ(reqsn, wsn&lt;sub&gt;i&lt;/sub&gt;, reg&lt;sub&gt;i&lt;/sub&gt;)给p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
@@ -1403,291 +1498,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[-FC]中的Quiescent可靠广播</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html" rel="alternate" type="text/html" title="在CAMP[-FC]中的Quiescent可靠广播" /><published>2023-09-29T22:59:00-07:00</published><updated>2023-09-29T22:59:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/09/29/urb-fc-quiescent.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;引入failure detector 的意义&lt;/p&gt;
-
-    &lt;p&gt;t&amp;lt;N/2这个假设很强, 也很不灵活, 而如果能提供必要的信息供系统使用, 就可以隔离关于系统模型的假设； 对于failure detector来说, 算法只要依赖于failure detector提供的关于failure的信息就可以解决问题的话, 对于任意failure detector的实现, 只要能满足它定义的属性, 它们实现的细节是分布式算法不用关心的. 即分布式算法只依赖于这些属性, 而不依赖于具体实现和具体环境的细节. 这就使得算法和系统设计更加模块化。&lt;/p&gt;
-
-    &lt;p&gt;同时, 使用failure detector可以可以使我们直接研究一个系统需要对 failure 的观察”准确和全面”到何等程度, “最少”需要多少对于failure的信息, 一个分布式系统的问题才能被解决. 这是学术上的failure detector的意义所在。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;failure detector 正式定义&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Failure pattern&lt;/strong&gt;数学上，Failure pattern是一个映射&lt;em&gt;F : N -&amp;gt; 2&lt;sup&gt;Π&lt;/sup&gt;&lt;/em&gt;，其中&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;N是自然数集（代表时间&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;2&lt;sup&gt;Π&lt;/sup&gt;代表所有process的幂集&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;那么，&lt;em&gt;F(τ)&lt;/em&gt; 就是在τ时刻，CAMP模型中，挂掉process的集合。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Faulty(F)&lt;/strong&gt; 和 &lt;strong&gt;Non-Faulty(F)&lt;/strong&gt;：表示在某次execution中，按照Failure pattern &lt;em&gt;F&lt;/em&gt;挂掉的process的集合。&lt;/p&gt;
-
-        &lt;p&gt;则有&lt;em&gt;Faulty(F) = F(τ&lt;sub&gt;max&lt;/sub&gt;)&lt;/em&gt;，τ&lt;sub&gt;max&lt;/sub&gt;代表了该次执行的结束时间。&lt;/p&gt;
-
-        &lt;p&gt;显然，&lt;em&gt;Faulty(F) = ∪&lt;sub&gt;1 ≤ τ &amp;lt; +∞&lt;/sub&gt;F(τ) = lim&lt;sub&gt;τ → +∞&lt;/sub&gt;F(τ)&lt;/em&gt;&lt;/p&gt;
-
-        &lt;p&gt;而&lt;em&gt;Non-Faulty(F) = Π - Faulty(F)&lt;/em&gt;，Non-Faulty(F)在本书中也被称为Correct(F)&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Failure detector history with range R&lt;/strong&gt;：&lt;em&gt;R&lt;/em&gt;表示failure detector提供给process的某类信息。&lt;/p&gt;
-
-        &lt;p&gt;&lt;em&gt;failure detector history&lt;/em&gt;是一个函数&lt;em&gt;H: Π × N → R&lt;/em&gt;，&lt;/p&gt;
-
-        &lt;p&gt;&lt;em&gt;H(p&lt;sub&gt;i&lt;/sub&gt;, τ)&lt;/em&gt; 代表了failure detector在τ时刻给p&lt;sub&gt;i&lt;/sub&gt;的信息。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Failure detector class FD with range R&lt;/strong&gt;: FD是一个将Failure pattern F映射到某个failure detector history with range R集合上的函数。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ]上的URB&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;failure detector &lt;em&gt;Θ&lt;/em&gt; 的定义&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;accuracy&lt;/strong&gt;：∀ i ∈ Π: ∀ τ ∈ N: (trusted&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt; ∩ Correct(F)) ≠ ∅&lt;/p&gt;
-
-            &lt;p&gt;这代表着在任何时间，任何trusted&lt;sub&gt;i&lt;/sub&gt;至少包含一个正常运行的process。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;: ∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F): trusted&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ⊆ Correct(F)&lt;/p&gt;
-
-            &lt;p&gt;这表示在某个时间点之后，任何正常运行的process上的trusted集合里只包括正常运行的process。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, t &amp;lt; n/2]上构造Failure detector Θ&lt;/strong&gt; 实现简述&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;初始化：构造队列queue，队列包含乱序的所有集合，trusted集合中可以包含任意⌈(n+1)/2⌉个process。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;运行时：&lt;/p&gt;
-            &lt;ul&gt;
-              &lt;li&gt;广播alive消息&lt;/li&gt;
-              &lt;li&gt;当收到从别的process过来的alive消息时，把pk移到队列queue头，把队列中前 ⌈(n+1)/2⌉ 个process加入到trusted。&lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在 &lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ]&lt;/strong&gt; 上的URB实现简述&lt;/p&gt;
-
-        &lt;p&gt;和之前 &lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC]&lt;/strong&gt; 的URB一样，唯一的区别在于urb-deliver的条件&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC]&lt;/strong&gt; 上的条件是 rec_by[m]中process的数量大于等于t + 1&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ]&lt;/strong&gt; 上的条件变成 trusted&lt;sub&gt;i&lt;/sub&gt; ⊆ rec_by[m]&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;引入failure detector Θ的&lt;strong&gt;意义&lt;/strong&gt;：&lt;/p&gt;
-
-        &lt;p&gt;有了 &lt;strong&gt;Θ&lt;/strong&gt;， 即使是t ≥ n/2，也可以实现URB。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;quiescent uniform reliable broadcast&lt;/p&gt;
-
-    &lt;p&gt;之前所有的在CAMP[-FC]上的URB实现中，Diffuse(m)都需要无限broadcast消息。&lt;/p&gt;
-
-    &lt;p&gt;原因就是在于无法区分一个process是死了, 还是消息丢失了, 所以只要有一个process没有ack之前就死了, 其他process就需要一直向其发送msg, 永不停止。&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;quiescent 属性&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;是指算法为了发送一条msg只需要有限次消息传递即可。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;3种达成Quiescent的方法&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;基于&lt;strong&gt;perfect failure detector P&lt;/strong&gt;的URB&lt;/p&gt;
-
-        &lt;p&gt;perfect failure detector P维护的集合是suspected&lt;sub&gt;i&lt;/sub&gt;,其中包含了p&lt;sub&gt;i&lt;/sub&gt;认为已经挂掉的process。&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;perfect failure detector P&lt;/strong&gt; 定义&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Completeness&lt;/strong&gt;: ∀ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F), ∀ j ∈ Faulty(F): j ∈ suspected&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt;&lt;/p&gt;
-
-                &lt;p&gt;这表示总有某个时刻τ，在其之后，所有的挂掉的process都已经进到了每个正常的process的suspected集合里去。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Strong accuracy&lt;/strong&gt;: ∀ τ ∈ N: ∀ i, j ∈ Alive(τ): j ∉ suspected&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-                &lt;p&gt;其中Alive(τ) = Π \ F(τ)。&lt;/p&gt;
-
-                &lt;p&gt;这表示任何时候，活着的process都不会出现在suspected集合中。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;在 &lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ, P]&lt;/strong&gt; 上的URB实现简述&lt;/p&gt;
-
-            &lt;p&gt;P提供suspected, 则Θ 的trusted即为 Π \ suspected.&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;broadcast&lt;/strong&gt;：发送给包括自己在内的所有process&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;收到从p&lt;sub&gt;k&lt;/sub&gt;发来的msg时&lt;/strong&gt;：&lt;/p&gt;
-
-                &lt;ul&gt;
-                  &lt;li&gt;如果是第一次收到：初始化rec_by[m]，启动Diffuse(m) 任务&lt;/li&gt;
-                  &lt;li&gt;否则更新rec_by[m]&lt;/li&gt;
-                &lt;/ul&gt;
-
-                &lt;p&gt;然后发送ack(m)给p&lt;sub&gt;k&lt;/sub&gt;。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;收到p&lt;sub&gt;k&lt;/sub&gt;发来的ack(m)时&lt;/strong&gt;，更新rec_by[m]。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Diffuse(m)&lt;/strong&gt;: 直到 rec_by&lt;sub&gt;i&lt;/sub&gt;[m] ∪ suspected&lt;sub&gt;i&lt;/sub&gt; = Π 为止都执行循环：对于不在rec_by且不在suspected中的每个process，发送m。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;urb-deliver条件&lt;/strong&gt;：&lt;/p&gt;
-
-                &lt;p&gt;同 &lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ]&lt;/strong&gt; 上的URB：&lt;/p&gt;
-
-                &lt;p&gt;(trusted&lt;sub&gt;i&lt;/sub&gt; ⊆ rec_by&lt;sub&gt;i&lt;/sub&gt;[m]) ∧ (p&lt;sub&gt;i&lt;/sub&gt; has not yet urb-delivered m)&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;注意：因为可以完美检测错误, 那么被检测到crash的不用再发信息就好了, 而没crash的好的process一定会最终ack, 所以不但可以实现Quiescent, 算法也可以终止&lt;/strong&gt;&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;基于&lt;strong&gt;eventually perfect failure detector ◇P&lt;/strong&gt;的URB&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;completeness&lt;/strong&gt;：∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F), ∀ j ∈ Faulty(F): j ∈ suspected&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt;&lt;/p&gt;
-
-                &lt;p&gt;这和perfect failure detector P一样。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Eventual strong accuracy&lt;/strong&gt;：∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i, j ∈ Alive(τ’): j ∉ suspected&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt;&lt;/p&gt;
-
-                &lt;p&gt;注意这里和和perfect failure detector P的区别，这里的条件更弱，只需要某个时刻之后就可以。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ, ◇P]上URB&lt;/strong&gt;的实现简述：&lt;/p&gt;
-
-            &lt;p&gt;与 &lt;strong&gt;CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ, P]上的URB&lt;/strong&gt; 实现唯一不同的在于Diffuse(m)的循环终止条件： rec_by&lt;sub&gt;i&lt;/sub&gt;[m] = Π&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;注意：算法无法停止(需要不断观察◇P的检测结果变化), 但是至少可以达成Quiescent效果(由于可以检测到crash, 所以不会向一个已经crash的process发无限的msg)&lt;/strong&gt;&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;基于&lt;strong&gt;heartbeat failure detector HB&lt;/strong&gt;的URB&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;heartbeat failure detector HB 定义&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;failure detector HB维护一个数据结构HB&lt;sub&gt;i&lt;/sub&gt;[1,…,n]&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Completeness&lt;/strong&gt;： ∀ i ∈ Correct(F), ∀ j ∈ Faulty(F): ∃ K: ∀ τ ∈ N: HB&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;[j] &amp;lt; K&lt;/p&gt;
-
-                &lt;p&gt;这表示p&lt;sub&gt;i&lt;/sub&gt;的HB计数器中对应挂掉的process的值不会增长&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;&lt;/p&gt;
-
-                &lt;ol&gt;
-                  &lt;li&gt;∀ i, j ∈ Π ∀ τ ∈ N: HB&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;[j] ≤ HB&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ+1&lt;/sup&gt;[j]&lt;/li&gt;
-                  &lt;li&gt;∀ i,j ∈ Correct(F): ∀ K: ∃ τ ∈ N: HB&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;[j] &amp;gt; K&lt;/li&gt;
-                &lt;/ol&gt;
-
-                &lt;p&gt;这两条表明HB单调递增，且如果p&lt;sub&gt;i&lt;/sub&gt;,p&lt;sub&gt;j&lt;/sub&gt;都正常，它的值HB&lt;sub&gt;i&lt;/sub&gt;[j]就会一直增长。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, Θ, HB]上URB&lt;/strong&gt;的实现简述：&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;broadcast&lt;/strong&gt;：把msg发送给包括自己在内的所有process&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;收到从p&lt;sub&gt;k&lt;/sub&gt;发来的msg时&lt;/strong&gt;：&lt;/p&gt;
-
-                &lt;ul&gt;
-                  &lt;li&gt;如果是第一次收到：初始化并更新rec_by[m], prev_hb[m]和cur_hb[m]，启动任务Diffuse(m)&lt;/li&gt;
-                  &lt;li&gt;否则就更新rec_by[m]&lt;/li&gt;
-                &lt;/ul&gt;
-
-                &lt;p&gt;最后向p&lt;sub&gt;k&lt;/sub&gt;发送ack&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;收到p&lt;sub&gt;k&lt;/sub&gt;发来的ack(m)时&lt;/strong&gt;，更新rec_by[m]&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;Diffuse(m)&lt;/strong&gt;: 直到 rec_by&lt;sub&gt;i&lt;/sub&gt;[m] = Π 为止都执行循环：将当前HB的值赋给cur_hb[m]，只对不在rec_by[m]并且prev_hb[m][j] &amp;lt; cur_hb[m][j]的process&lt;sub&gt;j&lt;/sub&gt;发送m，最后把cur_hb[m]赋给prev_hb[m]。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;urb-deliver条件&lt;/strong&gt;：(trusted&lt;sub&gt;i&lt;/sub&gt; ⊆ rec_by&lt;sub&gt;i&lt;/sub&gt;[m]) ∧ (p&lt;sub&gt;i&lt;/sub&gt; has not yet urb-delivered m)&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;注意:由于不知道什么时候有”die”的process会重新发来heartbeat, 所以算法无法终止, 但是真的crash了的process不会再发来heartbeat, 所以不会再向其发msg(可以达成Quiescent)&lt;/strong&gt;&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>
