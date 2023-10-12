@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Quorum failure detector &Sigma;
+title:  Quorum failure detector Σ以及 CAMP[Σ]上的atomic寄存器
 date:   2023-10-11 22:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
