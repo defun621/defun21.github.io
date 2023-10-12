@@ -1,4 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-11T23:28:18-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">更多关于二叉搜索树</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html" rel="alternate" type="text/html" title="更多关于二叉搜索树" /><published>2023-10-10T21:54:08-07:00</published><updated>2023-10-10T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-11T23:45:29-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">Quorum failure detector Σ</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector.html" rel="alternate" type="text/html" title="Quorum failure detector Σ" /><published>2023-10-11T22:45:00-07:00</published><updated>2023-10-11T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/11/quorum-failure-detector.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;quorum failure detector class Σ&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;Σ给每个process&lt;sub&gt;i&lt;/sub&gt;，提供一个sigma&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+    &lt;p&gt;集合{sigma&lt;sub&gt;i&lt;/sub&gt;}&lt;sub&gt;i ≤ n&lt;/sub&gt;一起使得Σ满足以下性质：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;Intersection&lt;/strong&gt;: ∀ i,j ∈ {1,…,n}: ∀ τ,τ’ ∈ N: sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt; ∩ sigma&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ≠ ∅&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;: ∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F): sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ⊆ Correct(F).&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;其中F表示某次execution对应的failure pattern；
+  Correct(F)表示在该failure pattern里没有挂掉的process集合；
+  sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;表示在τ时刻p&lt;sub&gt;i&lt;/sub&gt;读到的sigma&lt;sub&gt;i&lt;/sub&gt;的值，也就是H(p&lt;sub&gt;i&lt;/sub&gt;, τ)&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;Intersection&lt;/strong&gt;性质表明在任何时刻，任意两个process读到的sigma值总有交集 （可以prevent cluster partitioning）&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;性质表明一段时间之后，没挂掉的process读到的sigma里只有正在运行的process&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t≤n/2]中Σ实现简述&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;初始化： 每个process都有一个queue，里面随机排列所有n个process。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;每个process都广播alive消息&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt;从p&lt;sub&gt;j&lt;/sub&gt;那里收到alive消息时：&lt;/p&gt;
+
+        &lt;p&gt;把j放到队列头，把队列里前⌈(n+1)/2⌉个process形成的set赋值给sigma&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;strong&gt;注意到，该实现与在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t ≤ n/2]中的failure detector Θ的实现一样&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Σ]中SWSR的atomic寄存器的实现简述&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;不妨令在SWSR的atomic寄存器的实现中，写的那个process是p&lt;sub&gt;w&lt;/sub&gt;，读的那个process是p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
+
+    &lt;p&gt;为了实现atomic寄存器，每个process都会参与，每个process p&lt;sub&gt;i&lt;/sub&gt;都有一个REG的本地副本reg&lt;sub&gt;i&lt;/sub&gt;，还有一个本地变量wsn&lt;sub&gt;i&lt;/sub&gt;，目的和之前SWMR的regular寄存器实现中一样。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;w&lt;/sub&gt;调用&lt;em&gt;REG.write(v)&lt;/em&gt;时：&lt;/p&gt;
+
+        &lt;p&gt;wsn&lt;sub&gt;w&lt;/sub&gt; 自增1，广播WRITE(v, wsn&lt;sub&gt;w&lt;/sub&gt;)&lt;/p&gt;
+
+        &lt;p&gt;然后等到在从sigma&lt;sub&gt;w&lt;/sub&gt;中的每个process都收到ACK_WRITE(wsn&lt;sub&gt;w&lt;/sub&gt;)之后，&lt;em&gt;REG.write(v)&lt;/em&gt;完成&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当p&lt;sub&gt;r&lt;/sub&gt;调用&lt;em&gt;REG.read()&lt;/em&gt;时：&lt;/p&gt;
+
+        &lt;p&gt;reqsn&lt;sub&gt;r&lt;/sub&gt; 自增1，广播READ_REQ(reqsn&lt;sub&gt;r&lt;/sub&gt;)。&lt;/p&gt;
+
+        &lt;p&gt;然后等到在从sigma&lt;sub&gt;r&lt;/sub&gt;中的每个process那里都收到ACK_READ_REQ(rsn, wsn, v)之后，&lt;/p&gt;
+
+        &lt;p&gt;从这些ACK_READ_REQ里挑取wsn最大的那条，不妨令wsn最大的那条ACK_READ_REQ里的v值为x，&lt;/p&gt;
+
+        &lt;p&gt;则如果wsn&lt;sub&gt;r&lt;/sub&gt;小于wsn，则把wsn赋值给wsn&lt;sub&gt;r&lt;/sub&gt;，v赋值给reg&lt;sub&gt;r&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;最后返回reg&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到WRITE(wsn, v)时：&lt;/p&gt;
+
+        &lt;p&gt;如果wsn大于本地的wsn&lt;sub&gt;i&lt;/sub&gt;，则把wsn赋值给wsn&lt;sub&gt;i&lt;/sub&gt;，v赋值给reg&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;无论wsn如何，总是回复ACK_WRITE(wsn)给p&lt;sub&gt;w&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到READ_REQ(reqsn)时：&lt;/p&gt;
+
+        &lt;p&gt;回复ACK_READ_REQ(reqsn, wsn&lt;sub&gt;i&lt;/sub&gt;, reg&lt;sub&gt;i&lt;/sub&gt;)给p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">更多关于二叉搜索树</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html" rel="alternate" type="text/html" title="更多关于二叉搜索树" /><published>2023-10-10T21:54:08-07:00</published><updated>2023-10-10T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/10/more-on-bst-and-set.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -322,101 +417,6 @@
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;&lt;strong&gt;可以观察到，该基于logic clock的MWMR sequentially consistent寄存器实现里的读操作有两阶段，和ABD算法一样；而读操作只有一阶段&lt;/strong&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">Quorum failure detector Σ</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/quorum-failure-detector.html" rel="alternate" type="text/html" title="Quorum failure detector Σ" /><published>2023-10-09T21:45:00-07:00</published><updated>2023-10-09T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/quorum-failure-detector</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/09/quorum-failure-detector.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;quorum failure detector class Σ&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;Σ给每个process&lt;sub&gt;i&lt;/sub&gt;，提供一个sigma&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-    &lt;p&gt;集合{sigma&lt;sub&gt;i&lt;/sub&gt;}&lt;sub&gt;i ≤ n&lt;/sub&gt;一起使得Σ满足以下性质：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Intersection&lt;/strong&gt;: ∀ i,j ∈ {1,…,n}: ∀ τ,τ’ ∈ N: sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt; ∩ sigma&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ≠ ∅&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;: ∃ τ ∈ N: ∀ τ’ ≥ τ: ∀ i ∈ Correct(F): sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ’&lt;/sup&gt; ⊆ Correct(F).&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;其中F表示某次execution对应的failure pattern；
-  Correct(F)表示在该failure pattern里没有挂掉的process集合；
-  sigma&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;表示在τ时刻p&lt;sub&gt;i&lt;/sub&gt;读到的sigma&lt;sub&gt;i&lt;/sub&gt;的值，也就是H(p&lt;sub&gt;i&lt;/sub&gt;, τ)&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;Intersection&lt;/strong&gt;性质表明在任何时刻，任意两个process读到的sigma值总有交集 （可以prevent cluster partitioning）&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;性质表明一段时间之后，没挂掉的process读到的sigma里只有正在运行的process&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t≤n/2]中Σ实现简述&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;初始化： 每个process都有一个queue，里面随机排列所有n个process。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;每个process都广播alive消息&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt;从p&lt;sub&gt;j&lt;/sub&gt;那里收到alive消息时：&lt;/p&gt;
-
-        &lt;p&gt;把j放到队列头，把队列里前⌈(n+1)/2⌉个process形成的set赋值给sigma&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;&lt;strong&gt;注意到，该实现与在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t ≤ n/2]中的failure detector Θ的实现一样&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Σ]中SWSR的atomic寄存器的实现简述&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;不妨令在SWSR的atomic寄存器的实现中，写的那个process是p&lt;sub&gt;w&lt;/sub&gt;，读的那个process是p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
-
-    &lt;p&gt;为了实现atomic寄存器，每个process都会参与，每个process p&lt;sub&gt;i&lt;/sub&gt;都有一个REG的本地副本reg&lt;sub&gt;i&lt;/sub&gt;，还有一个本地变量wsn&lt;sub&gt;i&lt;/sub&gt;，目的和之前SWMR的regular寄存器实现中一样。&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;当p&lt;sub&gt;w&lt;/sub&gt;调用&lt;em&gt;REG.write(v)&lt;/em&gt;时：&lt;/p&gt;
-
-        &lt;p&gt;wsn&lt;sub&gt;w&lt;/sub&gt; 自增1，广播WRITE(v, wsn&lt;sub&gt;w&lt;/sub&gt;)&lt;/p&gt;
-
-        &lt;p&gt;然后等到在从sigma&lt;sub&gt;w&lt;/sub&gt;中的每个process都收到ACK_WRITE(wsn&lt;sub&gt;w&lt;/sub&gt;)之后，&lt;em&gt;REG.write(v)&lt;/em&gt;完成&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当p&lt;sub&gt;r&lt;/sub&gt;调用&lt;em&gt;REG.read()&lt;/em&gt;时：&lt;/p&gt;
-
-        &lt;p&gt;reqsn&lt;sub&gt;r&lt;/sub&gt; 自增1，广播READ_REQ(reqsn&lt;sub&gt;r&lt;/sub&gt;)。&lt;/p&gt;
-
-        &lt;p&gt;然后等到在从sigma&lt;sub&gt;r&lt;/sub&gt;中的每个process那里都收到ACK_READ_REQ(rsn, wsn, v)之后，&lt;/p&gt;
-
-        &lt;p&gt;从这些ACK_READ_REQ里挑取wsn最大的那条，不妨令wsn最大的那条ACK_READ_REQ里的v值为x，&lt;/p&gt;
-
-        &lt;p&gt;则如果wsn&lt;sub&gt;r&lt;/sub&gt;小于wsn，则把wsn赋值给wsn&lt;sub&gt;r&lt;/sub&gt;，v赋值给reg&lt;sub&gt;r&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;最后返回reg&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到WRITE(wsn, v)时：&lt;/p&gt;
-
-        &lt;p&gt;如果wsn大于本地的wsn&lt;sub&gt;i&lt;/sub&gt;，则把wsn赋值给wsn&lt;sub&gt;i&lt;/sub&gt;，v赋值给reg&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;无论wsn如何，总是回复ACK_WRITE(wsn)给p&lt;sub&gt;w&lt;/sub&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当任意process p&lt;sub&gt;i&lt;/sub&gt;收到READ_REQ(reqsn)时：&lt;/p&gt;
-
-        &lt;p&gt;回复ACK_READ_REQ(reqsn, wsn&lt;sub&gt;i&lt;/sub&gt;, reg&lt;sub&gt;i&lt;/sub&gt;)给p&lt;sub&gt;r&lt;/sub&gt;&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;

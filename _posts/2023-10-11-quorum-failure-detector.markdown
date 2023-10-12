@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Quorum failure detector &Sigma;
-date:   2023-10-09 21:45:00 -0700
+date:   2023-10-11 22:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
