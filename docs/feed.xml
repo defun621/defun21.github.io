@@ -1,4 +1,109 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-12T23:01:05-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">快排和归并排序</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/12/sort.html" rel="alternate" type="text/html" title="快排和归并排序" /><published>2023-10-12T19:54:08-07:00</published><updated>2023-10-12T19:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/12/sort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/12/sort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-13T15:56:49-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">atomic寄存器与urb广播</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/13/atomic-reg-and-urb.html" rel="alternate" type="text/html" title="atomic寄存器与urb广播" /><published>2023-10-13T14:45:00-07:00</published><updated>2023-10-13T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/13/atomic-reg-and-urb</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/13/atomic-reg-and-urb.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果D是一个failure detector class，并且在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[D]里可以构造出atomic register，不妨令A是该构造atomic register的算法，&lt;/p&gt;
+
+    &lt;p&gt;则总可以用A构造出算法，模拟出Σ,使得每个process p&lt;sub&gt;i&lt;/sub&gt;得到simga&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;结论：只要有failure detector class Σ，我们就可以在一个任意process可能crash的异步系统里构造出atomic寄存器&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;对比failure detector class Θ 和 Σ&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;只要有Θ，在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, t ≥ n/2]里就可以构造出URB 广播&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;只要有Σ，就可以在CAMP里构造出atomic 寄存器&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;并且两者的实现代码相同，那是否两者的computation power也一样呢？&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;strong&gt;结论：在任何t ≥ n/2的系统里，Σ严格地强于Θ。即Θ可以在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Σ]里被构造，而Σ无法在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Θ]里被构造出来&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;推理简述：&lt;/p&gt;
+
+        &lt;p&gt;回忆两者的properties，它们的liveness都是一样的，区别在于&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;Σ 上要求 &lt;strong&gt;intersection&lt;/strong&gt;: 在任何时刻，任意两个process读到的sigma值总有交集 （可以prevent cluster partitioning）&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;Θ 上要求&lt;strong&gt;correctness&lt;/strong&gt;：在任何时间，任何trusted&lt;sub&gt;i&lt;/sub&gt;至少包含一个正常运行的process。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;当t &amp;lt; n/2时，从Σ&lt;strong&gt;liveness&lt;/strong&gt;和&lt;strong&gt;intersection&lt;/strong&gt;结合起来看，可以得出Θ的&lt;strong&gt;correctness&lt;/strong&gt;。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;当t &amp;lt; n/2时，却可以通过反证法得到Σ无法在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Θ]里被构造出来。&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以用atomic寄存器构造出URB广播&lt;/p&gt;
+
+    &lt;p&gt;构造算法简述&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;算法由一组REG[i..n]组成，每个REG[i]都是一个SWMR的atomic register。每个REG[i]都允许p&lt;sub&gt;i&lt;/sub&gt;写，允许所有process读。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;每个p&lt;sub&gt;i&lt;/sub&gt;的本地变量有：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;sent&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;reg&lt;sub&gt;i&lt;/sub&gt;[1..n]&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;这些local variable里都放着一串message&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;urb-broadcast&lt;/strong&gt;:&lt;/p&gt;
+
+        &lt;p&gt;首先把msg concatenate到sent&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;然后p&lt;sub&gt;i&lt;/sub&gt;调用REG[i].write(sent&lt;sub&gt;i&lt;/sub&gt;).&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;urb-deliver&lt;/strong&gt;:&lt;/p&gt;
+
+        &lt;p&gt;urb-deliver由一个background task实现：&lt;/p&gt;
+
+        &lt;p&gt;这个task是一个while true loop：&lt;/p&gt;
+
+        &lt;p&gt;在loop里面p&lt;sub&gt;i&lt;/sub&gt;会从每个REG[x]里读取msg，然后放到本地reg&lt;sub&gt;i&lt;sub&gt;[x]里。对于reg&lt;sub&gt;i&lt;/sub&gt;[x]里每条没有被urb-deliver的msg，去urb-deliver该msg。&lt;/sub&gt;&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;从上面结论中我们可以看到，无论t的值，Θ都可以在CAMP[Σ]或者CAMP[-FC, Σ]里被构造，而反过来不行。&lt;/p&gt;
+
+    &lt;p&gt;同时Σ又是满足可以被加到CAMP[∅]中后能无论t的值都能实现atomic寄存器的the weakest failure detector class。&lt;/p&gt;
+
+    &lt;p&gt;这就意味着&lt;strong&gt;从failure detector class的角度来看，atomic寄存器strictly stronger than URB广播&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">快排和归并排序</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/12/sort.html" rel="alternate" type="text/html" title="快排和归并排序" /><published>2023-10-12T19:54:08-07:00</published><updated>2023-10-12T19:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/12/sort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/12/sort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1405,198 +1510,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">读写寄存器抽象</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html" rel="alternate" type="text/html" title="读写寄存器抽象" /><published>2023-10-02T12:45:00-07:00</published><updated>2023-10-02T12:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/02/rw-register-abstraction.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;concurrent object&lt;/strong&gt;:&lt;/p&gt;
-
-    &lt;p&gt;能同时被多个sequential process访问的object&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;register&lt;/strong&gt;:&lt;/p&gt;
-
-    &lt;p&gt;（shared register object，in short， register）寄存器R是一种抽象，可以代表一个字节，或者一个shared disk。&lt;/p&gt;
-
-    &lt;p&gt;R提供两种操作：R.read()和R.write()。&lt;/p&gt;
-
-    &lt;p&gt;第五章主要定义以下两类register：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;regular read/write register&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;atomic register&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;regular R/W register&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;regular R/W register是一种（SWMR）寄存器（单写多读）。&lt;/p&gt;
-
-    &lt;p&gt;regular寄存器读操作返回的值定义为：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;一个读如果不和任何写是concurrent关系, 则读需要读到寄存器当前的内容(即, 上一个成功完成的写入的值)&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;一个读如果和多个写操作是concurrent关系, 那么这个读可以返回这多个写的值里的任意一个, 或者寄存器在这些写发生前的值&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;new/old inversion&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;register上读到的值序列不一定是写入时候序列，也就是说可以先读到一个后被写入的值再读到一个老的值。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;atomic register&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;atomic register与regular register不同，它可以是MWMR，在atomic register上不会出现new/old inversion。&lt;/p&gt;
-
-    &lt;p&gt;atomic寄存器读操作返回的值定义为：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;所有的读和写操作看起来就像它们按照顺序执行一样，这个序列不妨称其为&lt;em&gt;S&lt;/em&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;如果op&lt;sub&gt;1&lt;/sub&gt;在op&lt;sub&gt;2&lt;/sub&gt;开始前结束，则op&lt;sub&gt;1&lt;/sub&gt;在S序列里出现在op&lt;sub&gt;2&lt;/sub&gt;之前。也即S遵守时间序。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;atomic寄存器上每个读操作返回在S序列上在他之前最近的写操作写入的值&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;&lt;em&gt;S&lt;/em&gt;被称为寄存器执行的线性化。（一个register execution可以存在多个linearization）。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;sequentially consistency register&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;它是atomic register的一种弱化形式。它满足一下性质：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;所有的读和写操作看起来就像它们按照顺序执行一样，这个序列不妨称其为&lt;em&gt;S&lt;/em&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;如果process p&lt;sub&gt;i&lt;/sub&gt;先执行op&lt;sub&gt;1&lt;/sub&gt;再执行op&lt;sub&gt;2&lt;/sub&gt;，则在序列S中op&lt;sub&gt;1&lt;/sub&gt;必须出现在op&lt;sub&gt;2&lt;/sub&gt;之前。也即S遵守进程顺序关系。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;每个读操作返回在S序列上在他之前最近的写操作写入的值&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;注意：atomic寄存器要求遵守全局时间序，而sequentially consistency register只要求操作需要遵守进程顺序关系&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如何形式化定义&lt;strong&gt;Atomicity&lt;/strong&gt;和&lt;strong&gt;Sequentially consistency&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;预备概念：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;R.op(arg)(res)&lt;/strong&gt;，表示寄存器R上参数为arg，返回值为res的操作op，可以是写也可以是读&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;每个&lt;strong&gt;R.op(arg)(res)&lt;/strong&gt;有两个相应的&lt;strong&gt;event&lt;/strong&gt;，invocation &lt;em&gt;inv[R.op(arg) by p&lt;sub&gt;i&lt;/sub&gt;]&lt;/em&gt; 和reply &lt;em&gt;resp[R.op(res) by p&lt;sub&gt;i&lt;/sub&gt;]&lt;/em&gt;.&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;History&lt;/strong&gt;:&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;Ĥ = (H, &amp;lt;&lt;sub&gt;H&lt;/sub&gt;)，其中H是所有process发生的event所构成的集合，&amp;lt;&lt;sub&gt;H&lt;/sub&gt;是在这些events上的全序关系。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;&lt;strong&gt;local history&lt;/strong&gt;，Ĥ|p&lt;sub&gt;i&lt;/sub&gt;，是只有p&lt;sub&gt;i&lt;/sub&gt;发起的event构成的Ĥ的一个子序列。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;如果 ∀ p&lt;sub&gt;i&lt;/sub&gt;: Ĥ|p&lt;sub&gt;i&lt;/sub&gt; = Ĥ’|p&lt;sub&gt;i&lt;/sub&gt;，则Ĥ和Ĥ‘是等价的。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;本文中只考虑well-formed history（即invocation后面是reply，然后再接invocation……）&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;operation上的偏序关系&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;（op →&lt;sub&gt;H&lt;/sub&gt; op’) ≝ (resp[op] &amp;lt;&lt;sub&gt;H&lt;/sub&gt; inv[op’])&lt;/p&gt;
-
-            &lt;p&gt;如果既没有（op →&lt;sub&gt;H&lt;/sub&gt; op’) 也没有（op’ →&lt;sub&gt;H&lt;/sub&gt; op) ，则op与op’ overlap。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;sequential history&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;当Ĥ的第一个事件是一个invocation，并且&lt;/p&gt;
-            &lt;ol&gt;
-              &lt;li&gt;每个invocation之后紧跟着它对应的reply；&lt;/li&gt;
-              &lt;li&gt;每个reply之后跟着一个invocation；则Ĥ是一个sequential history&lt;/li&gt;
-            &lt;/ol&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;concurrent history&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;即一个非sequential的history。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;Ŝ|R&lt;/strong&gt;，即在sequential history &lt;em&gt;Ŝ&lt;/em&gt; 上，只由寄存器R相关的事件构成的子序列。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;legal history&lt;/strong&gt;: 在&lt;strong&gt;Ŝ|R&lt;/strong&gt;，每个read都只返回它之前最近的write的值。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Atomicity&lt;/strong&gt;: 一个history Ĥ是Atomic的条件是&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;存在这么一个由Ĥ里的事件的排列构成的序列S&amp;amp;#770，即Ĥ和Ŝ等价&lt;/li&gt;
-          &lt;li&gt;Ŝ是sequential并且legal&lt;/li&gt;
-          &lt;li&gt;→&lt;sub&gt;H&lt;/sub&gt; ⊆ →&lt;sub&gt;S&lt;/sub&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;Ŝ就是Ĥ的一个线性化。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Sequentially consistency&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;一个history Ĥ是Sequentially consistency的条件是&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;存在这么一个由Ĥ里的事件的排列构成的序列Ŝ，即Ĥ和Ŝ等价&lt;/li&gt;
-          &lt;li&gt;Ŝ是sequential并且legal&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;一些重要结论：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;atomicity是composable的而Sequentially consistency不是&lt;/strong&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t ≥ n/2]里构造不出atomic寄存器&lt;/strong&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t ≥ n/2]里构造不出两个或更多Sequentially consistency寄存器&lt;/strong&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>
