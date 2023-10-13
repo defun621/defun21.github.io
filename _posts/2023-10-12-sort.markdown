@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  快排和归并排序
-date:   2023-10-10 21:54:08 -0700
+date:   2023-10-12 19:54:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
 
@@ -231,7 +231,7 @@ categories: [Algorithm-design-with-Haskell]
 
         这样得到的mergesort是满足fast、smooth、stable的
 
-        
+
 ---
 本文章属于以下分类：
 {% for category in page.categories %}
