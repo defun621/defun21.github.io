@@ -1,0 +1,239 @@
+---
+layout: post
+title:  快排和归并排序
+date:   2023-10-10 21:54:08 -0700
+categories: [Algorithm-design-with-Haskell]
+---
+
+教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
+
+- 一个好的排序算法应该*fast*，*smooth*，*stable*，*compact*。smooth是指输入越是有序，排序越快。compact是指空间复杂度也近可能低。
+
+- 快排
+
+    利用上一章的bst，我们可以得到快排的第一个版本
+
+    ```scala
+    enum Tree[+A]:
+        case Null
+        case Node(a: A, left: Tree[A], right: Tree[A])
+
+    def mkTree[A](xs: List[A])(using ord: Ordering[A]): Tree[A] = xs match
+        case Nil => Null
+        case x :: xs => 
+            def partition(p: A => Boolean)(xs: List[A]): (List[A], List[A]) = 
+                type ACC = (List[A], List[A])
+                val initAcc: ACC = (Nil, Nil)
+                val step: (A, ACC) => ACC = (a: A, acc: ACC) => 
+                    val (ys, zs) = acc
+                    if p(a) then (a :: ys, zs)
+                    else (ys, a :: zs)
+
+                xs.foldRight(initAcc)(step)
+            
+            val (ys, zs) = parition(i => ord.compare(i,x) < 0)(xs)
+            Node(x, mkTree(ys), mkTree(zs))
+            
+    val flatten: [A] => Tree[A] => List[A] = [A] => (t: Tree[A]) => t match
+        case Null => Nil
+        case Node(x, l, r) => flatten(l) ++ List(x) ++ flatten(r)
+    ```
+
+    第一版可以简化成我们常见的quickSort，因为：
+
+    ```haskell
+    qsort (x : xs)
+    = flatten (mkTree (x : xs))
+    = flatten (Node (mkTree ys) x (mkTree zs))
+    = flatten (mkTree ys) ++ [x] ++ flatten (mkTree zs)
+    = qsort ys ++ [x] ++ qsort zs
+    ```
+
+    这样就完全不需要中间mkTree，使实现更compact。
+
+    然而这版quicksort仍然
+    
+    - 不smooth，因为每次取第一个元素作为pivot的关系，如果输入已经是排过序的，时间复杂度会变成O(n<sup>2</sup>)。
+
+    - 也不fast，最坏是O(n<sup>2</sup>)
+
+    - 也不compact
+
+- mergesort
+
+    - 快排是在partition的时候把输入按大小分成两部分，而mergesort是在归并的时候来比较大小
+
+        同样，按照`msort = flatten . mkTree`的pattern
+
+        我们先给出Tree的定义
+
+        ```scala
+        enum Tree[+A]:
+            case Null
+            case Leaf(x: A)
+            case Node(l: Tree[A], r: Tree[A])
+        ```
+
+        有了这个定义，我们可以先定义flatten
+
+        ```scala
+        val flatten: [A] => Tree[A] => List[A] = [A] => (t: Tree[A]) => t match
+            case Null => Nil
+            case Leaf(a) => List(a)
+            case Node(l, r) => merge(flatten(l))(flatten(r))
+
+        def merge[A](xs: List[A])(ys: List[A])(using ord: Ordering[A]): List[A] = (xs, ys) match
+            case (Nil, _) => ys
+            case (_, Nil) => xs
+            case (x :: xt, y :: yt) => 
+                if ord.compare(x, y) <= 0 then x :: merge(xt)(ys)
+                else y :: merge(xs)(yt)
+        ```
+
+        为了使时间复杂度为O(nlogn)，我们需要让Node里的l和r平衡，一个时间复杂度为&Theta;(nlogn)的mkTree可以这样定义：
+
+        ```scala
+        mkTree: [A] => List[A] => Tree[A] = [A] => (l: List[A]) => l match
+            case Nil => Null
+            case List(x) => Leaf(x)
+            case _ => 
+                val (xs, ys) = halve(l)
+                Node(mkTree(xs), mkTree(ys))
+        ```
+
+        如何定义half呢：
+
+        第一种是
+        ```scala
+        val halve: [A] => List[A] => (List[A], List[A]) = [A] => (l: List[A]) => 
+            val length = l.size
+            val m = length / 2
+            (l.take(m), l.drop(m))
+        ```
+        这个实现有点呆，因为要traverse 三遍list。
+
+        第二种是：
+        ```scala
+        val halve: [A] => List[A] => (List[A], List[A]) = [A] => (l: List[A]) => 
+            type ACC = (List[A], List[A])
+            val initAcc: ACC = (Nil, Nil)
+            val step: (A, ACC) => ACC = (a: A, acc: ACC) => 
+                val (ys, zs) = acc
+                (zs, a :: ys)
+            l.foldRight(initAcc)(step)
+        ```
+
+        有了以上方法：我们得到了mergeSort
+        ```scala
+        def mergeSort[A](xs: List[A])(using ord: Ordering[A]): List[A] = flatten(mkTree(xs))
+        ```
+        我们同样用mergeSort，来替换flatten . mkTree，就可以得到
+        ```scala
+        def mergeSort[A](xs: List[A])(using ord: Ordering[A]): List[A] = xs match 
+            case Nil => Nil
+            case List(x) => List(x)
+            case _ => 
+                val (ys, zs) = halve(xs)
+                merge(mergeSort(ys))(mergeSort(zs))
+        ```
+
+    - 这样的mergesort：
+        
+        - 是fast的，因为时间复杂度是&Theta;(nlogn)。
+
+        - 如果是第一种halve的定义的话，是stable的，如果是第二种定义的话，那不stable了。
+
+        - 它不是smooth的因为就是输入已经是有序的也会是&Theta;(nlogn).
+
+    - 可以继续改进mergeSort，将mkTree的时间复杂度降为O(n).
+
+        - 第一种方法是避免在halve的时候访问已经走过的list元素，用的技巧是tupling
+
+            ```scala
+            val mkpair: [A] => Int => List[A] => (Tree[A], List[A]) = [A] => (n: Int) => l => n match
+                case 0 => (Null, l)
+                case 1 => (Leaf(l.head), l.tail)
+                case _ => 
+                    val m = n / 2
+                    val (t1, ys) = mkpair(m)(l)
+                    val (t2, zs) = mkpair(n - m)(ys)
+                    (Node(t1, t2), zs)
+
+            val mkTree: [A] => List[A] => Tree[A] = [A] => (l: List[A]) => mkpair(l.size)(l)._1
+            ```
+
+        - 第二种方法是自下而上构造，但这样会使得构造出来的树可能不平衡：
+
+            ```scala
+            val until: [A] => (A => Boolean) => (A => A) => A => A = [A] => (p: A => Boolean) => f => x =>
+                if p(x) then x
+                else until(p)(f)(f(x))
+
+            val single: [A] => List[A] => Boolean = [A] => (l： List[A]) => l.size == 1
+
+            val pairWith: [A] => (A => A => A) => List[A] => List[A] = [A] => (f: A => A => A) => xs => xs match
+                case Nil => Nil
+                case List(x) => List(x)
+                case x :: y :: t => f(x)(y) :: pairWith(f)(t)
+
+            val unwrap: [A] => List[A] => A = [A] => (l: List[A]) = l.head
+
+            val mkTree: [A] => List[A] => Tree[A] = [A] => (l: List[A]) => l match
+                case Nil => Null
+                case _ => unwrap(until(single)(pairWith(Node.curried))(l.map(x => Leaf(x))))
+            ```
+    
+    - 如果我们把上面的思路里的mkTree换成mergeSort，我们就有了一个叫Straight mergeSort的实现：
+
+        ```scala
+        def mergeSort[A](l: List[A])(using ord: Ordering[A]): List[A] = l match
+            case Nil => Nil
+            case _ => unwrap(until(single)(pairWith(merge))(l.map(x => List(x))))
+        ```
+
+    - 在Haskell的Data.List里，它的实现思路已经和Straight mergesort差不多了。
+    
+        区别在于它第一步不是直接把list里的element变成一个singlton list。而是通过runs 函数把输入划分为一个个单调的区间，每个这样的区间称为一个run
+
+        ```scala
+        def runs[A](l: List[A])(using ord: Ordering[A]): List[List[A]] = l match
+            case List(x) => List(List(x))
+            case x :: y :: xs =>
+                def upruns(a: A)(f: List[A] => List[A])(as: List[A]): List[List[A]] = as match
+                    case Nil => List(f(List(a)))
+                    case h :: t => 
+                        if ord.compare(a, h) <= 0 then upruns(h)(i => f(a :: i))(t)
+                        else f(List(a)) :: runs(as)
+
+                def dnruns(a: A)(as: List[A])(bs: List[A]): List[List[A]] = bs match
+                    case Nil => List(a :: as)
+                    case h :: t => 
+                        if ord.compare(a, h) > 0 then dnruns(h)(a :: as)(t)
+                        else (a :: as) :: runs(bs)
+
+                if ord.compare(x, y) <= 0 then upruns(y)(i => x :: i)(xs)
+                else dnruns(y)(List(x))(xs)
+        ```
+
+        upruns的第一个参数是当前看到的最小的element，第二个参数f是一个accumulator。dnruns是同样的道理。
+
+        通过upruns和dnruns，可以把list变成为由多个递增的list产生的list，并且它是stable的。
+
+        有了runs，再结合Straight mergesort的思路，
+
+        我们可以得到一个新的mergesort定义：
+
+        ```scala
+        def mergeSort[A](l: List[A])(using ord: Ordering[A]): List[A] = l match
+            case Nil => Nil
+            case _ => unwrap(until(single)(pairWith(merge))(runs(l)))
+        ```
+
+        这样得到的mergesort是满足fast、smooth、stable的
+
+        
+---
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}
