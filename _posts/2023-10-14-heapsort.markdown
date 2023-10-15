@@ -1,0 +1,113 @@
+---
+layout: post
+title:  堆排序
+date:   2023-10-14 21:04:08 -0700
+categories: [Algorithm-design-with-Haskell]
+---
+
+教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
+
+- 按照之前同样的思路，```flatten . mkTree```，我们也可以一样先给出heapsort用到的tree的ADT
+
+    ```scala
+    enum Tree[+A]:
+        case Null
+        case Node(a: A, left: Tree[A], right: Tree[A])
+    ```
+
+- 有了这个ADT之后，flatten也能直接给出：
+
+    ```scala
+    def flatten[A](t: Tree[A])(using ord: Ordering[A]): List[A] = t match
+        case Null => Nil
+        case Node(a, l, r) => a :: merge(flatten(l))(flatten(r))
+    ```
+    按照min-heap的定义，heap的root element就是最小的元素。如果heap的size-balanced的，则flatten的时间复杂度为&Theta;(nlogn)，n是heap里的节点数
+
+- mkHeap
+
+    - 第一种思路是
+
+        ```scala
+        def split[A](l: List[A])(using ord: Ordering[A]): (A, List[A], List[A]) = l match
+            case Nil => throw new IllegalStateException
+            case x :: xs =>
+                type ACC = (A, List[A], List[A])
+                val initACC: ACC = (x, Nil, Nil)
+                val step: (A, ACC) => ACC = (a: A, acc: ACC) => 
+                    val (h, l1, l2) = acc
+                    if ord.compare(a, h) <= 0 then (a, h :: l2, l1)
+                    else (h, a :: l2, l1)
+
+                xs.foldRight(initAcc)(step)
+
+        def mkHeap[A](l: List[A])(using: Ordering[A]): Tree[A] = l match
+            case Nil => Null
+            case _ => 
+                val (h, ys, zs) = split(l)
+                Node(h, mkHeap(ys), mkHeap(zs))
+        ```
+
+        因为在split的step里，每次我们都会交换l1与l2，所以我们可以得到一个balanced的heap。我们有递推式T(n) = 2T(n/2) + &Theta;(n), T(n) = &Theta;(nlogn)
+
+    - 可以优化，把mkHeap分为先mkTree然后再heapify
+
+        - mkTree可以利用之前在mergesort里用过的tupling技巧，避免重复计算
+
+            ```scala
+            val mkPair: [A] => Int => List[A] => (Tree[A], List[A]) = [A] => (n: Int) => l => n match
+                case 0 => (Null, l)
+                case _ => 
+                    val (x, xs) = (l.head, l.tail)
+                    val m = (n - 1) / 2
+                    val (t1, ys) = mkPair(m)(xs)
+                    val (t2, zs) = mkPair(n - 1 - m)(ys)
+                    (Node(x, t1, t2), zs)
+
+            val mkTree: [A] => List[A] => Tree[A] = [A] => (l: List[A]) => mkpair(l.size)(l)._1
+            ```
+
+            T(n) = 2T(n/2) + &Theta;(1)，mkTree的时间复杂度为&Theta;(n)
+
+        - heapify可以递归定义：
+
+            ```scala
+            def heapify[A](t: Tree[A])(using ord: Ordering[A]): Tree[A] = t match
+                case Null => Null
+                case Node(x, l, r) => siftDown(x)(heapify(l))(heapify(r))
+            ```
+
+        - siftDown的定义
+            ```scala
+            def siftDown[A](a: A)(t1: Tree[A])(t2: Tree[A])(using ord: Ordering[A]): Tree[A] = (t1, t2) match
+                case (Null, Null) => Node(a, Null, Null)
+                case (Node(x, u, v), Null) => 
+                    if ord.compare(a, x) <= 0 then Node(a, t1, t2)
+                    else Node(x, siftDown(a)(u)(v), Null)
+                case (Null, Node(x, u, v)) =>
+                    if ord.compare(a, x) <= 0 then Node(a, t1, t2)
+                    else Node(x, Null, siftDown(a)(u)(v))
+                case (Node (x1, u1, v1), Node(x2, u2, v2)) =>
+                    if a <= Math.min(x1, x2) then Node(a, t1, t2)
+                    else if x1 <= Math.min(a, x2) then Node(x1, siftDown(a, u1, v1), t2)
+                    else Node(x2, t1, SiftDown(a, u2, v2))
+            ```
+
+            不妨令Node(a, t1, t2)的高度为h，则heapify的时间复杂度为
+
+            h + 2(h - 1) + 4(h - 2) + ... + 2<sup>h - 1</sup> = 2<sup>h</sup>&Sigma;<sub>k=1</sub><sup>h</sup>k/2<sup>k</sup> &le; 2<sup>h+1</sup>
+
+            又因为一棵有n个节点的平衡树高度为&Theta;(logn)，所以heapify的时间复杂度为&Theta;(n)
+
+
+- 综上 ```heapsort = flatten . heapify . mkTree```。
+
+    heapsort是fast的，但是不stable、也不smooth、也不compact。
+
+
+
+---
+本文章属于以下分类：
+{% for category in page.categories %}
+- {{ category }}
+{% endfor %}

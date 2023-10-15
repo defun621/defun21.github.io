@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>堆排序 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="堆排序" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<meta property="og:description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<link rel="canonical" href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html" />
+<meta property="og:url" content="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-14T21:04:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="堆排序" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-14T21:04:08-07:00","datePublished":"2023-10-14T21:04:08-07:00","description":"教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52","headline":"堆排序","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html"},"url":"https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">堆排序</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-14T21:04:08-07:00" itemprop="datePublished">Oct 14, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52">https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</a></p>
+
+<ul>
+  <li>
+    <p>按照之前同样的思路，<code class="language-plaintext highlighter-rouge">flatten . mkTree</code>，我们也可以一样先给出heapsort用到的tree的ADT</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">enum</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span><span class="k">:</span>
+      <span class="kt">case</span> <span class="kt">Null</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">right</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>有了这个ADT之后，flatten也能直接给出：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">flatten</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="o">::</span> <span class="nf">merge</span><span class="o">(</span><span class="nf">flatten</span><span class="o">(</span><span class="n">l</span><span class="o">))(</span><span class="nf">flatten</span><span class="o">(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>    </div>
+    <p>按照min-heap的定义，heap的root element就是最小的元素。如果heap的size-balanced的，则flatten的时间复杂度为Θ(nlogn)，n是heap里的节点数</p>
+  </li>
+  <li>
+    <p>mkHeap</p>
+
+    <ul>
+      <li>
+        <p>第一种思路是</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">split</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=</span> <span class="n">l</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalStateException</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span>
+          <span class="k">type</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+          <span class="k">val</span> <span class="nv">initACC</span><span class="k">:</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="nc">Nil</span><span class="o">,</span> <span class="nc">Nil</span><span class="o">)</span>
+          <span class="k">val</span> <span class="nv">step</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">ACC</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">ACC</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">acc</span><span class="k">:</span> <span class="kt">ACC</span><span class="o">)</span> <span class="k">=&gt;</span> 
+              <span class="nf">val</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">l1</span><span class="o">,</span> <span class="n">l2</span><span class="o">)</span> <span class="k">=</span> <span class="n">acc</span>
+              <span class="k">if</span> <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">h</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="nf">then</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">h</span> <span class="o">::</span> <span class="n">l2</span><span class="o">,</span> <span class="n">l1</span><span class="o">)</span>
+              <span class="nf">else</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">a</span> <span class="o">::</span> <span class="n">l2</span><span class="o">,</span> <span class="n">l1</span><span class="o">)</span>
+
+          <span class="nv">xs</span><span class="o">.</span><span class="py">foldRight</span><span class="o">(</span><span class="n">initAcc</span><span class="o">)(</span><span class="n">step</span><span class="o">)</span>
+
+  <span class="k">def</span> <span class="nf">mkHeap</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">l</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Null</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> 
+          <span class="nf">val</span> <span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">ys</span><span class="o">,</span> <span class="n">zs</span><span class="o">)</span> <span class="k">=</span> <span class="nf">split</span><span class="o">(</span><span class="n">l</span><span class="o">)</span>
+          <span class="nc">Node</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="nf">mkHeap</span><span class="o">(</span><span class="n">ys</span><span class="o">),</span> <span class="nf">mkHeap</span><span class="o">(</span><span class="n">zs</span><span class="o">))</span>
+</code></pre></div>        </div>
+
+        <p>因为在split的step里，每次我们都会交换l1与l2，所以我们可以得到一个balanced的heap。我们有递推式T(n) = 2T(n/2) + Θ(n), T(n) = Θ(nlogn)</p>
+      </li>
+      <li>
+        <p>可以优化，把mkHeap分为先mkTree然后再heapify</p>
+
+        <ul>
+          <li>
+            <p>mkTree可以利用之前在mergesort里用过的tupling技巧，避免重复计算</p>
+
+            <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkPair</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">l</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="mi">0</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nc">Null</span><span class="o">,</span> <span class="n">l</span><span class="o">)</span>
+      <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> 
+          <span class="nf">val</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">xs</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="nv">l</span><span class="o">.</span><span class="py">head</span><span class="o">,</span> <span class="nv">l</span><span class="o">.</span><span class="py">tail</span><span class="o">)</span>
+          <span class="k">val</span> <span class="nv">m</span> <span class="k">=</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span>
+          <span class="nf">val</span> <span class="o">(</span><span class="n">t1</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span> <span class="k">=</span> <span class="nf">mkPair</span><span class="o">(</span><span class="n">m</span><span class="o">)(</span><span class="n">xs</span><span class="o">)</span>
+          <span class="nf">val</span> <span class="o">(</span><span class="n">t2</span><span class="o">,</span> <span class="n">zs</span><span class="o">)</span> <span class="k">=</span> <span class="nf">mkPair</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="o">)(</span><span class="n">ys</span><span class="o">)</span>
+          <span class="o">(</span><span class="nc">Node</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">t1</span><span class="o">,</span> <span class="n">t2</span><span class="o">),</span> <span class="n">zs</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="nv">mkTree</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nf">mkpair</span><span class="o">(</span><span class="nv">l</span><span class="o">.</span><span class="py">size</span><span class="o">)(</span><span class="n">l</span><span class="o">).</span><span class="py">_1</span>
+</code></pre></div>            </div>
+
+            <p>T(n) = 2T(n/2) + Θ(1)，mkTree的时间复杂度为Θ(n)</p>
+          </li>
+          <li>
+            <p>heapify可以递归定义：</p>
+
+            <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">heapify</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Null</span> <span class="k">=&gt;</span> <span class="nc">Null</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">siftDown</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="nf">heapify</span><span class="o">(</span><span class="n">l</span><span class="o">))(</span><span class="nf">heapify</span><span class="o">(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>siftDown的定义</p>
+            <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">siftDown</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)(</span><span class="n">t1</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">t2</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">t1</span><span class="o">,</span> <span class="n">t2</span><span class="o">)</span> <span class="k">match</span>
+      <span class="nf">case</span> <span class="o">(</span><span class="nc">Null</span><span class="o">,</span> <span class="nc">Null</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Node</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="nc">Null</span><span class="o">,</span> <span class="nc">Null</span><span class="o">)</span>
+      <span class="nf">case</span> <span class="o">(</span><span class="nc">Node</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">,</span> <span class="n">v</span><span class="o">),</span> <span class="nc">Null</span><span class="o">)</span> <span class="k">=&gt;</span> 
+          <span class="k">if</span> <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">then</span> <span class="nc">Node</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">t1</span><span class="o">,</span> <span class="n">t2</span><span class="o">)</span>
+          <span class="k">else</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="nf">siftDown</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">u</span><span class="o">)(</span><span class="n">v</span><span class="o">),</span> <span class="nc">Null</span><span class="o">)</span>
+      <span class="nf">case</span> <span class="o">(</span><span class="nc">Null</span><span class="o">,</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">,</span> <span class="n">v</span><span class="o">))</span> <span class="k">=&gt;</span>
+          <span class="k">if</span> <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">x</span><span class="o">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">then</span> <span class="nc">Node</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">t1</span><span class="o">,</span> <span class="n">t2</span><span class="o">)</span>
+          <span class="k">else</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="nc">Null</span><span class="o">,</span> <span class="nf">siftDown</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">u</span><span class="o">)(</span><span class="n">v</span><span class="o">))</span>
+      <span class="nf">case</span> <span class="o">(</span><span class="nc">Node</span> <span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">u1</span><span class="o">,</span> <span class="n">v1</span><span class="o">),</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x2</span><span class="o">,</span> <span class="n">u2</span><span class="o">,</span> <span class="n">v2</span><span class="o">))</span> <span class="k">=&gt;</span>
+          <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="nv">Math</span><span class="o">.</span><span class="py">min</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">)</span> <span class="n">then</span> <span class="nc">Node</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">t1</span><span class="o">,</span> <span class="n">t2</span><span class="o">)</span>
+          <span class="k">else</span> <span class="k">if</span> <span class="n">x1</span> <span class="o">&lt;=</span> <span class="nv">Math</span><span class="o">.</span><span class="py">min</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">x2</span><span class="o">)</span> <span class="n">then</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="nf">siftDown</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">u1</span><span class="o">,</span> <span class="n">v1</span><span class="o">),</span> <span class="n">t2</span><span class="o">)</span>
+          <span class="k">else</span> <span class="nc">Node</span><span class="o">(</span><span class="n">x2</span><span class="o">,</span> <span class="n">t1</span><span class="o">,</span> <span class="nc">SiftDown</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">u2</span><span class="o">,</span> <span class="n">v2</span><span class="o">))</span>
+</code></pre></div>            </div>
+
+            <p>不妨令Node(a, t1, t2)的高度为h，则heapify的时间复杂度为</p>
+
+            <p>h + 2(h - 1) + 4(h - 2) + … + 2<sup>h - 1</sup> = 2<sup>h</sup>Σ<sub>k=1</sub><sup>h</sup>k/2<sup>k</sup> ≤ 2<sup>h+1</sup></p>
+
+            <p>又因为一棵有n个节点的平衡树高度为Θ(logn)，所以heapify的时间复杂度为Θ(n)</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>综上 <code class="language-plaintext highlighter-rouge">heapsort = flatten . heapify . mkTree</code>。</p>
+
+    <p>heapsort是fast的，但是不stable、也不smooth、也不compact。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/10/14/heapsort.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
