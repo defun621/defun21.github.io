@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-14T22:29:30-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">堆排序</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html" rel="alternate" type="text/html" title="堆排序" /><published>2023-10-14T21:04:08-07:00</published><updated>2023-10-14T21:04:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-14T22:45:26-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">堆排序</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html" rel="alternate" type="text/html" title="堆排序" /><published>2023-10-14T21:04:08-07:00</published><updated>2023-10-14T21:04:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -102,7 +102,7 @@
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;综上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;heapsort = flatten . heapify . mkTree&lt;/code&gt;。&lt;/p&gt;
+    &lt;p&gt;综上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;heapsort = flatten . heapify . mkTree&lt;/code&gt;，综合三个部分的时间复杂度，heapsort的时间复杂度为Θ(nlogn)&lt;/p&gt;
 
     &lt;p&gt;heapsort是fast的，但是不stable、也不smooth、也不compact。&lt;/p&gt;
   &lt;/li&gt;

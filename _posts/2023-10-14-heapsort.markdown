@@ -100,7 +100,7 @@ categories: [Algorithm-design-with-Haskell]
             又因为一棵有n个节点的平衡树高度为&Theta;(logn)，所以heapify的时间复杂度为&Theta;(n)
 
 
-- 综上 ```heapsort = flatten . heapify . mkTree```。
+- 综上 ```heapsort = flatten . heapify . mkTree```，综合三个部分的时间复杂度，heapsort的时间复杂度为&Theta;(nlogn)
 
     heapsort是fast的，但是不stable、也不smooth、也不compact。
 
