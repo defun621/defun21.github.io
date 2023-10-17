@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-16T19:35:53-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">scd广播（set-constrained delivery broadcast)</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html" rel="alternate" type="text/html" title="scd广播（set-constrained delivery broadcast)" /><published>2023-10-16T14:45:00-07:00</published><updated>2023-10-16T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-16T19:40:29-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">scd广播（set-constrained delivery broadcast)</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html" rel="alternate" type="text/html" title="scd广播（set-constrained delivery broadcast)" /><published>2023-10-16T14:45:00-07:00</published><updated>2023-10-16T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -206,15 +206,7 @@
 
             &lt;p&gt;为了保证MS-ordering性质，p&lt;sub&gt;i&lt;/sub&gt;需要从to-deliver&lt;sub&gt;i&lt;/sub&gt;中将满足如下条件的qdplt删除：&lt;/p&gt;
 
-            &lt;table&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td&gt;∃ qdplt ∈ to_deliver&lt;sub&gt;i&lt;/sub&gt;, ∃ qdplt’ ∈ buffer&lt;sub&gt;i&lt;/sub&gt; \ to_deliver&lt;sub&gt;i&lt;/sub&gt;:&lt;/td&gt;
-                  &lt;td&gt;{f: qdplt.cl[f] &amp;lt; qdplt’.cl[f]}&lt;/td&gt;
-                  &lt;td&gt;≤ n/2&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
+            &lt;p&gt;∃ qdplt ∈ to_deliver&lt;sub&gt;i&lt;/sub&gt;, ∃ qdplt’ ∈ buffer&lt;sub&gt;i&lt;/sub&gt; \ to_deliver&lt;sub&gt;i&lt;/sub&gt;: |{f: qdplt.cl[f] &amp;lt; qdplt’.cl[f]}| ≤ n/2&lt;/p&gt;
 
             &lt;p&gt;如果剔除完之后to_deliver&lt;sub&gt;i&lt;/sub&gt;不为空：&lt;/p&gt;
 

@@ -148,7 +148,7 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
             为了保证MS-ordering性质，p<sub>i</sub>需要从to-deliver<sub>i</sub>中将满足如下条件的qdplt删除：
 
-            &exist; qdplt &isin; to_deliver<sub>i</sub>, &exist; qdplt' &isin; buffer<sub>i</sub> \ to_deliver<sub>i</sub>: |{f: qdplt.cl[f] &lt; qdplt'.cl[f]}| &le; n/2
+            &exist; qdplt &isin; to_deliver<sub>i</sub>, &exist; qdplt' &isin; buffer<sub>i</sub> \ to_deliver<sub>i</sub>: \|{f: qdplt.cl[f] &lt; qdplt'.cl[f]}\| &le; n/2
 
             如果剔除完之后to_deliver<sub>i</sub>不为空：
 

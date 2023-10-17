@@ -255,15 +255,7 @@
 
             <p>为了保证MS-ordering性质，p<sub>i</sub>需要从to-deliver<sub>i</sub>中将满足如下条件的qdplt删除：</p>
 
-            <table>
-              <tbody>
-                <tr>
-                  <td>∃ qdplt ∈ to_deliver<sub>i</sub>, ∃ qdplt’ ∈ buffer<sub>i</sub> \ to_deliver<sub>i</sub>:</td>
-                  <td>{f: qdplt.cl[f] &lt; qdplt’.cl[f]}</td>
-                  <td>≤ n/2</td>
-                </tr>
-              </tbody>
-            </table>
+            <p>∃ qdplt ∈ to_deliver<sub>i</sub>, ∃ qdplt’ ∈ buffer<sub>i</sub> \ to_deliver<sub>i</sub>: |{f: qdplt.cl[f] &lt; qdplt’.cl[f]}| ≤ n/2</p>
 
             <p>如果剔除完之后to_deliver<sub>i</sub>不为空：</p>
 
