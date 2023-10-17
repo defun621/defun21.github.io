@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  scd广播（set-constrained delivery broadcast)
+title:  CAMP[t < n/2]上的scd广播（set-constrained delivery broadcast)
 date:   2023-10-16 14:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
