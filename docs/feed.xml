@@ -1,4 +1,247 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-14T22:45:26-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">堆排序</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html" rel="alternate" type="text/html" title="堆排序" /><published>2023-10-14T21:04:08-07:00</published><updated>2023-10-14T21:04:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-16T19:35:53-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">scd广播（set-constrained delivery broadcast)</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html" rel="alternate" type="text/html" title="scd广播（set-constrained delivery broadcast)" /><published>2023-10-16T14:45:00-07:00</published><updated>2023-10-16T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;scd-broadcast和scd-deliver&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;scd-broadcast 以一条message为参数，进行广播&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;scd-deliver操作返回&lt;strong&gt;一个message 集合&lt;/strong&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;scd-broadcast性质&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;validity：如果一个process scd-deliver的message集合里包括m，则m是由某个process scd-broadcast的。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;integrity：一条message m最多被每个process scd-deliver一次。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;MS-ordering：&lt;/p&gt;
+
+        &lt;p&gt;不妨令p&lt;sub&gt;i&lt;/sub&gt;先scd-deliver了集合ms&lt;sub&gt;i&lt;/sub&gt;，再scd-deliver了集合ms’&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;对于任意一对message m ∈ ms&lt;sub&gt;i&lt;/sub&gt;, m’ ∈ ms’&lt;sub&gt;i&lt;/sub&gt;，&lt;/p&gt;
+
+        &lt;p&gt;不存在这样的p&lt;sub&gt;j&lt;/sub&gt;会先scd-deliver包含m’的集合ms’&lt;sub&gt;j&lt;/sub&gt;，再scd-deliver包含m的集合ms&lt;sub&gt;j&lt;/sub&gt;。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Termination-1：如果一个没挂掉的process scd-broadcast了一条message m，该process会结束该scd-broadcast操作，并且会scd-deliver一个包含m的消息集合&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Termination-2：如果一个process scd-deliver了消息m，每个没有挂掉的process都会scd-deliver包含m的消息集合。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;注意MS-ordering性质&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;任意两个process scd-deliver的消息集合里的东西不是相互独立的。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;如果令scd-deliver的消息集合大小为1，并且没有MS-order性质，这就是URB-broadcast&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;满足SCD顺序的例子：满足SCD顺序的例子：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;p1: {m1, m2}, {m3, m4, m5}, {m6}, {m7, m8}.&lt;/li&gt;
+          &lt;li&gt;p2: {m1}, {m3, m2}, {m6, m4, m5}, {m7}, {m8}.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;不满足SCD顺序的例子：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;p1: {m1, m2}, {m3, m4, m5}&lt;/li&gt;
+          &lt;li&gt;p2: {m1, m3}, {m2}&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;containment性质&lt;/p&gt;
+
+    &lt;p&gt;由MS-ordering性质和Termination-2性质，我们可以得到&lt;/p&gt;
+
+    &lt;p&gt;∀ i,j,x,y: (MS&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt; ⊆ MS&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;y&lt;/sup&gt;) ∨ (MS&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;y&lt;/sup&gt; ⊆ MS&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;)&lt;/p&gt;
+
+    &lt;p&gt;其中不妨令&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;l&lt;/sup&gt;表示由p&lt;sub&gt;i&lt;/sub&gt; scd-deliver的第l个消息集合&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;则p&lt;sub&gt;i&lt;/sub&gt;scd-deliver的消息序列即为ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;1&lt;/sup&gt;， ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;，……， ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;，&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;则MS&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt; = ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;1&lt;/sup&gt; ∪ ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt; … ∪ ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;消息上的partial order关系&lt;/p&gt;
+
+    &lt;p&gt;由MS-ordering性质和integrity性质我们可以得到一个消息上的偏序关系。&lt;/p&gt;
+
+    &lt;p&gt;不妨令p&lt;sub&gt;i&lt;/sub&gt;先scd-deliver了包含m的消息集合，再scd-deliver了包含m’的消息集合，&lt;/p&gt;
+
+    &lt;p&gt;则m和m’上由偏序关系：m ↦&lt;sub&gt;i&lt;/sub&gt; m’， 下标i表示这个关系是表示是p&lt;sub&gt;i&lt;/sub&gt;局部的。&lt;/p&gt;
+
+    &lt;p&gt;同时 ↦ = ∪&lt;sub&gt;1≤i≤n&lt;/sub&gt;↦&lt;sub&gt;i&lt;/sub&gt;构成了一个消息上的total-order。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t &amp;lt; n/2]上SCD广播实现简述&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;该实现基于FIFO-broadcast&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;每个process p&lt;sub&gt;i&lt;/sub&gt;维护以下本地变量：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;buffer&lt;sub&gt;i&lt;/sub&gt;：&lt;/p&gt;
+
+            &lt;p&gt;一个初始为空的buffer，buffer里面存有四元组qdplt = &amp;lt;qdplt.msg, qdplt.sd, qdplt.sn, qdplt.cl&amp;gt;，这些四元组里的msg都是已经被FIFO-delivered但属于一个还没被scd-deliver的消息集合。&lt;/p&gt;
+
+            &lt;p&gt;qdplt里&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;
+                &lt;p&gt;msg是消息m&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;sd是发消息的process id&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;sn是消息发送方发送该条消息的sequence number或local date。所以&amp;lt;qdplt.sn, qdplt.sd&amp;gt;构成了逻辑时间戳&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;cl是一个长度为n的array，array里的每个元素初始为无穷大。cl[x]里存放p&lt;sub&gt;x&lt;/sub&gt;广播FORWARD消息时对应于消息m的sequence number。&lt;/p&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;to_deliver&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+            &lt;p&gt;一组qdplt集合，每个qdplt里包含将要被scd-deliver的消息&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;sn&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+            &lt;p&gt;本地逻辑时钟，初始值为0。每次操作自增1。每个由p&lt;sub&gt;i&lt;/sub&gt; scd-broadcast的消息的id就是&amp;lt;i, sn&lt;sub&gt;i&lt;/sub&gt;&amp;gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;clock&lt;sub&gt;i&lt;/sub&gt;[1…n]&lt;/p&gt;
+
+            &lt;p&gt;由逻辑时间戳构成的数组。clock&lt;sub&gt;i&lt;/sub&gt;[j]表示由p&lt;sub&gt;i&lt;/sub&gt; scd-deliver的id为&amp;lt;j, x&amp;gt;的消息的中的时间戳x的最大值&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;scd广播消息m时：&lt;/p&gt;
+
+            &lt;p&gt;构造FORWARD消息 FORWARD(m, sn&lt;sub&gt;i&lt;/sub&gt;, i, sn&lt;sub&gt;i&lt;/sub&gt;, i)。&lt;/p&gt;
+
+            &lt;p&gt;第一对pair sn&lt;sub&gt;i&lt;/sub&gt;, i表示消息的identifier。&lt;/p&gt;
+
+            &lt;p&gt;第二对pair sn&lt;sub&gt;i&lt;/sub&gt;, i表示消息的时间戳。&lt;/p&gt;
+
+            &lt;p&gt;把FORWARD发给自己&lt;/p&gt;
+
+            &lt;p&gt;等到：条件buffer&lt;sub&gt;i&lt;/sub&gt;中没有sender是自身的四元组满足后，调用结束。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt; FIFO-deliver消息FORWARD(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, f, sn&lt;sub&gt;f&lt;/sub&gt;)之后，&lt;/p&gt;
+
+            &lt;p&gt;调用函数forward(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, f, sn&lt;sub&gt;f&lt;/sub&gt;)&lt;/p&gt;
+
+            &lt;p&gt;再调用函数try_deliver&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;函数forward(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, f, sn&lt;sub&gt;f&lt;/sub&gt;)：&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;
+                &lt;p&gt;如果sn&lt;sub&gt;sd&lt;/sub&gt; ≤ clock&lt;sub&gt;i&lt;/sub&gt;[sd]，说明p&lt;sub&gt;i&lt;/sub&gt;已经scd-deliver了消息&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;否则&lt;/p&gt;
+
+                &lt;ul&gt;
+                  &lt;li&gt;
+                    &lt;p&gt;如果buffer&lt;sub&gt;i&lt;/sub&gt;里没有包含消息m的四元组qdplt（即qdplt.sd = sd并且qdplt.sn = sn&lt;sub&gt;sd&lt;/sub&gt;)，&lt;/p&gt;
+
+                    &lt;p&gt;初始化一个新的qdplt，（cl[f] ← sn&lt;sub&gt;f&lt;/sub&gt;)。&lt;/p&gt;
+
+                    &lt;p&gt;把这个新的qdplt加到buffer&lt;sub&gt;i&lt;/sub&gt;中去&lt;/p&gt;
+
+                    &lt;p&gt;fifo-broadcast 消息forward(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, i, sn&lt;sub&gt;i&lt;/sub&gt;)&lt;/p&gt;
+
+                    &lt;p&gt;sn&lt;sub&gt;i&lt;/sub&gt;自增1。&lt;/p&gt;
+                  &lt;/li&gt;
+                  &lt;li&gt;
+                    &lt;p&gt;否则更新qdplt.cl[f] ← sn&lt;sub&gt;f&lt;/sub&gt;。&lt;/p&gt;
+
+                    &lt;p&gt;表明已经知道有消息m并且它被p&lt;sub&gt;f&lt;/sub&gt;在它本地时间sn&lt;sub&gt;f&lt;/sub&gt;转发过。&lt;/p&gt;
+                  &lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;函数try_deliver():&lt;/p&gt;
+
+            &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;会首先计算buffer&lt;sub&gt;i&lt;/sub&gt;中有多少消息已经被大多数process见过（即该qdplt中的cl数组中有超过半数的元素不是+∞)。&lt;/p&gt;
+
+            &lt;p&gt;为了保证MS-ordering性质，p&lt;sub&gt;i&lt;/sub&gt;需要从to-deliver&lt;sub&gt;i&lt;/sub&gt;中将满足如下条件的qdplt删除：&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;∃ qdplt ∈ to_deliver&lt;sub&gt;i&lt;/sub&gt;, ∃ qdplt’ ∈ buffer&lt;sub&gt;i&lt;/sub&gt; \ to_deliver&lt;sub&gt;i&lt;/sub&gt;:&lt;/td&gt;
+                  &lt;td&gt;{f: qdplt.cl[f] &amp;lt; qdplt’.cl[f]}&lt;/td&gt;
+                  &lt;td&gt;≤ n/2&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+
+            &lt;p&gt;如果剔除完之后to_deliver&lt;sub&gt;i&lt;/sub&gt;不为空：&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;
+                &lt;p&gt;则遍历每个qdplt，更新clock&lt;sub&gt;i&lt;/sub&gt;[qdplt.sd] ← max(clock&lt;sub&gt;i&lt;/sub&gt;[qdplt.sd], qdplt.sn).&lt;/p&gt;
+
+                &lt;p&gt;把to_deliver&lt;sub&gt;i&lt;/sub&gt;从buffer&lt;sub&gt;i&lt;/sub&gt;里移除，&lt;/p&gt;
+
+                &lt;p&gt;把to_deliver&lt;sub&gt;i&lt;/sub&gt;里的消息拿出来构造集合ms，&lt;/p&gt;
+
+                &lt;p&gt;最后SCD-deliver(ms)。&lt;/p&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">堆排序</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html" rel="alternate" type="text/html" title="堆排序" /><published>2023-10-14T21:04:08-07:00</published><updated>2023-10-14T21:04:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/14/heapsort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1351,142 +1594,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">在CAMP[t &amp;lt; n/2]中实现SWMR的regular寄存器</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html" rel="alternate" type="text/html" title="在CAMP[t &amp;lt; n/2]中实现SWMR的regular寄存器" /><published>2023-10-04T21:45:00-07:00</published><updated>2023-10-04T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/04/SWMR-regular-register-in-CAMP.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;所有实现shared read/write register &lt;em&gt;REG&lt;/em&gt;的在构成架构上都是相同的。组成部分包括：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;n 个process，每个process相互之间发送、接收消息；并且每个process维护自己本地的数据结构&lt;/p&gt;
-
-        &lt;p&gt;本地的数据结构包括：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;一个本地的reg&lt;sub&gt;i&lt;/sub&gt;，用来存放p&lt;sub&gt;i&lt;/sub&gt;已知的上一次写入&lt;em&gt;REG&lt;/em&gt;的值&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;一组控制变量，用来保证p&lt;sub&gt;i&lt;/sub&gt;调用&lt;em&gt;REG.read()&lt;/em&gt;的时候能读到正确的值。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;每个process既担任client（实现 &lt;em&gt;REG.read()和REG.write()&lt;/em&gt;的本地算法部分），又担任server（负责处理收到的消息）。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;回顾regular寄存器的定义&lt;/p&gt;
-
-    &lt;p&gt;regular寄存器由以下性质定义：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Safety&lt;/strong&gt;:&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;如果&lt;em&gt;REG.read()&lt;/em&gt;执行完成并且该次读操作没有和任何写操作concurrent，则它返回最近被写入&lt;em&gt;REG&lt;/em&gt;中的值。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;如果该次读操作与某些写操作concurrent，则它可以返回这些写操作要写入的值或者这些写操作之前最近被写入&lt;em&gt;REG&lt;/em&gt;中的值。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;这两条在上一篇中有给出，这里回顾一下，并且告诉我们regular寄存器可能返回什么样的值。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Liveness&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;无论操作是&lt;em&gt;REG.read()&lt;/em&gt;还是&lt;em&gt;REG.write()&lt;/em&gt;， 如果调用它的process p&lt;sub&gt;i&lt;/sub&gt;没有挂，则该操作总能完成。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[n &amp;lt; n/2]中实现一个SWMR regular寄存器&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;实现思路简述（不妨令p&lt;sub&gt;w&lt;/sub&gt;是那一个写的process）：&lt;/p&gt;
-
-        &lt;p&gt;一方面，p&lt;sub&gt;w&lt;/sub&gt;给每个写操作都赋一个sequence number，并且广播该pair（新写入的值和它对应的sequence number）。&lt;/p&gt;
-
-        &lt;p&gt;另一方面，每个其他process p&lt;sub&gt;i&lt;/sub&gt;都把sequence number最高的那个pair记在本地。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;local variables&lt;/strong&gt;: 每个p&lt;sub&gt;i&lt;/sub&gt;都维护以下本地变量：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;reg&lt;sub&gt;i&lt;/sub&gt;，用来存p&lt;sub&gt;i&lt;/sub&gt;已知的&lt;em&gt;REG&lt;/em&gt;的值&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;wsn&lt;sub&gt;i&lt;/sub&gt;，用来存reg&lt;sub&gt;i&lt;/sub&gt;里的值对应的sequence number&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;reqsn&lt;sub&gt;i&lt;/sub&gt;，用来存放p&lt;sub&gt;i&lt;/sub&gt;最近一次读到&lt;em&gt;REG&lt;/em&gt;值时对应的sequence number&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;实现简述:&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;REG.write(v)&lt;/strong&gt; (因为是SWMR，所以只有p&lt;sub&gt;w&lt;/sub&gt;会调用&lt;em&gt;REG.write()&lt;/em&gt;)&lt;/p&gt;
-
-            &lt;p&gt;wsn&lt;sub&gt;i&lt;/sub&gt;加一，然后广播pair &lt;em&gt;&amp;lt;v, wsn&amp;gt;&lt;/em&gt;，等到从多数process那里都收到&lt;em&gt;ack_write(wsn&lt;sub&gt;w&lt;/sub&gt;)&lt;/em&gt;的时候从方法中返回&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;REG.read()&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;reqsn&lt;sub&gt;i&lt;/sub&gt;加一，广播READ_REQ(reqsn&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
-
-            &lt;p&gt;如果别的process p&lt;sub&gt;j&lt;/sub&gt;收到READ_REQ(reqsn&lt;sub&gt;i&lt;/sub&gt;)时，p&lt;sub&gt;j&lt;/sub&gt;会返回ACK_READ_REQ(reqsn&lt;sub&gt;i&lt;/sub&gt;, wsn&lt;sub&gt;j&lt;/sub&gt;, reg&lt;sub&gt;j&lt;/sub&gt;)给p&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-            &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt;从大多数process那里收到reqsn&lt;sub&gt;i&lt;/sub&gt;对应的ACK_READ_REQ之后，他从中挑选wsn最大的那个值 &lt;em&gt;v&lt;/em&gt; ，并将 &lt;em&gt;v&lt;/em&gt; 值返回。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;当process&lt;sub&gt;i&lt;/sub&gt; &lt;strong&gt;收到write(val, wsn)&lt;/strong&gt; 时&lt;/p&gt;
-
-            &lt;p&gt;process&lt;sub&gt;i&lt;/sub&gt;会对比wsn是否比本地wsn大，如果比本地wsn&lt;sub&gt;i&lt;/sub&gt;的值大，则把val存进&lt;em&gt;reg&lt;sub&gt;i&lt;/sub&gt;&lt;/em&gt;中。&lt;/p&gt;
-
-            &lt;p&gt;然后总是发送ack_write(wsn)给p&lt;sub&gt;w&lt;/sub&gt;。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;cost&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;一次read或者write，会产生2 × n 条message。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;注意：该实现假定process之间能互通，构成完全图，并且process之间channel时reliable&lt;/strong&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果write process 挂了：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;如果p&lt;sub&gt;w&lt;/sub&gt;当没在写时挂掉，没影响，别的进程能读到最近写的值。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;如果p&lt;sub&gt;w&lt;/sub&gt;在执行写操作时挂掉，可能部分process能读到新值，部分process读到老值。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果read process挂掉：对其他process没影响。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>
