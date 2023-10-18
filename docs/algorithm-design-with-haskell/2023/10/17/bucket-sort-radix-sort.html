@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>桶排序和基数排序 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="桶排序和基数排序" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<meta property="og:description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<link rel="canonical" href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/17/bucket-sort-radix-sort.html" />
+<meta property="og:url" content="https://defun621.github.io/algorithm-design-with-haskell/2023/10/17/bucket-sort-radix-sort.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-17T21:24:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="桶排序和基数排序" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-17T21:24:08-07:00","datePublished":"2023-10-17T21:24:08-07:00","description":"教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52","headline":"桶排序和基数排序","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/algorithm-design-with-haskell/2023/10/17/bucket-sort-radix-sort.html"},"url":"https://defun621.github.io/algorithm-design-with-haskell/2023/10/17/bucket-sort-radix-sort.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">桶排序和基数排序</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-17T21:24:08-07:00" itemprop="datePublished">Oct 17, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52">https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</a></p>
+
+<ul>
+  <li>
+    <p><strong>discriminator</strong>：一个从元素中“抽取”特征的函数，抽出来的特征可以用来排序。</p>
+
+    <ul>
+      <li>
+        <p>例如：</p>
+
+        <ul>
+          <li>十进制k位数可以有k个discriminator，把每一个位的digit都提取出来</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>有了一个discriminator list之后，可以判断两个参数是否有序：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">ordered</span><span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span><span class="o">](</span><span class="n">fs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">B</span><span class="o">])(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)(</span><span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="n">fs</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="kc">true</span>
+      <span class="k">case</span> <span class="n">d</span> <span class="o">::</span> <span class="n">ds</span> <span class="k">=&gt;</span> 
+          <span class="k">val</span> <span class="nv">dx</span> <span class="k">=</span> <span class="nf">d</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
+          <span class="k">val</span> <span class="nv">dy</span> <span class="k">=</span> <span class="nf">d</span><span class="o">(</span><span class="n">y</span><span class="o">)</span>
+          <span class="k">if</span> <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="n">dx</span><span class="o">,</span> <span class="n">dy</span><span class="o">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="n">then</span> <span class="kc">true</span>
+          <span class="k">else</span> <span class="k">if</span> <span class="nv">ord</span><span class="o">.</span><span class="py">compare</span><span class="o">(</span><span class="n">dx</span><span class="o">,</span> <span class="n">dy</span><span class="o">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span> <span class="nf">ordered</span><span class="o">(</span><span class="n">ds</span><span class="o">)(</span><span class="n">x</span><span class="o">)(</span><span class="n">y</span><span class="o">)</span>
+          <span class="k">else</span> <span class="kc">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>实现桶排序要用到数据结构是rose tree。可以这样定义：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">enum</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span><span class="k">:</span>
+      <span class="kt">case</span> <span class="kt">Leaf</span><span class="o">(</span><span class="kt">a:</span> <span class="kt">A</span><span class="o">)</span>
+      <span class="kt">case</span> <span class="kt">Node</span><span class="o">(</span><span class="kt">children:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]])</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>给定一系列discriminator和数组，我们用以下方法构造rose tree</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">mkTree</span><span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span><span class="o">](</span><span class="n">fs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">B</span><span class="o">])(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">B</span><span class="o">],</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Enum</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="n">fs</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">xs</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">d</span> <span class="o">::</span> <span class="n">ds</span> <span class="k">=&gt;</span> 
+          <span class="k">val</span> <span class="nv">internal</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="n">l</span> <span class="k">=&gt;</span> <span class="nv">l</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">a</span> <span class="k">=&gt;</span> <span class="nf">mkTree</span><span class="o">(</span><span class="n">ds</span><span class="o">)(</span><span class="n">a</span><span class="o">))</span>
+          <span class="nc">Node</span><span class="o">(</span><span class="nf">ptn</span><span class="o">(</span><span class="n">d</span><span class="o">)(</span><span class="n">xs</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">internal</span><span class="o">))</span>
+</code></pre></div>    </div>
+
+    <p>其中Enum是scalaz里的一个typeclass，有succ和pred。在Scala中还有min和max。</p>
+  </li>
+  <li>
+    <p>如何定义ptn函数，按照discriminator d把list分割成buckets？</p>
+
+    <p>一个最简单的定义就是：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">ptn</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">d</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">using</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">B</span><span class="o">],</span> <span class="n">e</span><span class="k">:</span> <span class="kt">Enum</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> 
+      <span class="k">val</span> <span class="nv">rng</span> <span class="k">=</span> <span class="nv">e</span><span class="o">.</span><span class="py">min</span> <span class="o">|-&gt;</span> <span class="nv">e</span><span class="o">.</span><span class="py">max</span>
+      <span class="k">for</span> <span class="o">{</span>
+          <span class="n">m</span> <span class="k">&lt;-</span> <span class="n">rng</span>
+          <span class="n">sub</span> <span class="k">&lt;-</span> <span class="nv">xs</span><span class="o">.</span><span class="py">filter</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">d</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">==</span> <span class="n">m</span><span class="o">)</span>
+      <span class="o">}</span> <span class="k">yield</span> <span class="n">sub</span>
+</code></pre></div>    </div>
+
+    <p>这个定义很不效率，一方面e.min 到e.max 的范围可能十分巨大，另一方面对于每个m都要重复遍历一次rng。如何优化？</p>
+
+    <p>可以先把b的typecless 收小，使它变成Ix。（在scala貌似只有Int)。</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">ptn</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">d</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> 
+      <span class="k">val</span> <span class="nv">zipped</span> <span class="k">=</span> <span class="nv">xs</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">d</span><span class="o">).</span><span class="py">zip</span><span class="o">(</span><span class="n">xs</span><span class="o">)</span>
+      <span class="nv">zip</span><span class="o">.</span><span class="py">groupMap</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">_1</span><span class="o">)(</span><span class="nv">_</span><span class="o">.</span><span class="py">_2</span><span class="o">).</span><span class="py">values</span><span class="o">.</span><span class="py">toList</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>有了rose tree之后我们需要把它flatten，按照我们之前<code class="language-plaintext highlighter-rouge">sort = flatten . mkTree</code>的思路</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">flatten</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">children</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nv">children</span><span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="n">flatten</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>最后我们可以给出桶排序的定义：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">bucketSort</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">Int</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">Int</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">xs</span> <span class="k">=&gt;</span> <span class="nf">flatten</span><span class="o">(</span><span class="nf">mkTree</span><span class="o">(</span><span class="n">ds</span><span class="o">)(</span><span class="n">xs</span><span class="o">))</span>
+</code></pre></div>    </div>
+
+    <p>尝试消去中间结果：</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">bsort</span> <span class="p">(</span><span class="n">d</span><span class="o">:</span><span class="n">ds</span><span class="p">)</span> <span class="n">xs</span>
+  <span class="o">=</span> <span class="n">flatten</span> <span class="p">(</span><span class="n">mkTree</span> <span class="p">(</span><span class="n">d</span><span class="o">:</span><span class="n">ds</span><span class="p">)</span> <span class="n">xs</span><span class="p">)</span>
+  <span class="o">=</span> <span class="n">flatten</span> <span class="p">(</span><span class="kt">Node</span><span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">mkTree</span> <span class="n">ds</span><span class="p">)</span> <span class="p">(</span><span class="n">ptn</span> <span class="n">d</span> <span class="n">xs</span><span class="p">)))</span>
+  <span class="o">=</span> <span class="n">concatMap</span> <span class="n">flatten</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">mkTree</span> <span class="n">ds</span><span class="p">)</span> <span class="p">(</span><span class="n">ptn</span> <span class="n">d</span> <span class="n">xs</span><span class="p">))</span>
+  <span class="o">=</span> <span class="n">concatMap</span> <span class="p">(</span><span class="n">flatten</span> <span class="o">.</span> <span class="n">mkTree</span> <span class="n">ds</span><span class="p">)</span> <span class="p">(</span><span class="n">ptn</span> <span class="n">d</span> <span class="n">xs</span><span class="p">)</span>      <span class="c1">-- concatMap f . map g = concatMap (f.g)</span>
+  <span class="o">=</span> <span class="n">concatMap</span> <span class="p">(</span><span class="n">bsort</span> <span class="n">ds</span><span class="p">)</span> <span class="p">(</span><span class="n">ptn</span> <span class="n">d</span> <span class="n">xs</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>所以bucketSort又可以定义为：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">bucketSort</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">Int</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">Int</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">xs</span> <span class="k">=&gt;</span> <span class="n">ds</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="n">xs</span>
+      <span class="k">case</span> <span class="n">d</span> <span class="o">::</span> <span class="n">ds</span> <span class="k">=&gt;</span> <span class="nf">ptn</span><span class="o">(</span><span class="n">d</span><span class="o">)(</span><span class="n">xs</span><span class="o">).</span><span class="py">flatMap</span><span class="o">(</span><span class="nf">bucketSort</span><span class="o">(</span><span class="n">ds</span><span class="o">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>基数排序</p>
+
+    <p>由于<code class="language-plaintext highlighter-rouge">map (bsort ds) (ptn d xs) = ptn d (bsort ds xs)</code></p>
+
+    <p>所以bsort的最后一步<code class="language-plaintext highlighter-rouge">concatMap (bsort ds) (ptn d xs)</code>还可以进一步化为：<code class="language-plaintext highlighter-rouge">concat (ptn d (bsort ds xs))</code></p>
+
+    <p>这就是基数排序的定义：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">radixSort</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">Int</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span> <span class="k">=&gt;</span> <span class="kt">Int</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">xs</span> <span class="k">=&gt;</span> <span class="n">ds</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="n">xs</span>
+      <span class="k">case</span> <span class="n">d</span> <span class="o">::</span> <span class="n">ds</span> <span class="k">=&gt;</span> <span class="nf">ptn</span><span class="o">(</span><span class="n">d</span><span class="o">)(</span><span class="nf">radixSort</span><span class="o">(</span><span class="n">ds</span><span class="o">)(</span><span class="n">xs</span><span class="o">)).</span><span class="py">flatten</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>这章中，所有的算法都由一个基础思想<code class="language-plaintext highlighter-rouge">sort = flatten . mkTree</code>变化而得。这也是divide and conquer算法思想的体现。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/10/17/bucket-sort-radix-sort.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
