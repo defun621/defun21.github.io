@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  用scd-broadcast实现一些read/write object
-date:   2023-10-16 14:45:00 -0700
+date:   2023-10-18 14:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
 
