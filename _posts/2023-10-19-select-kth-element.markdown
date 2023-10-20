@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  分治思想：select第k大元素
+title:  select第k大元素
 date:   2023-10-19 21:59:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
@@ -150,7 +150,7 @@ categories: [Algorithm-design-with-Haskell]
 
     所以T(n) = &Theta;(n).
 
-    
+
 
 ---
 本文章属于以下分类：
