@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>用SWMR snapshot objects实现scd-broadcast | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="用SWMR snapshot objects实现scd-broadcast" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-25T22:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="用SWMR snapshot objects实现scd-broadcast" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-25T22:45:00-07:00","datePublished":"2023-10-25T22:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"用SWMR snapshot objects实现scd-broadcast","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">用SWMR snapshot objects实现scd-broadcast</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-25T22:45:00-07:00" itemprop="datePublished">Oct 25, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p><strong>实现简述</strong></p>
+
+    <ul>
+      <li>
+        <p>shared object</p>
+
+        <ul>
+          <li>
+            <p>SWMR snapshot object：SENT[1..n]。</p>
+
+            <p>初始为[∅,…,∅]。SENT[i]表示p<sub>i</sub> scd广播出去的message。</p>
+          </li>
+          <li>
+            <p>SWMR snapshot object: SETS_SEQ[1,…,n].</p>
+
+            <p>初始为[ε,…,ε]。SETS_SEQ[i]表示p<sub>i</sub> scd-deliver过的消息集合的sequence。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>本地变量</p>
+
+        <ul>
+          <li>
+            <p>sent<sub>i</sub>。SENT在p<sub>i</sub>的本地copy</p>
+          </li>
+          <li>
+            <p>sets_seq<sub>i</sub>。SETS_SEQ在p<sub>i</sub>的本地copy</p>
+          </li>
+          <li>
+            <p>to_deliver<sub>i</sub>。用来存放p<sub>i</sub>要scd-deliver的下个消息集合。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>算法简述</p>
+
+        <ul>
+          <li>
+            <p>每个p<sub>i</sub>都有一个后台线程T一直循环执行方法progress。保证每条message 都会被scd-deliver。</p>
+          </li>
+          <li>
+            <p>p<sub>i</sub>调用scd-broadcast(m):</p>
+
+            <p>把m加入到本地sent<sub>i</sub>中。p<sub>i</sub>往SENT[i]里写sent<sub>i</sub>。</p>
+
+            <p>然后调用progress方法。</p>
+          </li>
+          <li>
+            <p>progress方法：</p>
+
+            <p>因为scd-broadcast和线程T都会调用progress方法、access本地变量，所以progress第一步就是调用互斥锁。</p>
+
+            <p>调用catchup方法。目的是为了让p<sub>i</sub>可以scd-deliver那些已经被scd-broadcast但还没本地scd-deliver的消息。</p>
+
+            <p>等从catchup方法退出之后，开始scd-deliver那些别的process scd-broadcast的消息。</p>
+
+            <p>p<sub>i</sub>首先从SENT读snapshot出来，然后存到sent<sub>i</sub>。</p>
+
+            <p>然后计算要scd-deliver的消息集合，放入to_deliver<sub>i</sub>.
+  to_deliver<sub>i</sub> ← ∪<sub>1 ≤ j ≤ n</sub>sent<sub>i</sub>[j] \ member(sets_seq<sub>i</sub>[i])。</p>
+
+            <p>如果to_deliver<sub>i</sub>不为空，说明有消息要deliver。</p>
+
+            <p>这时，把to_deliver<sub>i</sub>加入到sets_seq<sub>i</sub>[i]中，接着往SETS_SEQ里写sets_seq<sub>i</sub>[i]。写完后scd-broadcast to_deliver<sub>i</sub>.</p>
+
+            <p>最后退出互斥锁。</p>
+          </li>
+          <li>
+            <p>catchup方法：</p>
+
+            <p>p<sub>i</sub>先从SETS_SEQ里读一个snapshot，存入sets_seq<sub>i</sub>.</p>
+
+            <p>然后对每个包含了没有被p<sub>i</sub> scd-deliver过的消息的message set，如果有这样的process p<sub>j</sub> , 即
+  ∃ j, set: set = sets_seq<sub>i</sub>[j].head: set ⊈ member(sets_seq<sub>i</sub>[i])，</p>
+
+            <p>p<sub>i</sub>把set里没发过的消息（不在member(sets_seq<sub>i</sub>[i])都加到to_deliver<sub>i</sub>里。</p>
+
+            <p>把to_deliver<sub>i</sub>加入到sets_seq<sub>i</sub>[i]中，接着往SETS_SEQ里写sets_seq<sub>i</sub>[i]。写完后scd-broadcast to_deliver<sub>i</sub>.</p>
+
+            <p>结束循环后退出catchup方法。</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>可以证明上述实现可以保证</p>
+
+    <ul>
+      <li>validity</li>
+      <li>integrity</li>
+      <li>termination-1 和termination-2</li>
+      <li>MS-ordering</li>
+    </ul>
+
+    <p>即，保证了scd broadcast的性质。（证明略，看书）</p>
+  </li>
+  <li>
+    <p>那既然scd-broadcast可以实现snapshot，snapshot也可以实现scd broadcast，也就是说<strong>scd broadcast 和 snapshot在computability power上是等价的</strong></p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
