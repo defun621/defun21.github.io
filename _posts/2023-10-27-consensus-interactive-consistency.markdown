@@ -49,9 +49,9 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
     不妨令V是可以被proprose的值的集合。
 
-    如果|V|=2，那么这个consensus是binary的，通常认为V = {0, 1}。
+    如果\|V\|=2，那么这个consensus是binary的，通常认为V = {0, 1}。
 
-    如果|V| &gt; 2，则这个consensus是multivalued。V可以是一个有限集合也可以是一个无限的集合。
+    如果\|V\| &gt; 2，则这个consensus是multivalued。V可以是一个有限集合也可以是一个无限的集合。
 
 - interactive consistency （也叫vector consensus）
 
