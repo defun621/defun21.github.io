@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>consensus和interactive consistency定义 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="consensus和interactive consistency定义" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-27T21:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="consensus和interactive consistency定义" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-27T21:45:00-07:00","datePublished":"2023-10-27T21:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"consensus和interactive consistency定义","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">consensus和interactive consistency定义</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-27T21:45:00-07:00" itemprop="datePublished">Oct 27, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>consensus问题在process crash failure模型里可以定义为一个distributed agreement abstraction</p>
+
+    <ul>
+      <li>
+        <p>propose()操作</p>
+
+        <p>如果一个process p<sub>i</sub> 调用了propose(v<sub>i</sub>)，最后propose(v<sub>i</sub>)返回了w<sub>i</sub>。</p>
+
+        <p>我们说p<sub>i</sub> propose了v<sub>i</sub>，p<sub>i</sub> decide了w<sub>i</sub>。</p>
+      </li>
+      <li>
+        <p>性质：</p>
+
+        <ul>
+          <li>
+            <p><strong>CC-validity</strong>：一个被decide的值肯定是一个被某个process proposed的值</p>
+          </li>
+          <li>
+            <p><strong>CC-agreement</strong>：不存在两个decide出不同值的process。</p>
+          </li>
+          <li>
+            <p><strong>CC-termination</strong>：每个正确的process都能decide 一个值出来。</p>
+          </li>
+        </ul>
+
+        <p>其中CC表示在crash failure model下的consensus。</p>
+
+        <p>CC-validity和CC-agreement保证了safety。</p>
+
+        <p>CC-validity说明decided value是从proposed value中选出的。</p>
+
+        <p>CC-agreement保证了最后会只有一个值。</p>
+
+        <p>CC-termination体现了liveness。没挂掉的process上的propose操作总会terminate。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>uniform consensus</p>
+
+    <p>通过CC-agreement和CC-termination保证了如果一个process了一个值，再crash掉，他不会产生不同的值。</p>
+  </li>
+  <li>
+    <p>non-uniform consensus</p>
+
+    <p>是比uniform consensus更弱的模型。</p>
+
+    <p>它有性质：<strong>Non-uniform CC-agreement</strong>：不存在两个没挂的process会decide出不同的结果。</p>
+
+    <p>也就是说，在non-uniform consensus里允许process挂掉并decide出和别的process不同的值。</p>
+  </li>
+  <li>
+    <p><strong>binary consensus 和 multivalued consensus</strong></p>
+
+    <p>不妨令V是可以被proprose的值的集合。</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>如果</td>
+          <td>V</td>
+          <td>=2，那么这个consensus是binary的，通常认为V = {0, 1}。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>如果</td>
+          <td>V</td>
+          <td>&gt; 2，则这个consensus是multivalued。V可以是一个有限集合也可以是一个无限的集合。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>interactive consistency （也叫vector consensus）</p>
+
+    <p>和consensus不同，interactive consistency不是只得到一个decided value，而是得到一个decided vector。所以叫做vector consensus。</p>
+
+    <ul>
+      <li>
+        <p><strong>性质</strong>：</p>
+
+        <ul>
+          <li>
+            <p><strong>ICC-validity</strong>：</p>
+
+            <p>不妨令D<sub>i</sub>[1..n]是由p<sub>i</sub> decide出的vector。</p>
+
+            <p>则有 ∀ j ∈ [1..n]: D<sub>i</sub>[j] ∈ {v<sub>j</sub>, ⊥}，</p>
+
+            <p>其中v<sub>j</sub>是由p<sub>j</sub>propose的值。</p>
+
+            <p>如果p<sub>j</sub>没挂，则D<sub>i</sub>[j] = v<sub>j</sub>。</p>
+          </li>
+          <li>
+            <p><strong>ICC-agreement</strong>：不存在能decide出不同值的两个process</p>
+          </li>
+          <li>
+            <p><strong>ICC-termination</strong>： 每个没有挂掉正常运行的process都可以最后decide出同一个vector。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>值得注意的是：</p>
+
+        <p>如果D<sub>i</sub>[j] = ⊥，则说明p<sub>i</sub>知道p<sub>j</sub>挂了。</p>
+
+        <p>反之，如果D<sub>i</sub>[j] ≠ ⊥，则说明p<sub>i</sub>并不能下判断p<sub>j</sub>是否正常运行。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>由ICC 可以得到CC，而从CC不能得到ICC，所以ICC是在CSMP<sub>n,t</sub>[∅]中比CC更强的抽象。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

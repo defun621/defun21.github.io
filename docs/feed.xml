@@ -1,4 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-25T23:25:04-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">用SWMR snapshot objects实现scd-broadcast</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html" rel="alternate" type="text/html" title="用SWMR snapshot objects实现scd-broadcast" /><published>2023-10-25T22:45:00-07:00</published><updated>2023-10-25T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-27T22:29:49-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">consensus和interactive consistency定义</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html" rel="alternate" type="text/html" title="consensus和interactive consistency定义" /><published>2023-10-27T21:45:00-07:00</published><updated>2023-10-27T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;consensus问题在process crash failure模型里可以定义为一个distributed agreement abstraction&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;propose()操作&lt;/p&gt;
+
+        &lt;p&gt;如果一个process p&lt;sub&gt;i&lt;/sub&gt; 调用了propose(v&lt;sub&gt;i&lt;/sub&gt;)，最后propose(v&lt;sub&gt;i&lt;/sub&gt;)返回了w&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;我们说p&lt;sub&gt;i&lt;/sub&gt; propose了v&lt;sub&gt;i&lt;/sub&gt;，p&lt;sub&gt;i&lt;/sub&gt; decide了w&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;性质：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;CC-validity&lt;/strong&gt;：一个被decide的值肯定是一个被某个process proposed的值&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;CC-agreement&lt;/strong&gt;：不存在两个decide出不同值的process。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;CC-termination&lt;/strong&gt;：每个正确的process都能decide 一个值出来。&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;其中CC表示在crash failure model下的consensus。&lt;/p&gt;
+
+        &lt;p&gt;CC-validity和CC-agreement保证了safety。&lt;/p&gt;
+
+        &lt;p&gt;CC-validity说明decided value是从proposed value中选出的。&lt;/p&gt;
+
+        &lt;p&gt;CC-agreement保证了最后会只有一个值。&lt;/p&gt;
+
+        &lt;p&gt;CC-termination体现了liveness。没挂掉的process上的propose操作总会terminate。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;uniform consensus&lt;/p&gt;
+
+    &lt;p&gt;通过CC-agreement和CC-termination保证了如果一个process了一个值，再crash掉，他不会产生不同的值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;non-uniform consensus&lt;/p&gt;
+
+    &lt;p&gt;是比uniform consensus更弱的模型。&lt;/p&gt;
+
+    &lt;p&gt;它有性质：&lt;strong&gt;Non-uniform CC-agreement&lt;/strong&gt;：不存在两个没挂的process会decide出不同的结果。&lt;/p&gt;
+
+    &lt;p&gt;也就是说，在non-uniform consensus里允许process挂掉并decide出和别的process不同的值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;binary consensus 和 multivalued consensus&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;不妨令V是可以被proprose的值的集合。&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;如果&lt;/td&gt;
+          &lt;td&gt;V&lt;/td&gt;
+          &lt;td&gt;=2，那么这个consensus是binary的，通常认为V = {0, 1}。&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;如果&lt;/td&gt;
+          &lt;td&gt;V&lt;/td&gt;
+          &lt;td&gt;&amp;gt; 2，则这个consensus是multivalued。V可以是一个有限集合也可以是一个无限的集合。&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;interactive consistency （也叫vector consensus）&lt;/p&gt;
+
+    &lt;p&gt;和consensus不同，interactive consistency不是只得到一个decided value，而是得到一个decided vector。所以叫做vector consensus。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;strong&gt;性质&lt;/strong&gt;：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;ICC-validity&lt;/strong&gt;：&lt;/p&gt;
+
+            &lt;p&gt;不妨令D&lt;sub&gt;i&lt;/sub&gt;[1..n]是由p&lt;sub&gt;i&lt;/sub&gt; decide出的vector。&lt;/p&gt;
+
+            &lt;p&gt;则有 ∀ j ∈ [1..n]: D&lt;sub&gt;i&lt;/sub&gt;[j] ∈ {v&lt;sub&gt;j&lt;/sub&gt;, ⊥}，&lt;/p&gt;
+
+            &lt;p&gt;其中v&lt;sub&gt;j&lt;/sub&gt;是由p&lt;sub&gt;j&lt;/sub&gt;propose的值。&lt;/p&gt;
+
+            &lt;p&gt;如果p&lt;sub&gt;j&lt;/sub&gt;没挂，则D&lt;sub&gt;i&lt;/sub&gt;[j] = v&lt;sub&gt;j&lt;/sub&gt;。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;ICC-agreement&lt;/strong&gt;：不存在能decide出不同值的两个process&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;&lt;strong&gt;ICC-termination&lt;/strong&gt;： 每个没有挂掉正常运行的process都可以最后decide出同一个vector。&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;值得注意的是：&lt;/p&gt;
+
+        &lt;p&gt;如果D&lt;sub&gt;i&lt;/sub&gt;[j] = ⊥，则说明p&lt;sub&gt;i&lt;/sub&gt;知道p&lt;sub&gt;j&lt;/sub&gt;挂了。&lt;/p&gt;
+
+        &lt;p&gt;反之，如果D&lt;sub&gt;i&lt;/sub&gt;[j] ≠ ⊥，则说明p&lt;sub&gt;i&lt;/sub&gt;并不能下判断p&lt;sub&gt;j&lt;/sub&gt;是否正常运行。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;由ICC 可以得到CC，而从CC不能得到ICC，所以ICC是在CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中比CC更强的抽象。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">用SWMR snapshot objects实现scd-broadcast</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html" rel="alternate" type="text/html" title="用SWMR snapshot objects实现scd-broadcast" /><published>2023-10-25T22:45:00-07:00</published><updated>2023-10-25T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/25/from-snapshot-to-scd.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1325,109 +1453,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">atomic寄存器与urb广播</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/13/atomic-reg-and-urb.html" rel="alternate" type="text/html" title="atomic寄存器与urb广播" /><published>2023-10-13T14:45:00-07:00</published><updated>2023-10-13T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/13/atomic-reg-and-urb</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/13/atomic-reg-and-urb.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果D是一个failure detector class，并且在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[D]里可以构造出atomic register，不妨令A是该构造atomic register的算法，&lt;/p&gt;
-
-    &lt;p&gt;则总可以用A构造出算法，模拟出Σ,使得每个process p&lt;sub&gt;i&lt;/sub&gt;得到simga&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;τ&lt;/sup&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;结论：只要有failure detector class Σ，我们就可以在一个任意process可能crash的异步系统里构造出atomic寄存器&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;对比failure detector class Θ 和 Σ&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;只要有Θ，在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[-FC, t ≥ n/2]里就可以构造出URB 广播&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;只要有Σ，就可以在CAMP里构造出atomic 寄存器&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;并且两者的实现代码相同，那是否两者的computation power也一样呢？&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;&lt;strong&gt;结论：在任何t ≥ n/2的系统里，Σ严格地强于Θ。即Θ可以在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Σ]里被构造，而Σ无法在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Θ]里被构造出来&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;推理简述：&lt;/p&gt;
-
-        &lt;p&gt;回忆两者的properties，它们的liveness都是一样的，区别在于&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;Σ 上要求 &lt;strong&gt;intersection&lt;/strong&gt;: 在任何时刻，任意两个process读到的sigma值总有交集 （可以prevent cluster partitioning）&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Θ 上要求&lt;strong&gt;correctness&lt;/strong&gt;：在任何时间，任何trusted&lt;sub&gt;i&lt;/sub&gt;至少包含一个正常运行的process。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;当t &amp;lt; n/2时，从Σ&lt;strong&gt;liveness&lt;/strong&gt;和&lt;strong&gt;intersection&lt;/strong&gt;结合起来看，可以得出Θ的&lt;strong&gt;correctness&lt;/strong&gt;。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;当t &amp;lt; n/2时，却可以通过反证法得到Σ无法在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[Θ]里被构造出来。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可以用atomic寄存器构造出URB广播&lt;/p&gt;
-
-    &lt;p&gt;构造算法简述&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;算法由一组REG[i..n]组成，每个REG[i]都是一个SWMR的atomic register。每个REG[i]都允许p&lt;sub&gt;i&lt;/sub&gt;写，允许所有process读。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;每个p&lt;sub&gt;i&lt;/sub&gt;的本地变量有：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;sent&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;reg&lt;sub&gt;i&lt;/sub&gt;[1..n]&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;这些local variable里都放着一串message&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;urb-broadcast&lt;/strong&gt;:&lt;/p&gt;
-
-        &lt;p&gt;首先把msg concatenate到sent&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;然后p&lt;sub&gt;i&lt;/sub&gt;调用REG[i].write(sent&lt;sub&gt;i&lt;/sub&gt;).&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;urb-deliver&lt;/strong&gt;:&lt;/p&gt;
-
-        &lt;p&gt;urb-deliver由一个background task实现：&lt;/p&gt;
-
-        &lt;p&gt;这个task是一个while true loop：&lt;/p&gt;
-
-        &lt;p&gt;在loop里面p&lt;sub&gt;i&lt;/sub&gt;会从每个REG[x]里读取msg，然后放到本地reg&lt;sub&gt;i&lt;sub&gt;[x]里。对于reg&lt;sub&gt;i&lt;/sub&gt;[x]里每条没有被urb-deliver的msg，去urb-deliver该msg。&lt;/sub&gt;&lt;/sub&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;从上面结论中我们可以看到，无论t的值，Θ都可以在CAMP[Σ]或者CAMP[-FC, Σ]里被构造，而反过来不行。&lt;/p&gt;
-
-    &lt;p&gt;同时Σ又是满足可以被加到CAMP[∅]中后能无论t的值都能实现atomic寄存器的the weakest failure detector class。&lt;/p&gt;
-
-    &lt;p&gt;这就意味着&lt;strong&gt;从failure detector class的角度来看，atomic寄存器strictly stronger than URB广播&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>
