@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-30T23:41:14-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">CSMP[∅]中的consensus algorithm</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" rel="alternate" type="text/html" title="CSMP[∅]中的consensus algorithm" /><published>2023-10-30T22:45:00-07:00</published><updated>2023-10-30T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-30T23:45:22-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">CSMP[∅]中的consensus algorithm</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" rel="alternate" type="text/html" title="CSMP[∅]中的consensus algorithm" /><published>2023-10-30T22:45:00-07:00</published><updated>2023-10-30T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -114,6 +114,9 @@
         &lt;p&gt;可以证明上述算法实现满足ICC-validity、ICC-termination和ICC-agreement。&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以证明 t + 1是在CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里的consensus算法的最低轮数。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 

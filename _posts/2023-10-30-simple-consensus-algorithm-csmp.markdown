@@ -100,6 +100,9 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
     - 可以证明上述算法实现满足ICC-validity、ICC-termination和ICC-agreement。
 
 
+- 可以证明 t + 1是在CSMP<sub>n,t</sub>[&empty;]里的consensus算法的最低轮数。
+
+
 
 
 
