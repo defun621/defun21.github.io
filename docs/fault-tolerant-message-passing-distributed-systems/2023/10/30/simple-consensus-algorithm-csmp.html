@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>CSMP[∅]中的consensus algorithm | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="CSMP[∅]中的consensus algorithm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-30T22:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="CSMP[∅]中的consensus algorithm" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-30T22:45:00-07:00","datePublished":"2023-10-30T22:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"CSMP[∅]中的consensus algorithm","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">CSMP[∅]中的consensus algorithm</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-30T22:45:00-07:00" itemprop="datePublished">Oct 30, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>CSMP<sub>n,t</sub>[∅]中consensus 算法实现一：</p>
+
+    <ul>
+      <li>
+        <p>思想：因为最多t个process会挂，所以任取一个大小为t+1的process集合，集合里总能找到一个process可以decide出一个value。</p>
+      </li>
+      <li>
+        <p>propose实现简述：</p>
+
+        <p>p<sub>i</sub>初始化本地变量est<sub>i</sub>为v<sub>i</sub>。</p>
+
+        <p>然后所有process 同步执行t + 1轮如下操作，每一轮中有一个process作为coordinator。</p>
+
+        <p>不妨令第r轮的coordinator是p<sub>r</sub>。</p>
+
+        <p>如果在第r轮中，如果i == r，即自身是coordinator的话， 广播消息 EST(est<sub>i</sub>)。</p>
+
+        <p>如果在第r轮中，拿到了从coordinator发过来的EST消息，则把消息里的值赋予est<sub>i</sub>。</p>
+
+        <p>t + 1轮结束之后，p<sub>i</sub>返回本地的est<sub>i</sub>为decide的值。</p>
+      </li>
+      <li>
+        <p>从代码中我们可以直接看出上述实现满足CC-validity 和CC-termination。</p>
+
+        <p>因为执行了t + 1轮， 所以总有一轮里面的coordinator是正常的process。</p>
+
+        <p>broadcast后，没挂的process都会update 由该coordinator发出来的值。</p>
+
+        <p>所以能得到CC-agreement。</p>
+      </li>
+      <li>
+        <p>该实现是不公平的：</p>
+
+        <p>因为v<sub>j</sub>，其中j ∈ {t + 1, …, n}，根本没有机会参与到决策中。</p>
+
+        <p>可以在所有轮之前加一轮随机shuffle process的propose value，这可以使得该算法公平。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>CSMP<sub>n,t</sub>[∅]中consensus 算法实现二：</p>
+
+    <ul>
+      <li>
+        <p>思想：</p>
+
+        <p>每个process存下每轮看到的value。在最后一轮之后，根据某个rule来返回最后decide了的value。</p>
+      </li>
+      <li>
+        <p>propose实现简述：</p>
+
+        <p>p<sub>i</sub>有两个本地变量：est<sub>i</sub>和prev_est<sub>i</sub>。</p>
+
+        <p>est<sub>i</sub>初始化为v<sub>i</sub>. prev_est<sub>i</sub>初始化为⊥。</p>
+
+        <p>算法一共t + 1轮，在每一轮中：</p>
+
+        <p>如果p<sub>i</sub>在上一轮中看到了更小的值（即est<sub>i</sub> ≠ prev_est<sub>i</sub>)，p<sub>i</sub>广播 EST(est<sub>i</sub>)。</p>
+
+        <p>不妨令recval<sub>i</sub>是p<sub>i</sub>在某轮中收到的所有values组成的集合。</p>
+
+        <p>先更新prev_est<sub>i</sub>为est<sub>i</sub>。</p>
+
+        <p>然后更新est<sub>i</sub> 为 集合revcals<sub>i</sub> ∪ {est<sub>i</sub>} 中的最小值。</p>
+
+        <p>t + 1轮之后，返回est<sub>i</sub></p>
+      </li>
+      <li>
+        <p>可以得到，上述算法也满足CC-validity、CC-termination和CC-agreement。</p>
+      </li>
+      <li>
+        <p>该实现是公平的</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>基于实现二，我们可以得到CSMP<sub>n,t</sub>[∅]里vector consensus的算法</p>
+
+    <ul>
+      <li>
+        <p>propose实现简述：</p>
+
+        <p>p<sub>i</sub>有如下本地变量：</p>
+
+        <p>view<sub>i</sub>是一个array，其中view<sub>i</sub>[k]表示p<sub>i</sub>知道的p<sub>k</sub> propose的值。</p>
+
+        <p>也就是说如果view<sub>i</sub>[k] = ⊥，则表示p<sub>i</sub>还不知道p<sub>k</sub> propose的值。</p>
+
+        <p>如果view<sub>i</sub>[k] = v，表示p<sub>i</sub>已经知道p<sub>k</sub> propose了v。</p>
+
+        <p>算法中用两元组&lt;k, v&gt;表示p<sub>k</sub> propose了值v。</p>
+
+        <p>在某轮结束之后，本地变量new<sub>i</sub>表示p<sub>i</sub>在本轮新了解到的值。</p>
+
+        <p>一开始new<sub>i</sub>初始化为{&lt;i, v<sub>i</sub>&gt;}。</p>
+
+        <p>算法一共t + 1轮，每一轮总是先send，后receive，然后再计算：</p>
+
+        <p>发的时候，在每一轮中，如果new<sub>i</sub> 有值，则p<sub>i</sub>广播消息EST(new<sub>i</sub>)。</p>
+
+        <p>收的时候，把从p<sub>j</sub>那里收到的new<sub>j</sub>赋予recfrom<sub>i</sub>[j]，如果没有从p<sub>j</sub>那里收到EST消息，recfrom<sub>i</sub>[j]置为⊥。</p>
+
+        <p>计算时，对于每个有值的recfrom<sub>i</sub>[j]，对于该值集合中的每个二元组&lt;k, v&gt;，如果view<sub>i</sub>[k]是空，</p>
+
+        <p>则更新view<sub>i</sub>[k] ← v，并且更新new<sub>i</sub> ← new<sub>i</sub> ∪ {&lt;k, v&gt;}。</p>
+
+        <p>t + 1轮之后，返回view<sub>i</sub></p>
+      </li>
+      <li>
+        <p>可以证明上述算法实现满足ICC-validity、ICC-termination和ICC-agreement。</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

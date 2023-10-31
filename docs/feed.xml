@@ -1,4 +1,128 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-28T21:18:24-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">以插入排序为例看list上的贪婪算法抽象</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/28/greedy-insertion-sort.html" rel="alternate" type="text/html" title="以插入排序为例看list上的贪婪算法抽象" /><published>2023-10-28T18:54:08-07:00</published><updated>2023-10-28T18:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/28/greedy-insertion-sort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/28/greedy-insertion-sort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-10-30T23:41:14-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">CSMP[∅]中的consensus algorithm</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" rel="alternate" type="text/html" title="CSMP[∅]中的consensus algorithm" /><published>2023-10-30T22:45:00-07:00</published><updated>2023-10-30T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中consensus 算法实现一：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;思想：因为最多t个process会挂，所以任取一个大小为t+1的process集合，集合里总能找到一个process可以decide出一个value。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;propose实现简述：&lt;/p&gt;
+
+        &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;初始化本地变量est&lt;sub&gt;i&lt;/sub&gt;为v&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;然后所有process 同步执行t + 1轮如下操作，每一轮中有一个process作为coordinator。&lt;/p&gt;
+
+        &lt;p&gt;不妨令第r轮的coordinator是p&lt;sub&gt;r&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;如果在第r轮中，如果i == r，即自身是coordinator的话， 广播消息 EST(est&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
+
+        &lt;p&gt;如果在第r轮中，拿到了从coordinator发过来的EST消息，则把消息里的值赋予est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;t + 1轮结束之后，p&lt;sub&gt;i&lt;/sub&gt;返回本地的est&lt;sub&gt;i&lt;/sub&gt;为decide的值。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;从代码中我们可以直接看出上述实现满足CC-validity 和CC-termination。&lt;/p&gt;
+
+        &lt;p&gt;因为执行了t + 1轮， 所以总有一轮里面的coordinator是正常的process。&lt;/p&gt;
+
+        &lt;p&gt;broadcast后，没挂的process都会update 由该coordinator发出来的值。&lt;/p&gt;
+
+        &lt;p&gt;所以能得到CC-agreement。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;该实现是不公平的：&lt;/p&gt;
+
+        &lt;p&gt;因为v&lt;sub&gt;j&lt;/sub&gt;，其中j ∈ {t + 1, …, n}，根本没有机会参与到决策中。&lt;/p&gt;
+
+        &lt;p&gt;可以在所有轮之前加一轮随机shuffle process的propose value，这可以使得该算法公平。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中consensus 算法实现二：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;思想：&lt;/p&gt;
+
+        &lt;p&gt;每个process存下每轮看到的value。在最后一轮之后，根据某个rule来返回最后decide了的value。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;propose实现简述：&lt;/p&gt;
+
+        &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;有两个本地变量：est&lt;sub&gt;i&lt;/sub&gt;和prev_est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;est&lt;sub&gt;i&lt;/sub&gt;初始化为v&lt;sub&gt;i&lt;/sub&gt;. prev_est&lt;sub&gt;i&lt;/sub&gt;初始化为⊥。&lt;/p&gt;
+
+        &lt;p&gt;算法一共t + 1轮，在每一轮中：&lt;/p&gt;
+
+        &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt;在上一轮中看到了更小的值（即est&lt;sub&gt;i&lt;/sub&gt; ≠ prev_est&lt;sub&gt;i&lt;/sub&gt;)，p&lt;sub&gt;i&lt;/sub&gt;广播 EST(est&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
+
+        &lt;p&gt;不妨令recval&lt;sub&gt;i&lt;/sub&gt;是p&lt;sub&gt;i&lt;/sub&gt;在某轮中收到的所有values组成的集合。&lt;/p&gt;
+
+        &lt;p&gt;先更新prev_est&lt;sub&gt;i&lt;/sub&gt;为est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;然后更新est&lt;sub&gt;i&lt;/sub&gt; 为 集合revcals&lt;sub&gt;i&lt;/sub&gt; ∪ {est&lt;sub&gt;i&lt;/sub&gt;} 中的最小值。&lt;/p&gt;
+
+        &lt;p&gt;t + 1轮之后，返回est&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;可以得到，上述算法也满足CC-validity、CC-termination和CC-agreement。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;该实现是公平的&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于实现二，我们可以得到CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里vector consensus的算法&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;propose实现简述：&lt;/p&gt;
+
+        &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;有如下本地变量：&lt;/p&gt;
+
+        &lt;p&gt;view&lt;sub&gt;i&lt;/sub&gt;是一个array，其中view&lt;sub&gt;i&lt;/sub&gt;[k]表示p&lt;sub&gt;i&lt;/sub&gt;知道的p&lt;sub&gt;k&lt;/sub&gt; propose的值。&lt;/p&gt;
+
+        &lt;p&gt;也就是说如果view&lt;sub&gt;i&lt;/sub&gt;[k] = ⊥，则表示p&lt;sub&gt;i&lt;/sub&gt;还不知道p&lt;sub&gt;k&lt;/sub&gt; propose的值。&lt;/p&gt;
+
+        &lt;p&gt;如果view&lt;sub&gt;i&lt;/sub&gt;[k] = v，表示p&lt;sub&gt;i&lt;/sub&gt;已经知道p&lt;sub&gt;k&lt;/sub&gt; propose了v。&lt;/p&gt;
+
+        &lt;p&gt;算法中用两元组&amp;lt;k, v&amp;gt;表示p&lt;sub&gt;k&lt;/sub&gt; propose了值v。&lt;/p&gt;
+
+        &lt;p&gt;在某轮结束之后，本地变量new&lt;sub&gt;i&lt;/sub&gt;表示p&lt;sub&gt;i&lt;/sub&gt;在本轮新了解到的值。&lt;/p&gt;
+
+        &lt;p&gt;一开始new&lt;sub&gt;i&lt;/sub&gt;初始化为{&amp;lt;i, v&lt;sub&gt;i&lt;/sub&gt;&amp;gt;}。&lt;/p&gt;
+
+        &lt;p&gt;算法一共t + 1轮，每一轮总是先send，后receive，然后再计算：&lt;/p&gt;
+
+        &lt;p&gt;发的时候，在每一轮中，如果new&lt;sub&gt;i&lt;/sub&gt; 有值，则p&lt;sub&gt;i&lt;/sub&gt;广播消息EST(new&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
+
+        &lt;p&gt;收的时候，把从p&lt;sub&gt;j&lt;/sub&gt;那里收到的new&lt;sub&gt;j&lt;/sub&gt;赋予recfrom&lt;sub&gt;i&lt;/sub&gt;[j]，如果没有从p&lt;sub&gt;j&lt;/sub&gt;那里收到EST消息，recfrom&lt;sub&gt;i&lt;/sub&gt;[j]置为⊥。&lt;/p&gt;
+
+        &lt;p&gt;计算时，对于每个有值的recfrom&lt;sub&gt;i&lt;/sub&gt;[j]，对于该值集合中的每个二元组&amp;lt;k, v&amp;gt;，如果view&lt;sub&gt;i&lt;/sub&gt;[k]是空，&lt;/p&gt;
+
+        &lt;p&gt;则更新view&lt;sub&gt;i&lt;/sub&gt;[k] ← v，并且更新new&lt;sub&gt;i&lt;/sub&gt; ← new&lt;sub&gt;i&lt;/sub&gt; ∪ {&amp;lt;k, v&amp;gt;}。&lt;/p&gt;
+
+        &lt;p&gt;t + 1轮之后，返回view&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;可以证明上述算法实现满足ICC-validity、ICC-termination和ICC-agreement。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">以插入排序为例看list上的贪婪算法抽象</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/28/greedy-insertion-sort.html" rel="alternate" type="text/html" title="以插入排序为例看list上的贪婪算法抽象" /><published>2023-10-28T18:54:08-07:00</published><updated>2023-10-28T18:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/28/greedy-insertion-sort</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/28/greedy-insertion-sort.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1254,239 +1378,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">CAMP[t &amp;lt; n/2]上的scd广播（set-constrained delivery broadcast)</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html" rel="alternate" type="text/html" title="CAMP[t &amp;lt; n/2]上的scd广播（set-constrained delivery broadcast)" /><published>2023-10-16T14:45:00-07:00</published><updated>2023-10-16T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/16/scd-broadcast.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;scd-broadcast和scd-deliver&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;scd-broadcast 以一条message为参数，进行广播&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;scd-deliver操作返回&lt;strong&gt;一个message 集合&lt;/strong&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;scd-broadcast性质&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;validity：如果一个process scd-deliver的message集合里包括m，则m是由某个process scd-broadcast的。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;integrity：一条message m最多被每个process scd-deliver一次。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;MS-ordering：&lt;/p&gt;
-
-        &lt;p&gt;不妨令p&lt;sub&gt;i&lt;/sub&gt;先scd-deliver了集合ms&lt;sub&gt;i&lt;/sub&gt;，再scd-deliver了集合ms’&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;对于任意一对message m ∈ ms&lt;sub&gt;i&lt;/sub&gt;, m’ ∈ ms’&lt;sub&gt;i&lt;/sub&gt;，&lt;/p&gt;
-
-        &lt;p&gt;不存在这样的p&lt;sub&gt;j&lt;/sub&gt;会先scd-deliver包含m’的集合ms’&lt;sub&gt;j&lt;/sub&gt;，再scd-deliver包含m的集合ms&lt;sub&gt;j&lt;/sub&gt;。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;Termination-1：如果一个没挂掉的process scd-broadcast了一条message m，该process会结束该scd-broadcast操作，并且会scd-deliver一个包含m的消息集合&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;Termination-2：如果一个process scd-deliver了消息m，每个没有挂掉的process都会scd-deliver包含m的消息集合。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;注意MS-ordering性质&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;任意两个process scd-deliver的消息集合里的东西不是相互独立的。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;如果令scd-deliver的消息集合大小为1，并且没有MS-order性质，这就是URB-broadcast&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;满足SCD顺序的例子：满足SCD顺序的例子：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;p1: {m1, m2}, {m3, m4, m5}, {m6}, {m7, m8}.&lt;/li&gt;
-          &lt;li&gt;p2: {m1}, {m3, m2}, {m6, m4, m5}, {m7}, {m8}.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;不满足SCD顺序的例子：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;p1: {m1, m2}, {m3, m4, m5}&lt;/li&gt;
-          &lt;li&gt;p2: {m1, m3}, {m2}&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;containment性质&lt;/p&gt;
-
-    &lt;p&gt;由MS-ordering性质和Termination-2性质，我们可以得到&lt;/p&gt;
-
-    &lt;p&gt;∀ i,j,x,y: (MS&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt; ⊆ MS&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;y&lt;/sup&gt;) ∨ (MS&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;y&lt;/sup&gt; ⊆ MS&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;)&lt;/p&gt;
-
-    &lt;p&gt;其中不妨令&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;l&lt;/sup&gt;表示由p&lt;sub&gt;i&lt;/sub&gt; scd-deliver的第l个消息集合&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;则p&lt;sub&gt;i&lt;/sub&gt;scd-deliver的消息序列即为ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;1&lt;/sup&gt;， ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;，……， ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;，&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;则MS&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt; = ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;1&lt;/sup&gt; ∪ ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt; … ∪ ms&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;消息上的partial order关系&lt;/p&gt;
-
-    &lt;p&gt;由MS-ordering性质和integrity性质我们可以得到一个消息上的偏序关系。&lt;/p&gt;
-
-    &lt;p&gt;不妨令p&lt;sub&gt;i&lt;/sub&gt;先scd-deliver了包含m的消息集合，再scd-deliver了包含m’的消息集合，&lt;/p&gt;
-
-    &lt;p&gt;则m和m’上由偏序关系：m ↦&lt;sub&gt;i&lt;/sub&gt; m’， 下标i表示这个关系是表示是p&lt;sub&gt;i&lt;/sub&gt;局部的。&lt;/p&gt;
-
-    &lt;p&gt;同时 ↦ = ∪&lt;sub&gt;1≤i≤n&lt;/sub&gt;↦&lt;sub&gt;i&lt;/sub&gt;构成了一个消息上的total-order。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[t &amp;lt; n/2]上SCD广播实现简述&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;该实现基于FIFO-broadcast&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;每个process p&lt;sub&gt;i&lt;/sub&gt;维护以下本地变量：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;buffer&lt;sub&gt;i&lt;/sub&gt;：&lt;/p&gt;
-
-            &lt;p&gt;一个初始为空的buffer，buffer里面存有四元组qdplt = &amp;lt;qdplt.msg, qdplt.sd, qdplt.sn, qdplt.cl&amp;gt;，这些四元组里的msg都是已经被FIFO-delivered但属于一个还没被scd-deliver的消息集合。&lt;/p&gt;
-
-            &lt;p&gt;qdplt里&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;msg是消息m&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;sd是发消息的process id&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;sn是消息发送方发送该条消息的sequence number或local date。所以&amp;lt;qdplt.sn, qdplt.sd&amp;gt;构成了逻辑时间戳&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;cl是一个长度为n的array，array里的每个元素初始为无穷大。cl[x]里存放p&lt;sub&gt;x&lt;/sub&gt;广播FORWARD消息时对应于消息m的sequence number。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;to_deliver&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-            &lt;p&gt;一组qdplt集合，每个qdplt里包含将要被scd-deliver的消息&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;sn&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-            &lt;p&gt;本地逻辑时钟，初始值为0。每次操作自增1。每个由p&lt;sub&gt;i&lt;/sub&gt; scd-broadcast的消息的id就是&amp;lt;i, sn&lt;sub&gt;i&lt;/sub&gt;&amp;gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;clock&lt;sub&gt;i&lt;/sub&gt;[1…n]&lt;/p&gt;
-
-            &lt;p&gt;由逻辑时间戳构成的数组。clock&lt;sub&gt;i&lt;/sub&gt;[j]表示由p&lt;sub&gt;i&lt;/sub&gt; scd-deliver的id为&amp;lt;j, x&amp;gt;的消息的中的时间戳x的最大值&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;scd广播消息m时：&lt;/p&gt;
-
-            &lt;p&gt;构造FORWARD消息 FORWARD(m, sn&lt;sub&gt;i&lt;/sub&gt;, i, sn&lt;sub&gt;i&lt;/sub&gt;, i)。&lt;/p&gt;
-
-            &lt;p&gt;第一对pair sn&lt;sub&gt;i&lt;/sub&gt;, i表示消息的identifier。&lt;/p&gt;
-
-            &lt;p&gt;第二对pair sn&lt;sub&gt;i&lt;/sub&gt;, i表示消息的时间戳。&lt;/p&gt;
-
-            &lt;p&gt;把FORWARD发给自己&lt;/p&gt;
-
-            &lt;p&gt;等到：条件buffer&lt;sub&gt;i&lt;/sub&gt;中没有sender是自身的四元组满足后，调用结束。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt; FIFO-deliver消息FORWARD(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, f, sn&lt;sub&gt;f&lt;/sub&gt;)之后，&lt;/p&gt;
-
-            &lt;p&gt;调用函数forward(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, f, sn&lt;sub&gt;f&lt;/sub&gt;)&lt;/p&gt;
-
-            &lt;p&gt;再调用函数try_deliver&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;函数forward(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, f, sn&lt;sub&gt;f&lt;/sub&gt;)：&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;如果sn&lt;sub&gt;sd&lt;/sub&gt; ≤ clock&lt;sub&gt;i&lt;/sub&gt;[sd]，说明p&lt;sub&gt;i&lt;/sub&gt;已经scd-deliver了消息&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;否则&lt;/p&gt;
-
-                &lt;ul&gt;
-                  &lt;li&gt;
-                    &lt;p&gt;如果buffer&lt;sub&gt;i&lt;/sub&gt;里没有包含消息m的四元组qdplt（即qdplt.sd = sd并且qdplt.sn = sn&lt;sub&gt;sd&lt;/sub&gt;)，&lt;/p&gt;
-
-                    &lt;p&gt;初始化一个新的qdplt，（cl[f] ← sn&lt;sub&gt;f&lt;/sub&gt;)。&lt;/p&gt;
-
-                    &lt;p&gt;把这个新的qdplt加到buffer&lt;sub&gt;i&lt;/sub&gt;中去&lt;/p&gt;
-
-                    &lt;p&gt;fifo-broadcast 消息forward(m, sd, sn&lt;sub&gt;sd&lt;/sub&gt;, i, sn&lt;sub&gt;i&lt;/sub&gt;)&lt;/p&gt;
-
-                    &lt;p&gt;sn&lt;sub&gt;i&lt;/sub&gt;自增1。&lt;/p&gt;
-                  &lt;/li&gt;
-                  &lt;li&gt;
-                    &lt;p&gt;否则更新qdplt.cl[f] ← sn&lt;sub&gt;f&lt;/sub&gt;。&lt;/p&gt;
-
-                    &lt;p&gt;表明已经知道有消息m并且它被p&lt;sub&gt;f&lt;/sub&gt;在它本地时间sn&lt;sub&gt;f&lt;/sub&gt;转发过。&lt;/p&gt;
-                  &lt;/li&gt;
-                &lt;/ul&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;函数try_deliver():&lt;/p&gt;
-
-            &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;会首先计算buffer&lt;sub&gt;i&lt;/sub&gt;中有多少消息已经被大多数process见过（即该qdplt中的cl数组中有超过半数的元素不是+∞)。&lt;/p&gt;
-
-            &lt;p&gt;为了保证MS-ordering性质，p&lt;sub&gt;i&lt;/sub&gt;需要从to-deliver&lt;sub&gt;i&lt;/sub&gt;中将满足如下条件的qdplt删除：&lt;/p&gt;
-
-            &lt;p&gt;∃ qdplt ∈ to_deliver&lt;sub&gt;i&lt;/sub&gt;, ∃ qdplt’ ∈ buffer&lt;sub&gt;i&lt;/sub&gt; \ to_deliver&lt;sub&gt;i&lt;/sub&gt;: |{f: qdplt.cl[f] &amp;lt; qdplt’.cl[f]}| ≤ n/2&lt;/p&gt;
-
-            &lt;p&gt;如果剔除完之后to_deliver&lt;sub&gt;i&lt;/sub&gt;不为空：&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;则遍历每个qdplt，更新clock&lt;sub&gt;i&lt;/sub&gt;[qdplt.sd] ← max(clock&lt;sub&gt;i&lt;/sub&gt;[qdplt.sd], qdplt.sn).&lt;/p&gt;
-
-                &lt;p&gt;把to_deliver&lt;sub&gt;i&lt;/sub&gt;从buffer&lt;sub&gt;i&lt;/sub&gt;里移除，&lt;/p&gt;
-
-                &lt;p&gt;把to_deliver&lt;sub&gt;i&lt;/sub&gt;里的消息拿出来构造集合ms，&lt;/p&gt;
-
-                &lt;p&gt;最后SCD-deliver(ms)。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>
