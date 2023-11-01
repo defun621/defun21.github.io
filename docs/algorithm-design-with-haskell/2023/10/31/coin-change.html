@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>找零问题 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="找零问题" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<meta property="og:description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<link rel="canonical" href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html" />
+<meta property="og:url" content="https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-31T21:54:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="找零问题" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-31T21:54:08-07:00","datePublished":"2023-10-31T21:54:08-07:00","description":"教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52","headline":"找零问题","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html"},"url":"https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">找零问题</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-31T21:54:08-07:00" itemprop="datePublished">Oct 31, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52">https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</a></p>
+
+<ul>
+  <li>
+    <p>找零问题如何套入list上贪婪的范式 <code class="language-plaintext highlighter-rouge">minWith cost . candidates</code>呢？</p>
+  </li>
+  <li>
+    <p>因为不同国家有不同的货币单位</p>
+
+    <p>所以我们可以首先定义货币计价单位：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">type</span> <span class="kt">Denom</span> <span class="o">=</span> <span class="nc">Int</span>
+  <span class="k">type</span> <span class="kt">Tuple</span> <span class="o">=</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> 
+
+  <span class="k">val</span> <span class="nv">usds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="mi">50</span><span class="o">,</span> <span class="mi">25</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span> <span class="c1">//1刀、5角、25美分、一角、5美分和1美分</span>
+  <span class="k">val</span> <span class="nv">ukds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="mi">50</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>有了货币单位之后，可以给出amount函数</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">amount</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tuple</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">cs</span> <span class="k">=&gt;</span> 
+      <span class="nv">ds</span><span class="o">.</span><span class="py">zip</span><span class="o">(</span><span class="n">cs</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nv">t</span><span class="o">.</span><span class="py">_1</span> <span class="o">*</span> <span class="nv">t</span><span class="o">.</span><span class="py">_2</span><span class="o">).</span><span class="py">sum</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>找零问题就可以定义为：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkChange</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">Tuple</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">amount</span> <span class="k">=&gt;</span> 
+      <span class="nf">minWith</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nv">t</span><span class="o">.</span><span class="py">sum</span><span class="o">)(</span><span class="nf">mktuples</span><span class="o">(</span><span class="n">ds</span><span class="o">)(</span><span class="n">amount</span><span class="o">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>其中mktuple函数生成所有的candidates</p>
+
+    <p>生成式的定义可以是：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkTuples</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tuple</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">=&gt;</span> <span class="n">ds</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span> 
+          <span class="k">for</span> <span class="o">{</span>
+              <span class="n">c</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="n">n</span> <span class="o">/</span> <span class="n">x</span><span class="o">).</span><span class="py">toList</span>
+              <span class="n">cs</span> <span class="k">&lt;-</span> <span class="nf">mkTuples</span><span class="o">(</span><span class="n">xs</span><span class="o">)(</span><span class="n">n</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="o">)</span>
+          <span class="o">}</span> <span class="k">yield</span> <span class="n">c</span> <span class="o">::</span> <span class="n">cs</span>
+</code></pre></div>    </div>
+
+    <p>这样的枚举出来中间结果很耗时间。</p>
+  </li>
+  <li>
+    <p>此外，minWith(t =&gt; t.sum) 可能不唯一，所以我们需要改变目标函数。</p>
+
+    <p>把目标函数改成 maxWith id。这样的话，mkChange得到的是唯一的lexically最大的tuple。</p>
+
+    <p>该tuple是否是硬币数最少的tuple取决于货币单位。</p>
+  </li>
+  <li>
+    <p>为了以后推到方便，我们需要重写一下mktuples。</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkTuples</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tuple</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">=&gt;</span> <span class="n">ds</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span> 
+          <span class="k">def</span> <span class="nf">extend</span><span class="o">(</span><span class="n">us</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])(</span><span class="n">v</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Tuple</span><span class="o">]</span> <span class="k">=</span> <span class="nf">mkTuples</span><span class="o">(</span><span class="n">us</span><span class="o">)(</span><span class="n">n</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">vs</span> <span class="k">=&gt;</span> <span class="n">v</span> <span class="o">::</span> <span class="n">vs</span><span class="o">)</span>
+          <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="n">n</span><span class="o">/</span><span class="n">x</span><span class="o">).</span><span class="py">toList</span><span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="n">c</span> <span class="k">=&gt;</span> <span class="nf">extend</span><span class="o">(</span><span class="n">xs</span><span class="o">)(</span><span class="n">c</span><span class="o">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>又因为存在以下关系：</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">maximum</span> <span class="p">(</span><span class="n">concatMap</span> <span class="n">f</span> <span class="n">xs</span><span class="p">)</span> <span class="o">=</span> <span class="n">maximum</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">maximum</span> <span class="o">.</span> <span class="n">f</span><span class="p">)</span> <span class="n">xs</span><span class="p">)</span>
+  <span class="n">maximum</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span><span class="p">)</span> <span class="n">xs</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">:</span> <span class="n">maximum</span> <span class="n">xs</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>所以有：</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">mkchange</span> <span class="p">(</span><span class="n">d</span> <span class="o">:</span> <span class="n">ds</span><span class="p">)</span> <span class="n">n</span>
+  <span class="o">=</span> <span class="n">maximum</span> <span class="p">(</span><span class="n">mktuples</span> <span class="p">(</span><span class="n">d</span> <span class="o">:</span> <span class="n">ds</span><span class="p">)</span> <span class="n">n</span><span class="p">)</span>
+  <span class="o">=</span> <span class="n">maximum</span> <span class="p">(</span><span class="n">concatMap</span> <span class="p">(</span><span class="n">extend</span> <span class="n">ds</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="o">.</span> <span class="o">.</span><span class="n">m</span><span class="p">])</span> <span class="c1">-- m = n div d</span>
+  <span class="o">=</span> <span class="n">maximum</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">maximum</span> <span class="err">·</span> <span class="n">extend</span> <span class="n">ds</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="o">.</span> <span class="o">.</span><span class="n">m</span><span class="p">])</span> <span class="c1">-- 上面第一条规则</span>
+</code></pre></div>    </div>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">maximum</span> <span class="p">(</span><span class="n">extend</span> <span class="n">ds</span> <span class="n">c</span><span class="p">)</span>
+  <span class="o">=</span> <span class="n">maximum</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">c</span><span class="o">:</span><span class="p">)</span> <span class="p">(</span><span class="n">mktuples</span> <span class="n">ds</span> <span class="p">(</span><span class="n">n</span><span class="err">−</span><span class="n">c</span><span class="err">×</span><span class="n">d</span><span class="p">)))</span>
+  <span class="o">=</span> <span class="n">c</span> <span class="o">:</span> <span class="n">maximum</span> <span class="p">(</span><span class="n">mktuples</span> <span class="n">ds</span> <span class="p">(</span><span class="n">n</span><span class="err">−</span><span class="n">c</span><span class="err">×</span><span class="n">d</span><span class="p">))</span> <span class="c1">-- 上面第二条rule</span>
+  <span class="o">=</span> <span class="n">c</span> <span class="o">:</span> <span class="n">mkchange</span> <span class="n">ds</span> <span class="p">(</span><span class="n">n</span><span class="err">−</span><span class="n">c</span><span class="err">×</span><span class="n">d</span><span class="p">)</span> <span class="c1">-- mkchange 定义</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>综上有：</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">maximum</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">maximum</span> <span class="err">·</span> <span class="n">extend</span> <span class="n">ds</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="o">.</span> <span class="o">.</span><span class="n">m</span><span class="p">])</span>
+  <span class="o">=</span> <span class="n">m</span><span class="o">:</span> <span class="n">mkchange</span> <span class="n">ds</span> <span class="p">(</span><span class="n">n</span><span class="err">−</span><span class="n">m</span><span class="err">×</span><span class="n">d</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>所以最后我们可以得到简化后的省略产生中间结果的最终mkChange</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkChange</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">Tuple</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">=&gt;</span> <span class="n">ds</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">n</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span> 
+          <span class="k">val</span> <span class="nv">c</span> <span class="k">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">x</span>
+          <span class="n">c</span> <span class="o">::</span> <span class="nf">mkChange</span><span class="o">(</span><span class="n">xs</span><span class="o">)(</span><span class="n">n</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>除了生成式来算mkTuples以外，我们还可以用foldr来得到mkTuples</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkTuples</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tuple</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">=&gt;</span> 
+      <span class="k">type</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="nc">List</span><span class="o">[(</span><span class="kt">Tuple</span>, <span class="kt">Int</span><span class="o">)]</span>
+      <span class="k">val</span> <span class="nv">init</span><span class="k">:</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="nc">List</span><span class="o">((</span><span class="nc">Nil</span><span class="o">,</span> <span class="n">n</span><span class="o">))</span>
+      <span class="k">def</span> <span class="nf">extend</span><span class="o">(</span><span class="n">d</span><span class="k">:</span> <span class="kt">Denom</span><span class="o">,</span> <span class="n">p</span><span class="k">:</span> <span class="o">(</span><span class="kt">Tuple</span><span class="o">,</span> <span class="kt">Int</span><span class="o">))</span><span class="k">:</span> <span class="kt">ACC</span> <span class="o">=</span> 
+          <span class="k">for</span> <span class="o">{</span>
+              <span class="n">c</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="nv">p</span><span class="o">.</span><span class="py">_2</span> <span class="o">/</span> <span class="n">d</span><span class="o">).</span><span class="py">toList</span>
+          <span class="o">}</span> <span class="nf">yield</span> <span class="o">(</span><span class="nv">p</span><span class="o">.</span><span class="py">_1</span> <span class="o">++</span> <span class="nc">List</span><span class="o">(</span><span class="n">c</span><span class="o">),</span> <span class="nv">p</span><span class="o">.</span><span class="py">_2</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span><span class="o">)</span>
+      <span class="k">def</span> <span class="nf">step</span><span class="o">(</span><span class="n">d</span><span class="k">:</span> <span class="kt">Denom</span><span class="o">,</span> <span class="n">acc</span><span class="k">:</span> <span class="kt">ACC</span><span class="o">)</span><span class="k">:</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="nv">acc</span><span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="n">a</span> <span class="k">=&gt;</span> <span class="nf">extend</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="n">a</span><span class="o">))</span>
+      <span class="nv">ds</span><span class="o">.</span><span class="py">reverse</span><span class="o">.</span><span class="py">foldRight</span><span class="o">(</span><span class="n">init</span><span class="o">)(</span><span class="n">step</span><span class="o">).</span><span class="py">filter</span><span class="o">(</span><span class="n">pair</span> <span class="k">=&gt;</span> <span class="nv">pair</span><span class="o">.</span><span class="py">_2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">_1</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>有了foldr 我们就可以尝试用fusion law 和maximum来避免产生中间结果。</p>
+
+    <p>回顾foldr 的fusion law：</p>
+
+    <p>对于有限长度的list xs来说，下式成立</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">h</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">f</span> <span class="n">e</span> <span class="n">xs</span><span class="p">)</span> <span class="o">=</span> <span class="n">foldr</span> <span class="n">g</span> <span class="n">e'</span> <span class="n">xs</span>
+</code></pre></div>    </div>
+
+    <p>其中<code class="language-plaintext highlighter-rouge">e' = h e</code>，此外还要满足fusion condition <code class="language-plaintext highlighter-rouge">h (f x y) = g x (h y)</code></p>
+  </li>
+  <li>
+    <p>现在</p>
+
+    <p>h 为 <code class="language-plaintext highlighter-rouge">maximum</code>，</p>
+
+    <p>xs是<code class="language-plaintext highlighter-rouge">reverse ds</code>，</p>
+
+    <p>e是<code class="language-plaintext highlighter-rouge">[([], n)]</code>，</p>
+
+    <p>f是<code class="language-plaintext highlighter-rouge">concatMap . extend</code></p>
+
+    <p>则h e 即为 <code class="language-plaintext highlighter-rouge">([], n)</code>。</p>
+
+    <p>h y 即为所有(cs, r)两元组的list中第一个element lexically maximum的。</p>
+
+    <p>为了保证这个特性，易得</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">g</span> <span class="n">d</span> <span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">cs</span> <span class="o">++</span> <span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">r</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+      <span class="kr">where</span> <span class="n">c</span> <span class="o">=</span> <span class="n">r</span> <span class="n">div</span> <span class="n">d</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>所以通过fusion law，我们可以得到：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkChange</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=&gt;</span> <span class="nc">Tuple</span> <span class="k">=</span> <span class="o">(</span><span class="n">ds</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Denom</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="k">=&gt;</span> 
+      <span class="k">type</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Tuple</span><span class="o">,</span> <span class="nc">Int</span><span class="o">)</span>
+      <span class="k">val</span> <span class="nv">init</span><span class="k">:</span> <span class="kt">ACC</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Nil</span><span class="o">,</span> <span class="n">n</span><span class="o">)</span>
+      <span class="k">def</span> <span class="nf">step</span><span class="o">(</span><span class="n">d</span><span class="k">:</span> <span class="kt">Denom</span><span class="o">,</span> <span class="n">acc</span><span class="k">:</span> <span class="kt">ACC</span><span class="o">)</span><span class="k">:</span> <span class="kt">ACC</span> <span class="o">=</span> 
+          <span class="k">val</span> <span class="nv">c</span> <span class="k">=</span> <span class="nv">acc</span><span class="o">.</span><span class="py">_2</span> <span class="o">/</span> <span class="nf">d</span>
+          <span class="o">(</span><span class="nv">acc</span><span class="o">.</span><span class="py">_1</span> <span class="o">++</span> <span class="nc">List</span><span class="o">(</span><span class="n">c</span><span class="o">),</span> <span class="nv">acc</span><span class="o">.</span><span class="py">_2</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span><span class="o">)</span>
+      <span class="nv">ds</span><span class="o">.</span><span class="py">reverse</span><span class="o">.</span><span class="py">foldRight</span><span class="o">(</span><span class="n">init</span><span class="o">)(</span><span class="n">step</span><span class="o">).</span><span class="py">_1</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/10/31/coin-change.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
