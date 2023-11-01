@@ -86,16 +86,16 @@ categories: [Algorithm-design-with-Haskell]
 
     ```haskell
     maximum (extend ds c)
-    = maximum (map (c:) (mktuples ds (n−c×d)))
-    = c : maximum (mktuples ds (n−c×d)) -- 上面第二条rule
-    = c : mkchange ds (n−c×d) -- mkchange 定义
+    = maximum (map (c:) (mktuples ds (n - c * d)))
+    = c : maximum (mktuples ds (n - c * d)) -- 上面第二条rule
+    = c : mkchange ds (n - c * d) -- mkchange 定义
     ```
 
 - 综上有：
 
     ```haskell
-    maximum (map (maximum · extend ds) [0. .m])
-    = m: mkchange ds (n−m×d)
+    maximum (map (maximum . extend ds) [0. .m])
+    = m: mkchange ds (n - m * d)
     ```
 
 - 所以最后我们可以得到简化后的省略产生中间结果的最终mkChange
