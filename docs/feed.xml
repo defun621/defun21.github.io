@@ -1,4 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-01T00:03:40-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">找零问题</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html" rel="alternate" type="text/html" title="找零问题" /><published>2023-10-31T21:54:08-07:00</published><updated>2023-10-31T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-02T01:52:20-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">early deciding</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html" rel="alternate" type="text/html" title="early deciding" /><published>2023-11-01T22:45:00-07:00</published><updated>2023-11-01T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;early decision&lt;/p&gt;
+
+    &lt;p&gt;虽然 t + 1轮中最坏情况是达到interactive consistency的轮数，&lt;/p&gt;
+
+    &lt;p&gt;但当在execution中，挂掉的process数f相比模型CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里的t小的时候，需要的轮数也会相应的更小。&lt;/p&gt;
+
+    &lt;p&gt;当一个process decide了一个值，结束propose操作，也就是说不再往别的process广播message。&lt;/p&gt;
+
+    &lt;p&gt;这叫做early dicision/stopping。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;问题的关键还是分布式系统的老问题：&lt;/p&gt;
+
+    &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt;没有收到从p&lt;sub&gt;j&lt;/sub&gt;那里发来的消息，p&lt;sub&gt;i&lt;/sub&gt;无法判断p&lt;sub&gt;j&lt;/sub&gt;是挂了还是决定不发了。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;为了能early stopping，要求process遵循以下行动准则：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;process直到挂掉或者decide为止每轮都要发消息&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;每条消息都可以indicate发送者是否在该轮发送完之后就会decide 值&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;这样的话，假设p&lt;sub&gt;i&lt;/sub&gt;在第r轮第一次没有从p&lt;sub&gt;j&lt;/sub&gt;收到消息。&lt;/p&gt;
+
+    &lt;p&gt;说明p&lt;sub&gt;j&lt;/sub&gt;在第r - 1轮要么挂掉了，要么decide出value了，或者是在第r轮中往p&lt;sub&gt;i&lt;/sub&gt;发出消息之前挂掉。&lt;/p&gt;
+
+    &lt;p&gt;如果p&lt;sub&gt;j&lt;/sub&gt;成功decide出值来，则显然在r - 1轮之前的所有轮（包括r - 1）中都往p&lt;sub&gt;i&lt;/sub&gt;发送过 pair &amp;lt;k, v&amp;gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;不妨令：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;UP&lt;sup&gt;r&lt;/sup&gt;是第r轮时活着的process&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;是第r轮中，p&lt;sub&gt;i&lt;/sub&gt;收到的所有消息的发送方构成的集合&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;不失一般性，令R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;0&lt;/sup&gt;是所有n个process构成的集合。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;如果process按照之前的行动规则执行并且process挂掉之后不会recover，则有&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;∀ r ≥ 1: R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt; ⊆ UP&lt;sup&gt;r&lt;/sup&gt; ⊆ R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r - 1&lt;/sup&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;当R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;=R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r-1&lt;/sup&gt;时&lt;/strong&gt; ，p&lt;sub&gt;i&lt;/sub&gt;可以early decision。&lt;/p&gt;
+
+    &lt;p&gt;因为此时已经知道r轮知道的新信息不会更多，未来只会更少。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;此外p&lt;sub&gt;i&lt;/sub&gt;还得通知别的process p&lt;sub&gt;j&lt;/sub&gt;它early decide了。&lt;/p&gt;
+
+    &lt;p&gt;所以假设在第r轮p&lt;sub&gt;i&lt;/sub&gt;已经可以early stopping，还需要额外一轮来forward自己在第r轮得到的所有&amp;lt;k,v&amp;gt;。&lt;/p&gt;
+
+    &lt;p&gt;而p&lt;sub&gt;j&lt;/sub&gt;可以在第r + 2轮decide，因为在第r + 1轮收到消息后还需要同样额外一轮来forward。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;early stopping算法&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;本地变量&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;view&lt;sub&gt;i&lt;/sub&gt;[1..n]，和interactive consistency的实现中的view&lt;sub&gt;i&lt;/sub&gt;一样&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;new&lt;sub&gt;i&lt;/sub&gt;，和interactive consistency的实现中的new&lt;sub&gt;i&lt;/sub&gt;一样&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;early&lt;sub&gt;i&lt;/sub&gt;，当local early decision predicate &lt;em&gt;R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;=R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r-1&lt;/sup&gt;&lt;/em&gt; 被满足时，该值被置为true&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;nbr&lt;sub&gt;i&lt;/sub&gt;[0..n]，其中nbr&lt;sub&gt;i&lt;/sub&gt;[r] 即为 |R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;|。&lt;/p&gt;
+
+            &lt;p&gt;所以local early decision predicate 即为 nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] = nbr&lt;sub&gt;i&lt;/sub&gt;[r]&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;decide&lt;sub&gt;i&lt;/sub&gt;，当从p&lt;sub&gt;j&lt;/sub&gt;收到消息知道early&lt;sub&gt;j&lt;/sub&gt;为true时，该值被置为true。&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;propose()实现简述&lt;/p&gt;
+
+        &lt;p&gt;首先初始化view&lt;sub&gt;i&lt;/sub&gt;，new&lt;sub&gt;i&lt;/sub&gt;，nbr&lt;sub&gt;i&lt;/sub&gt;和early&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;开始t + 1轮synchronous round，在每一轮中：&lt;/p&gt;
+
+        &lt;p&gt;先广播消息EST(new&lt;sub&gt;i&lt;/sub&gt;, early&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
+
+        &lt;p&gt;再把收到所有new&lt;sub&gt;j&lt;/sub&gt; (j ∈ {1,…,n} \ {i})，放入recfrom&lt;sub&gt;i&lt;/sub&gt;数组中。&lt;/p&gt;
+
+        &lt;p&gt;如果此时early&lt;sub&gt;i&lt;/sub&gt;为true，则直接返回view&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+        &lt;p&gt;否则计算nbr&lt;sub&gt;i&lt;/sub&gt;[r]，计算decide&lt;sub&gt;i&lt;/sub&gt; ← ⋁(early&lt;sub&gt;j&lt;/sub&gt;)，&lt;/p&gt;
+
+        &lt;p&gt;然后开始计算new&lt;sub&gt;i&lt;/sub&gt;，即recfrom&lt;sub&gt;i&lt;/sub&gt;[j]不为空并且如果view&lt;sub&gt;i&lt;/sub&gt;[k]为空值，则view&lt;sub&gt;i&lt;/sub&gt;[k] ← v并且 new&lt;sub&gt;i&lt;/sub&gt; ← new&lt;sub&gt;i&lt;/sub&gt; ∪ {&amp;lt;k,v&amp;gt;}。&lt;/p&gt;
+
+        &lt;p&gt;如果此时满足nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] = nbr&lt;sub&gt;i&lt;/sub&gt;[r]或者decide&lt;sub&gt;i&lt;/sub&gt;是true，则置early&lt;sub&gt;i&lt;/sub&gt;为true。&lt;/p&gt;
+
+        &lt;p&gt;最后如果已经是第t + 1轮， 则返回view&lt;sub&gt;i&lt;/sub&gt;.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">找零问题</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html" rel="alternate" type="text/html" title="找零问题" /><published>2023-10-31T21:54:08-07:00</published><updated>2023-10-31T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/10/31/coin-change.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1285,144 +1413,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">用scd-broadcast实现一些read/write register</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/18/scd-broadcast-rw-objects.html" rel="alternate" type="text/html" title="用scd-broadcast实现一些read/write register" /><published>2023-10-18T14:45:00-07:00</published><updated>2023-10-18T14:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/18/scd-broadcast-rw-objects</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/18/scd-broadcast-rw-objects.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;可以用scd-broadcast来实现concurrent object。实现的基础框架为：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;操作op：&lt;/p&gt;
-
-        &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;初始化为false，scd广播消息TYPE(a,b,…,i)，等done&lt;sub&gt;i&lt;/sub&gt;被置为true。&lt;/p&gt;
-
-        &lt;p&gt;以上三步根据实现的object不同，可能会被重复1到2次。&lt;/p&gt;
-
-        &lt;p&gt;最后用本地变量计算出最终结果r并返回。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当要scd-deliver 消息集合{MSG(…,j&lt;sub&gt;1&lt;/sub&gt;), …, MSG(…,j&lt;sub&gt;x&lt;/sub&gt;), SYNC(j&lt;sub&gt;x+1&lt;/sub&gt;), …, SYNC(j&lt;sub&gt;y&lt;/sub&gt;)}时，&lt;/p&gt;
-
-        &lt;p&gt;对于每条MSG(…,j)消息，根据不同object更新本地状态&lt;/p&gt;
-
-        &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt; 发现scd-deliver了自己broadcast的消息时（∃ l: j&lt;sub&gt;l&lt;/sub&gt; = i)，把done&lt;sub&gt;i&lt;/sub&gt;置为true，使得op可以返回。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[SCD-broadcast]里实现MWMR寄存器&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;实现MWMR的atomic寄存器&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;本地变量&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;reg&lt;sub&gt;i&lt;/sub&gt;，对应atomic寄存器REG的本地值&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;tsa&lt;sub&gt;i&lt;/sub&gt;，现在在reg&lt;sub&gt;i&lt;/sub&gt;中的值写入时的时间戳。该时间戳是一个逻辑时间戳，&amp;lt;sn, x&amp;gt;。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;REG.read()&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;置为false，scd-broadcast消息SYNC(i)，等到done&lt;sub&gt;i&lt;/sub&gt;被置为true时，返回reg&lt;sub&gt;i&lt;/sub&gt;内的值。&lt;/p&gt;
-
-            &lt;p&gt;消息SYNC(i)用来告诉其他process，p&lt;sub&gt;i&lt;/sub&gt;要刷新本地的reg&lt;sub&gt;i&lt;/sub&gt;了。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;REG.write()&lt;/strong&gt;&lt;/p&gt;
-
-            &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;置为false，scd-broadcast消息 SYNC(i)，等到done&lt;sub&gt;i&lt;/sub&gt;被置为true执行下一步。&lt;/p&gt;
-
-            &lt;p&gt;这一步的目的是re-synchronization。给p&lt;sub&gt;i&lt;/sub&gt;一个最新的tsa&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-            &lt;p&gt;再把done&lt;sub&gt;i&lt;/sub&gt;置为false，scd-broadcast消息 WRITE(v &amp;lt;tsa&lt;sub&gt;i&lt;/sub&gt; + 1, i&amp;gt;)，等到done&lt;sub&gt;i&lt;/sub&gt;被置为true之后，写操作结束。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;当要scd-deliver消息集合 {WRITE(v&lt;sub&gt;j&lt;sub&gt;1&lt;/sub&gt;&lt;/sub&gt;, &amp;lt;date&lt;sub&gt;j&lt;sub&gt;1&lt;/sub&gt;&lt;/sub&gt;, j&lt;sub&gt;1&lt;/sub&gt;&amp;gt;), …, WRITE(v&lt;sub&gt;j&lt;sub&gt;x&lt;/sub&gt;&lt;/sub&gt;, &amp;lt;date&lt;sub&gt;j&lt;sub&gt;x&lt;/sub&gt;&lt;/sub&gt;, j&lt;sub&gt;x&lt;/sub&gt;&amp;gt;), SYNC(j&lt;sub&gt;x+1&lt;/sub&gt;), …, SYNC(j&lt;sub&gt;y&lt;/sub&gt;)}时&lt;/strong&gt;：&lt;/p&gt;
-
-            &lt;p&gt;不妨令WRITE(v,&amp;lt;d,w&amp;gt;)是收到的所有WRITE消息里时间戳最大的那一条消息。&lt;/p&gt;
-
-            &lt;p&gt;如果tsa&lt;sub&gt;i&lt;/sub&gt;小于d，则说明有更新，p&lt;sub&gt;i&lt;/sub&gt;进行更新：reg&lt;sub&gt;i&lt;/sub&gt; ← v, tsa&lt;sub&gt;i&lt;/sub&gt; ← &amp;lt;d,w&amp;gt;&lt;/p&gt;
-
-            &lt;p&gt;更新结束后，如果发现有msg是从自己scd-broadcast出来的，则把done&lt;sub&gt;i&lt;/sub&gt;置为true。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;为什么该实现是一个MWMR的atomic寄存器：&lt;/p&gt;
-
-            &lt;p&gt;Lemma21证明过程略。思路是构造一个在operation上的total order。leamma 21可以REG是linearizable。–&amp;gt;safety&lt;/p&gt;
-
-            &lt;p&gt;通过上述算法描述可以简单证明如果一个正常的process 发起一个operation，则该operation可以正常结束 –&amp;gt; liveness&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;实现MWMR的sequential consistent寄存器&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;实现和上面的MWMR的atomic寄存器基本一样，只需要把发SYNC消息的部分移除即可。&lt;/p&gt;
-
-        &lt;p&gt;因为SYNC起到的作用是让所有的读写操作好像依照真实时间中的顺序。而sequential consistent寄存器并没有这个要求&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在CAMP&lt;sub&gt;n,t&lt;/sub&gt;[SCD-broadcast]里实现atomic snapshot object&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Atomic MWMR snapshot object&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;是一个REG[1…m]数组，每个REG[i]都是一个atomic寄存器。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;提供两个操作：&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;write(r,v)： 把v值赋给REG[r]&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;snapshot()：返回REG[1…m]的在该时刻的snapshot。因为是atomic的，所以满足atomic的定义：如果snapshot和多个写concurrent，这么多写中的任意一个。&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;实现简述：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;snapshot实现和atomic MWMR寄存器里的read类似。区别在于snapshot返回时返回所有本地reg[1…m]。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;write实现和atomic MWMR寄存器的write类似。区别在于snapshot object的write消息多了一个field，目标寄存器r&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;当消息集合要被scd-deliver时的实现也和atomic MWMR寄存器里的类似。唯一区别在于现在更新时需要更新m个reg&lt;sub&gt;i&lt;/sub&gt;本地变量，也同时需要更新m个时间戳tsa&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>

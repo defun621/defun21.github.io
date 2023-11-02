@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>early deciding | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="early deciding" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-01T22:45:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="early deciding" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-01T22:45:00-07:00","datePublished":"2023-11-01T22:45:00-07:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"early deciding","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">early deciding</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-01T22:45:00-07:00" itemprop="datePublished">Nov 1, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>early decision</p>
+
+    <p>虽然 t + 1轮中最坏情况是达到interactive consistency的轮数，</p>
+
+    <p>但当在execution中，挂掉的process数f相比模型CSMP<sub>n,t</sub>[∅]里的t小的时候，需要的轮数也会相应的更小。</p>
+
+    <p>当一个process decide了一个值，结束propose操作，也就是说不再往别的process广播message。</p>
+
+    <p>这叫做early dicision/stopping。</p>
+  </li>
+  <li>
+    <p>问题的关键还是分布式系统的老问题：</p>
+
+    <p>如果p<sub>i</sub>没有收到从p<sub>j</sub>那里发来的消息，p<sub>i</sub>无法判断p<sub>j</sub>是挂了还是决定不发了。</p>
+  </li>
+  <li>
+    <p>为了能early stopping，要求process遵循以下行动准则：</p>
+
+    <ul>
+      <li>
+        <p>process直到挂掉或者decide为止每轮都要发消息</p>
+      </li>
+      <li>
+        <p>每条消息都可以indicate发送者是否在该轮发送完之后就会decide 值</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>这样的话，假设p<sub>i</sub>在第r轮第一次没有从p<sub>j</sub>收到消息。</p>
+
+    <p>说明p<sub>j</sub>在第r - 1轮要么挂掉了，要么decide出value了，或者是在第r轮中往p<sub>i</sub>发出消息之前挂掉。</p>
+
+    <p>如果p<sub>j</sub>成功decide出值来，则显然在r - 1轮之前的所有轮（包括r - 1）中都往p<sub>i</sub>发送过 pair &lt;k, v&gt;。</p>
+  </li>
+  <li>
+    <p>不妨令：</p>
+
+    <ul>
+      <li>
+        <p>UP<sup>r</sup>是第r轮时活着的process</p>
+      </li>
+      <li>
+        <p>R<sub>i</sub><sup>r</sup>是第r轮中，p<sub>i</sub>收到的所有消息的发送方构成的集合</p>
+      </li>
+      <li>
+        <p>不失一般性，令R<sub>i</sub><sup>0</sup>是所有n个process构成的集合。</p>
+      </li>
+    </ul>
+
+    <p>如果process按照之前的行动规则执行并且process挂掉之后不会recover，则有</p>
+
+    <ul>
+      <li>∀ r ≥ 1: R<sub>i</sub><sup>r</sup> ⊆ UP<sup>r</sup> ⊆ R<sub>i</sub><sup>r - 1</sup></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>当R<sub>i</sub><sup>r</sup>=R<sub>i</sub><sup>r-1</sup>时</strong> ，p<sub>i</sub>可以early decision。</p>
+
+    <p>因为此时已经知道r轮知道的新信息不会更多，未来只会更少。</p>
+  </li>
+  <li>
+    <p>此外p<sub>i</sub>还得通知别的process p<sub>j</sub>它early decide了。</p>
+
+    <p>所以假设在第r轮p<sub>i</sub>已经可以early stopping，还需要额外一轮来forward自己在第r轮得到的所有&lt;k,v&gt;。</p>
+
+    <p>而p<sub>j</sub>可以在第r + 2轮decide，因为在第r + 1轮收到消息后还需要同样额外一轮来forward。</p>
+  </li>
+  <li>
+    <p>early stopping算法</p>
+
+    <ul>
+      <li>
+        <p>本地变量</p>
+
+        <ul>
+          <li>
+            <p>view<sub>i</sub>[1..n]，和interactive consistency的实现中的view<sub>i</sub>一样</p>
+          </li>
+          <li>
+            <p>new<sub>i</sub>，和interactive consistency的实现中的new<sub>i</sub>一样</p>
+          </li>
+          <li>
+            <p>early<sub>i</sub>，当local early decision predicate <em>R<sub>i</sub><sup>r</sup>=R<sub>i</sub><sup>r-1</sup></em> 被满足时，该值被置为true</p>
+          </li>
+          <li>
+            <p>nbr<sub>i</sub>[0..n]，其中nbr<sub>i</sub>[r] 即为 |R<sub>i</sub><sup>r</sup>|。</p>
+
+            <p>所以local early decision predicate 即为 nbr<sub>i</sub>[r - 1] = nbr<sub>i</sub>[r]</p>
+          </li>
+          <li>
+            <p>decide<sub>i</sub>，当从p<sub>j</sub>收到消息知道early<sub>j</sub>为true时，该值被置为true。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>propose()实现简述</p>
+
+        <p>首先初始化view<sub>i</sub>，new<sub>i</sub>，nbr<sub>i</sub>和early<sub>i</sub>。</p>
+
+        <p>开始t + 1轮synchronous round，在每一轮中：</p>
+
+        <p>先广播消息EST(new<sub>i</sub>, early<sub>i</sub>)。</p>
+
+        <p>再把收到所有new<sub>j</sub> (j ∈ {1,…,n} \ {i})，放入recfrom<sub>i</sub>数组中。</p>
+
+        <p>如果此时early<sub>i</sub>为true，则直接返回view<sub>i</sub>。</p>
+
+        <p>否则计算nbr<sub>i</sub>[r]，计算decide<sub>i</sub> ← ⋁(early<sub>j</sub>)，</p>
+
+        <p>然后开始计算new<sub>i</sub>，即recfrom<sub>i</sub>[j]不为空并且如果view<sub>i</sub>[k]为空值，则view<sub>i</sub>[k] ← v并且 new<sub>i</sub> ← new<sub>i</sub> ∪ {&lt;k,v&gt;}。</p>
+
+        <p>如果此时满足nbr<sub>i</sub>[r - 1] = nbr<sub>i</sub>[r]或者decide<sub>i</sub>是true，则置early<sub>i</sub>为true。</p>
+
+        <p>最后如果已经是第t + 1轮， 则返回view<sub>i</sub>.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
