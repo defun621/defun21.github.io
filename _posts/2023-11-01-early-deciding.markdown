@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  early deciding
+title:  early deciding interactive consistency/consensus 算法
 date:   2023-11-01 22:45:00 -0700
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
