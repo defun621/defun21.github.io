@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>list上greedy algorithm进行refinement一般思路 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="list上greedy algorithm进行refinement一般思路" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="如果minWith cost不能有unique candidate，要么换cost function，要么找方法使得greedy condition成立" />
+<meta property="og:description" content="如果minWith cost不能有unique candidate，要么换cost function，要么找方法使得greedy condition成立" />
+<link rel="canonical" href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html" />
+<meta property="og:url" content="https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-02T21:54:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="list上greedy algorithm进行refinement一般思路" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-02T21:54:08-07:00","datePublished":"2023-11-02T21:54:08-07:00","description":"如果minWith cost不能有unique candidate，要么换cost function，要么找方法使得greedy condition成立","headline":"list上greedy algorithm进行refinement一般思路","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html"},"url":"https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">list上greedy algorithm进行refinement一般思路</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-02T21:54:08-07:00" itemprop="datePublished">Nov 2, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul>
+  <li>
+    <p>如果minWith cost不能有unique candidate，要么换cost function，要么找方法使得greedy condition成立</p>
+
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">gstep</span> <span class="n">x</span> <span class="p">(</span><span class="n">minWith</span> <span class="n">cost</span> <span class="p">(</span><span class="n">candidates</span> <span class="n">xs</span><span class="p">))</span> <span class="o">=</span> <span class="n">minWith</span> <span class="n">cost</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="n">gstep</span> <span class="n">x</span><span class="p">)</span> <span class="p">(</span><span class="n">candidates</span> <span class="n">xs</span><span class="p">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>如果对于minimum cost存在多个candidate，</p>
+
+    <p>必须要有如下性质：</p>
+
+    <p>对于任意c 和c’，如果 cost c ≤ cost c’ ⇔ cost (gstep x c) ≤ cost (gstep x c’)</p>
+  </li>
+  <li>
+    <p>该式问题在于，现实情况中很难保证它被满足</p>
+
+    <p>我们需要一种别的方式使得我们在如下单调关系成立的时候可以使用fusion law</p>
+
+    <p>cost c ≤ cost c’ ⇒ cost (gstep x c) ≤ cost (gstep x c’)</p>
+  </li>
+  <li>
+    <p>书里引入了 ←</p>
+
+    <p>x ← MinWith cost xs</p>
+
+    <p>即从xs的cost最小的元素构成的集合中选取任意一个，</p>
+
+    <p>用set membership代替了equation reasoning</p>
+  </li>
+  <li>
+    <p>更一般的，← 还可以表示集合包含</p>
+
+    <p>即E<sub>1</sub> ← E<sub>2</sub>就是表示 v ← E<sub>1</sub> ⇒ v ← E<sub>2</sub></p>
+  </li>
+  <li>
+    <p>此外，x ← E(E<sub>1</sub>)表示 存在y，使得 y ← E<sub>1</sub>并且 x ← E(y)</p>
+  </li>
+  <li>
+    <p>通过上述3个定义，所有的expression在refinement的定义下是monotonic的。</p>
+  </li>
+  <li>
+    <p>如何证明 gstep x (MinWith cost (candidates xs)) ← MinWith cost (map (gstep x) (candidates xs))?</p>
+
+    <p>左边即表示</p>
+
+    <p>对于某个c’, c’ ← MinWith cost (candidates xs)，并且c = gstep x c’，则有 c ← gstep x (MinWith cost (candidates xs))</p>
+
+    <p>因为cost c ≤ cost c’ ⇒ cost (gstep x c) ≤ cost (gstep x c’)</p>
+
+    <p>所以c’ 作为candidates xs中cost最小的元素之一，也同样是MinWith cost (map (gstep x) (candidates xs))中的cost最小元素之一。</p>
+
+    <p>所以c ← MinWith cost (map (gstep x) (candidates xs))</p>
+
+    <p>所以gstep x (MinWith cost (candidates xs)) ← MinWith cost (map (gstep x) (candidates xs))</p>
+  </li>
+  <li>
+    <p>如何证明 MinWith cost (concat xss) ← MinWith cost (map (MinWith cost) xss)?</p>
+
+    <p>左边表示有 x ← MinWith cost (concat xss)</p>
+
+    <p>不妨令xss = [xs<sub>1</sub>, …, xs<sub>n</sub>]</p>
+
+    <p>是所有xss中cost最小的元素之一。</p>
+
+    <p>同时，也存在某个i，使得x 是xs<sub>i</sub>中的元素。</p>
+
+    <p>不妨令y<sub>i</sub> ← MinWith cost xs<sub>i</sub>。</p>
+
+    <p>则 [y1,.., y<sub>i-1</sub>, x, y<sub>i+1</sub>,.., yn] ← map (MinWith cost) xss</p>
+
+    <p>又因为x是最小的之一，所以x ← [y1,.., y<sub>i-1</sub>, x, y<sub>i+1</sub>,.., yn]</p>
+
+    <p>所以x ← MinWith cost (map (MinWith cost) xss)</p>
+  </li>
+  <li>
+    <p>如何证明 MinWith cost (map (MinWith cost) xss) ← MinWith cost (concat xss)?</p>
+
+    <p>不妨令xs ← map (MinWith cost) xss， 其中xs = [x<sub>1</sub>, .., x<sub>n</sub>]</p>
+
+    <p>也就是说对于任意i，有x<sub>i</sub> ← MinWith cost xs<sub>i</sub>。</p>
+
+    <p>不妨令x<sub>k</sub> ← MinWith cost xs</p>
+
+    <p>所以对于任意i，有cost x<sub>k</sub> ≤ cost x<sub>i</sub>。</p>
+
+    <p>又因为x<sub>i</sub> ← MinWith cost xs<sub>i</sub></p>
+
+    <p>所以x<sub>k</sub> ← MinWith cost (concat xss)</p>
+  </li>
+  <li>
+    <p>上面两个综合，我们有MinWith cost (map (MinWith cost) xss) = MinWith cost (concat xss)。</p>
+
+    <p>也就是说我们从集合包含的角度证明了分布律</p>
+  </li>
+  <li>
+    <p>如何证明 foldr gstep c<sub>0</sub> xs ← MinWith cost (foldr fstep [c<sub>0</sub>] xs)?</p>
+
+    <p>induction part:</p>
+    <div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">foldr</span> <span class="n">gstep</span> <span class="n">c0</span> <span class="p">(</span><span class="n">x</span> <span class="o">:</span> <span class="n">xs</span><span class="p">)</span>
+  <span class="o">=</span> <span class="n">gstep</span> <span class="n">x</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">gstep</span> <span class="n">c0</span> <span class="n">xs</span><span class="p">)</span>  <span class="c1">-- foldr 定义</span>
+  <span class="o">&lt;-</span> <span class="n">gstep</span> <span class="n">x</span> <span class="p">(</span><span class="kt">MinWith</span> <span class="n">cost</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">fstep</span> <span class="p">[</span><span class="n">c0</span><span class="p">]</span> <span class="n">xs</span><span class="p">))</span> <span class="c1">-- induction</span>
+  <span class="o">&lt;-</span> <span class="kt">MinWith</span> <span class="n">cost</span> <span class="p">(</span><span class="n">fstep</span> <span class="n">x</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">fstep</span> <span class="p">[</span><span class="n">c0</span><span class="p">]</span> <span class="n">xs</span><span class="p">))</span> <span class="c1">-- fusion law</span>
+  <span class="o">=</span> <span class="kt">MinWith</span> <span class="n">cost</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">fstep</span> <span class="p">[</span><span class="n">c0</span><span class="p">]</span> <span class="p">(</span><span class="n">x</span> <span class="o">:</span> <span class="n">xs</span><span class="p">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>综上</p>
+
+    <p>我们可以得到</p>
+
+    <p>mcc xs ← MinWith cost (candidates xs)</p>
+  </li>
+  <li>
+    <p>所以，当我们从equality reasoning 做不了的时候，可以尝试从refinedment reasoning角度入手。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
