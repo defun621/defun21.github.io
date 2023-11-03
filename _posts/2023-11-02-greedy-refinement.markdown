@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  list上greedy algorithm进行refinement一般思路
+title:  list上greedy algorithm用refinement reasoning
 date:   2023-11-02 21:54:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
