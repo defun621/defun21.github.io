@@ -5,6 +5,8 @@ date:   2023-11-02 21:54:08 -0700
 categories: [Algorithm-design-with-Haskell]
 ---
 
+教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
+
 - 如果minWith cost不能有unique candidate，要么换cost function，要么找方法使得greedy condition成立
 
     ```haskell

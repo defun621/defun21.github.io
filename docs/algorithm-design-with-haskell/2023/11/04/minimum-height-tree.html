@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>最小高度树（上） | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="最小高度树（上）" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<meta property="og:description" content="教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52" />
+<link rel="canonical" href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html" />
+<meta property="og:url" content="https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-04T20:54:08-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="最小高度树（上）" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-04T20:54:08-07:00","datePublished":"2023-11-04T20:54:08-07:00","description":"教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52","headline":"最小高度树（上）","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html"},"url":"https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">最小高度树（上）</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-04T20:54:08-07:00" itemprop="datePublished">Nov 4, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52">https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</a></p>
+
+<ul>
+  <li>
+    <p>这里讨论树上贪婪算法时候用的树的类型是leaf-labeled tree：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">enum</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span><span class="k">:</span>
+      <span class="kt">case</span> <span class="kt">Leaf</span><span class="o">(</span><span class="kt">a:</span> <span class="kt">A</span><span class="o">)</span>
+      <span class="kt">case</span> <span class="kt">Node</span><span class="o">(</span><span class="kt">l:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span>
+
+  <span class="k">object</span> <span class="nc">Tree</span><span class="k">:</span>
+      <span class="kt">def</span> <span class="kt">apply</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+      <span class="k">def</span> <span class="nf">apply</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>回顾一下基本util函数</p>
+
+    <ul>
+      <li>
+        <p>size：</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">size</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">size</span><span class="o">(</span><span class="n">l</span><span class="o">)</span> <span class="o">+</span> <span class="nf">size</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>height</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">height</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="nv">Math</span><span class="o">.</span><span class="py">max</span><span class="o">(</span><span class="nf">height</span><span class="o">(</span><span class="n">l</span><span class="o">),</span> <span class="nf">height</span><span class="o">(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>fringe / flatten</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">fringecat</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">l</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="o">::</span> <span class="n">l</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">fringecat</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="nf">fringecat</span><span class="o">(</span><span class="n">r</span><span class="o">)(</span><span class="n">l</span><span class="o">))</span>
+  <span class="k">val</span> <span class="nv">fringe</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">fringecat</span><span class="o">(</span><span class="n">t</span><span class="o">)(</span><span class="nc">Nil</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>mkTree</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkTree</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nf">unwrap</span><span class="o">(</span><span class="nf">until</span><span class="o">(</span><span class="n">single</span><span class="o">)(</span><span class="nf">pairWith</span><span class="o">(</span><span class="nv">Tree</span><span class="o">.</span><span class="py">apply</span><span class="o">.</span><span class="py">uncurried</span><span class="o">))(</span><span class="nv">l</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="k">_</span><span class="o">))))</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>最小高度树问题：给定一列自然数，能否有一个线性时间算法以最小cost构造出fringe为该list的一棵树，其中cost为：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">cost</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="nv">Math</span><span class="o">.</span><span class="py">max</span><span class="o">(</span><span class="nf">cost</span><span class="o">(</span><span class="n">l</span><span class="o">),</span> <span class="nf">cost</span><span class="o">(</span><span class="n">r</span><span class="o">))</span>
+</code></pre></div>    </div>
+
+    <p>该问题还可以理解为：给定一列tree和它们的高度构成的pair，能否给出一个在线性时间内将这组tree合并成一颗高度最低的树，但仍保持tree的fringe。</p>
+  </li>
+  <li>
+    <p>算法的签名是：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mct</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+</code></pre></div>    </div>
+
+    <p>它的refinement为：</p>
+
+    <p>mct ← MinWith cost (mktrees xs)</p>
+
+    <p>其中mktrees 负责生成所有的candidates.</p>
+  </li>
+  <li>
+    <p>mktrees 可以这么定义：</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">extend</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="n">A</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">),</span> <span class="n">t</span><span class="o">)</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">),</span> <span class="n">t</span><span class="o">)</span> <span class="o">::</span> <span class="nf">extend</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">l</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">u</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">u</span><span class="o">,</span> <span class="n">r</span><span class="o">))</span>
+
+  <span class="k">val</span> <span class="nv">mkTrees</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">l</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">x</span><span class="o">))</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span> 
+          <span class="k">val</span> <span class="nv">base</span> <span class="k">=</span> <span class="nf">mkTrees</span><span class="o">(</span><span class="n">xs</span><span class="o">).</span><span class="py">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nf">extend</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">t</span><span class="o">))</span>
+</code></pre></div>    </div>
+
+    <p>为了能套入foldr fusion law和greedy condition，</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">foldrn</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">g</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=</span> <span class="n">l</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">g</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="nf">foldrn</span><span class="o">(</span><span class="n">xs</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="n">g</span><span class="o">))</span>
+
+  <span class="k">val</span> <span class="nv">mkTrees</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> 
+      <span class="k">type</span> <span class="kt">TL</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span>
+      <span class="k">val</span> <span class="nv">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">TL</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nc">TL</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">tl</span><span class="k">:</span> <span class="kt">TL</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nv">tl</span><span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nf">extend</span><span class="o">(</span><span class="n">x</span><span class="o">)(</span><span class="n">t</span><span class="o">))</span>
+      <span class="k">val</span> <span class="nv">g</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">TL</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">))</span>
+      <span class="nf">foldrn</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="n">g</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>mktrees 也可以这么定义：</p>
+
+    <ul>
+      <li>
+        <p>先定义forest，也就是a list of trees</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">type</span> <span class="kt">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>forest可以roll成一棵树：</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">rollup</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">ts</span><span class="k">:</span> <span class="kt">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">ts</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">List</span><span class="o">(</span><span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span>
+      <span class="k">case</span> <span class="n">x</span> <span class="o">::</span> <span class="n">y</span> <span class="o">::</span> <span class="n">xs</span> <span class="k">=&gt;</span> <span class="nv">xs</span><span class="o">.</span><span class="py">foldLeft</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">))(</span><span class="nv">Tree</span><span class="o">.</span><span class="py">apply</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>spine 是rollup的反函数：</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">spinecat</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="n">ts</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="k">match</span>
+      <span class="k">case</span> <span class="nc">Leaf</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span> <span class="o">::</span> <span class="n">ts</span>
+      <span class="k">case</span> <span class="nc">Node</span><span class="o">(</span><span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nf">spinecat</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">r</span> <span class="o">::</span> <span class="n">ts</span><span class="o">)</span>
+
+  <span class="k">val</span> <span class="nv">spine</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nf">spinecat</span><span class="o">(</span><span class="n">t</span><span class="o">)(</span><span class="nc">Nil</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>所以成立： <code class="language-plaintext highlighter-rouge">spine (rollup ts) = ts</code></p>
+      </li>
+      <li>
+        <p>mkforests</p>
+
+        <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">extend</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="n">A</span> <span class="k">=&gt;</span> <span class="nc">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">ts</span> <span class="k">=&gt;</span> 
+      <span class="k">for</span> <span class="o">{</span>
+          <span class="n">k</span> <span class="k">&lt;-</span> <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="nv">ts</span><span class="o">.</span><span class="py">size</span><span class="o">).</span><span class="py">toList</span>
+          <span class="n">tail</span> <span class="k">=</span> <span class="nv">ts</span><span class="o">.</span><span class="py">drop</span><span class="o">(</span><span class="n">k</span><span class="o">)</span>
+          <span class="n">head</span> <span class="k">=</span> <span class="nf">rollup</span><span class="o">(</span><span class="nv">ts</span><span class="o">.</span><span class="py">take</span><span class="o">(</span><span class="n">k</span><span class="o">))</span>
+      <span class="o">}</span> <span class="k">yield</span> <span class="nc">Tree</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">::</span> <span class="n">head</span> <span class="o">::</span> <span class="n">tail</span>
+
+  <span class="k">val</span> <span class="nv">mkforests</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> 
+      <span class="k">type</span> <span class="kt">FL</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Forest</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span>
+      <span class="k">val</span> <span class="nv">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">FL</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nc">FL</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">fl</span><span class="k">:</span> <span class="kt">FL</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nv">fl</span><span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="n">ts</span> <span class="k">=&gt;</span> <span class="nf">extend</span><span class="o">(</span><span class="n">a</span><span class="o">)(</span><span class="n">ts</span><span class="o">))</span>
+      <span class="k">val</span> <span class="nv">g</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">FL</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="nc">Tree</span><span class="o">(</span><span class="n">a</span><span class="o">)))</span>
+      <span class="nf">foldrn</span><span class="o">(</span><span class="n">l</span><span class="o">)(</span><span class="n">f</span><span class="o">)(</span><span class="n">g</span><span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>最后，有了mkforests，我们可以定义mktrees</p>
+      </li>
+    </ul>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">mkTrees</span><span class="k">:</span> <span class="err">[</span><span class="kt">A</span><span class="err">]</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Tree</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span> <span class="k">=</span> <span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nf">mkforests</span><span class="o">(</span><span class="n">l</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">f</span> <span class="k">=&gt;</span> <span class="nf">rollup</span><span class="o">(</span><span class="n">f</span><span class="o">))</span>
+</code></pre></div>    </div>
+
+    <p>下一篇继续学习如何在上述两个定义下进行refine从而得到最终的贪婪算法</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Algorithm-design-with-Haskell</li>
+</ul>
+
+  </div><a class="u-url" href="/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
