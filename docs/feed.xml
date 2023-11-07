@@ -1,4 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-04T23:05:49-07:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">最小高度树（上）</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html" rel="alternate" type="text/html" title="最小高度树（上）" /><published>2023-11-04T20:54:08-07:00</published><updated>2023-11-04T20:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-06T23:27:31-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">其他的early decision predicates</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html" rel="alternate" type="text/html" title="其他的early decision predicates" /><published>2023-11-06T20:45:00-08:00</published><updated>2023-11-06T20:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;之前的early stopping 算法中用到的predicate是：&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;nbr&lt;sub&gt;i&lt;/sub&gt;[r] - nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] = 0&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;我们这里称之为DIFF(i, r)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;不妨令 faulty&lt;sub&gt;i&lt;/sub&gt;[r] = n - nbr&lt;sub&gt;i&lt;/sub&gt;[r]，即在第r轮，p&lt;sub&gt;i&lt;/sub&gt;认为挂掉的process的数量。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;则 COUNT(i,r) ≡ (faulty&lt;sub&gt;i&lt;/sub&gt;[r] ≤ r) 也可以是一个正确的early decision predicate&lt;/p&gt;
+
+    &lt;p&gt;因为：&lt;/p&gt;
+
+    &lt;p&gt;当COUNT(i,r)被满足时，现在的轮数大于p&lt;sub&gt;i&lt;/sub&gt;挂掉的process的个数，&lt;/p&gt;
+
+    &lt;p&gt;也即在p&lt;sub&gt;i&lt;/sub&gt;看来，存在这么一轮r’，1 ≤ r’ ≤ r，在该轮中没有process 挂掉。&lt;/p&gt;
+
+    &lt;p&gt;那在该r’轮结束时，p&lt;sub&gt;i&lt;/sub&gt;里的view&lt;sub&gt;i&lt;/sub&gt;已经有当时能够知道的所有&amp;lt;k,v&amp;gt;元组并且由于不存在recover，以后也不会知道更多的&amp;lt;k,v&amp;gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;DIFF(i,r) 和 COUNT(i,r) 孰优孰劣？&lt;/p&gt;
+
+    &lt;p&gt;可以证明：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;给定一个execution，不妨令 r ≥ 2是满足COUNT(i,r)的第一轮。则存在COUNT(i,r) ⇒ DIFF(i,r)&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;给定一个execution，不妨令 r ≥ 2是满足DIFF(i,r)的第一轮。则存在failure pattern，使得DIFF(i,r) ∧ ¬ COUNT(i,r)。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第一条是因为当COUNT(i,r)满足时，也就是说foulty&lt;sub&gt;i&lt;/sub&gt;[r] &amp;lt; r 并且 faulty&lt;sub&gt;i&lt;/sub&gt;[r - 1] ≥ r - 1。&lt;/p&gt;
+
+    &lt;p&gt;则有faulty&lt;sub&gt;i&lt;/sub&gt;[r] - faulty&lt;sub&gt;i&lt;/sub&gt;[r - 1] &amp;lt; 1&lt;/p&gt;
+
+    &lt;p&gt;也即nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] - nbr&lt;sub&gt;i&lt;/sub&gt;[r] &amp;lt; 1&lt;/p&gt;
+
+    &lt;p&gt;又因为nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] - nbr&lt;sub&gt;i&lt;/sub&gt;[r] ≥ 0&lt;/p&gt;
+
+    &lt;p&gt;所以 nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] - nbr&lt;sub&gt;i&lt;/sub&gt;[r] = 0。&lt;/p&gt;
+
+    &lt;p&gt;也就是说COUNT(i,r) ⇒ DIFF(i,r)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;第二条可以反证：&lt;/p&gt;
+
+    &lt;p&gt;不妨令在某次execution中一开始就有2 ≤ x ≤ t个process 挂掉，之后没有一个process挂掉。&lt;/p&gt;
+
+    &lt;p&gt;则COUNT(i,r)在第x + 1轮变为真。&lt;/p&gt;
+
+    &lt;p&gt;而从第2轮起，nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1]和nbr&lt;sub&gt;i&lt;/sub&gt;[r]之间的差即为0.&lt;/p&gt;
+
+    &lt;p&gt;所以对于2到x中的任意轮，DIFF(i,r) ∧ ¬ COUNT(i,r)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;上面两个定理说明：&lt;strong&gt;DIFF(i,r)优于COUNT(i,r)&lt;/strong&gt;。&lt;/p&gt;
+
+    &lt;p&gt;因为存在某些failure pattern使得用DIFF(i,r)的算法可以在min(f + 2, t + 1)轮之前就终止。&lt;/p&gt;
+
+    &lt;p&gt;其根本原因是DIFF(i,r)可以把本轮中挂掉的process数也加入到考量中。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;从CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]上的early stopping的interactive consistency算法可以很直接得到early stopping 的consensus算法。&lt;/p&gt;
+
+    &lt;p&gt;因为是consensus，所以不需要view，只需要一个est.&lt;/p&gt;
+
+    &lt;p&gt;此处略过不表。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">最小高度树（上）</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html" rel="alternate" type="text/html" title="最小高度树（上）" /><published>2023-11-04T20:54:08-07:00</published><updated>2023-11-04T20:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/04/minimum-height-tree.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1228,178 +1311,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">用scd-broadcast实现counter和lattice agreement</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/23/scd-atomic-counter.html" rel="alternate" type="text/html" title="用scd-broadcast实现counter和lattice agreement" /><published>2023-10-23T20:45:00-07:00</published><updated>2023-10-23T20:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/23/scd-atomic-counter</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/23/scd-atomic-counter.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Counter object&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;一个concurrent counter object有三个操作：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;increase&lt;/li&gt;
-      &lt;li&gt;decrease&lt;/li&gt;
-      &lt;li&gt;read&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;用scd-broadcast实现counter object&lt;/strong&gt;实现简述&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;increase：&lt;/p&gt;
-
-        &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;置为false。&lt;/p&gt;
-
-        &lt;p&gt;scd广播plus(i)消息，等到done&lt;sub&gt;i&lt;/sub&gt;值被置为true时，increase 操作结束&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;decrease：&lt;/p&gt;
-
-        &lt;p&gt;和increase一样，区别在scd广播的是消息MINUS(i)&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;read：&lt;/p&gt;
-
-        &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;置为false。&lt;/p&gt;
-
-        &lt;p&gt;scd广播SYNC(i)消息，等到done&lt;sub&gt;i&lt;/sub&gt;值被置为true时，返回本地counter&lt;sub&gt;i&lt;/sub&gt;的值。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt;要scd-deliver消息集合 {PLUS(j&lt;sub&gt;1&lt;/sub&gt;), …, MINUS(j&lt;sub&gt;x&lt;/sub&gt;), …, SYNC(j&lt;sub&gt;y&lt;/sub&gt;), …}时：&lt;/p&gt;
-
-        &lt;p&gt;不妨令u是消息集合中PLUS的消息个数，v是消息集合中MINUS消息的个数，&lt;/p&gt;
-
-        &lt;p&gt;更新counter&lt;sub&gt;i&lt;/sub&gt;为counter&lt;sub&gt;i&lt;/sub&gt; + u - v&lt;/p&gt;
-
-        &lt;p&gt;如果在消息集合中有本地scd-broadcast的消息时，done&lt;sub&gt;i&lt;/sub&gt;置为true。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可以证明：上述算法可以实现一个atomic counter。证明思路和之前用scd-broadcast实现atomic register类似。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;sequentially consistent counter&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;上述实现只需要把done&lt;sub&gt;i&lt;/sub&gt;改成一个本地计数器就可以实现一个sequentially consistent counter。&lt;/p&gt;
-
-        &lt;p&gt;在该实现中，increase和decrease在消息broadcast完后能马上返回，不需要等待某个值。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;实现简述&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;increase&lt;/p&gt;
-
-            &lt;p&gt;本地lsc&lt;sub&gt;i&lt;/sub&gt;自增1，广播PLUS(i)。结束&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;decrease&lt;/p&gt;
-
-            &lt;p&gt;和increase类似，区别在于scd广播的是MINUS(i)。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;read：&lt;/p&gt;
-
-            &lt;p&gt;等到本地lsc&lt;sub&gt;i&lt;/sub&gt;的值归0之后，返回counter&lt;sub&gt;i&lt;/sub&gt;的值。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;当p&lt;sub&gt;i&lt;/sub&gt;要scd-deliver消息集合 {PLUS(j&lt;sub&gt;1&lt;/sub&gt;), …, MINUS(j&lt;sub&gt;x&lt;/sub&gt;), …}时：&lt;/p&gt;
-
-            &lt;p&gt;不妨令u是消息集合中PLUS的消息个数，v是消息集合中MINUS消息的个数，w是集合里从本地发出的消息的个数。&lt;/p&gt;
-
-            &lt;p&gt;更新counter&lt;sub&gt;i&lt;/sub&gt;为counter&lt;sub&gt;i&lt;/sub&gt; + u - v。&lt;/p&gt;
-
-            &lt;p&gt;更新lsc&lt;sub&gt;i&lt;/sub&gt;为lsc&lt;sub&gt;i&lt;/sub&gt; - w.&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;lattice agreement&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;p&gt;不妨令S是一个集合，≤是S上的偏序关系。&lt;/p&gt;
-
-        &lt;p&gt;给定S’ ⊆ S，&lt;strong&gt;S’的上界&lt;/strong&gt;就是一个属于S的元素x，使得 ∀ y ∈ S’: y ≤ x&lt;/p&gt;
-
-        &lt;p&gt;&lt;strong&gt;S’的最小上界z&lt;/strong&gt;，就是一个这么样的元素，使得对于所有S’的上界y都有 z ≤ y。&lt;/p&gt;
-
-        &lt;p&gt;如果S的所有有限子集都有一个最小上界，则S被称做一个&lt;strong&gt;semilattice&lt;/strong&gt;。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;lattice agreement task&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;定义：&lt;/p&gt;
-
-            &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;有操作propose。&lt;/p&gt;
-
-            &lt;p&gt;不妨令 p&lt;sub&gt;i&lt;/sub&gt;调用了propose(in&lt;sub&gt;i&lt;/sub&gt;)返回了属于semilattice S的元素z，其中in&lt;sub&gt;i&lt;/sub&gt;也是semilattice S中的元素。&lt;/p&gt;
-
-            &lt;p&gt;我们称p&lt;sub&gt;i&lt;/sub&gt; propose in&lt;sub&gt;i&lt;/sub&gt;，decide z。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;性质：&lt;/p&gt;
-
-            &lt;ul&gt;
-              &lt;li&gt;
-                &lt;p&gt;LA-validity：&lt;/p&gt;
-
-                &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt; decide了 out&lt;sub&gt;i&lt;/sub&gt;，则有in&lt;sub&gt;i&lt;/sub&gt; ≤ out&lt;sub&gt;i&lt;/sub&gt; ≤ lub({in&lt;sub&gt;1&lt;/sub&gt;, …, in&lt;sub&gt;n&lt;/sub&gt;}),&lt;/p&gt;
-
-                &lt;p&gt;其中lub(S)表示S的最小上界。&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;LA-containment:&lt;/p&gt;
-
-                &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt; decide了out&lt;sub&gt;i&lt;/sub&gt;， p&lt;sub&gt;j&lt;/sub&gt; decide了 out&lt;sub&gt;j&lt;/sub&gt;，&lt;/p&gt;
-
-                &lt;p&gt;则有out&lt;sub&gt;i&lt;/sub&gt; ≤ out&lt;sub&gt;j&lt;/sub&gt; 或者 out&lt;sub&gt;j&lt;/sub&gt; ≤ out&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-              &lt;/li&gt;
-              &lt;li&gt;
-                &lt;p&gt;LA-termination:&lt;/p&gt;
-
-                &lt;p&gt;如果一个没有挂的process propose了一个值，则它会decide 一个值&lt;/p&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;lattice agreement实现简述：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;propose(in&lt;sub&gt;i&lt;/sub&gt;)：&lt;/p&gt;
-
-        &lt;p&gt;done&lt;sub&gt;i&lt;/sub&gt;置为false。广播消息MSG(i, in&lt;sub&gt;i&lt;/sub&gt;)。等到done&lt;sub&gt;i&lt;/sub&gt;为true时，返回本地lub(rec&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;当要scd-deliver消息集合{MSG(j&lt;sub&gt;1&lt;/sub&gt;, v&lt;sub&gt;j&lt;sub&gt;1&lt;/sub&gt;&lt;/sub&gt;), …, MSG(j&lt;sub&gt;x&lt;/sub&gt;, v&lt;sub&gt;j&lt;sub&gt;x&lt;/sub&gt;&lt;/sub&gt;)}时：&lt;/p&gt;
-
-        &lt;p&gt;rec&lt;sub&gt;i&lt;/sub&gt;更新为 rec&lt;sub&gt;i&lt;/sub&gt; ∪ {v&lt;sub&gt;j&lt;sub&gt;1&lt;/sub&gt;&lt;/sub&gt;, …, v&lt;sub&gt;j&lt;sub&gt;x&lt;/sub&gt;&lt;/sub&gt;}&lt;/p&gt;
-
-        &lt;p&gt;如果有从本地发出的MSG，则done&lt;sub&gt;i&lt;/sub&gt;置为true。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>

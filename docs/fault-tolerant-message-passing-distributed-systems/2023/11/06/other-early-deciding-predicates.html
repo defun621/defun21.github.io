@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>其他的early decision predicates | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="其他的early decision predicates" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-06T20:45:00-08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="其他的early decision predicates" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-06T20:45:00-08:00","datePublished":"2023-11-06T20:45:00-08:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"其他的early decision predicates","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">其他的early decision predicates</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-06T20:45:00-08:00" itemprop="datePublished">Nov 6, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>之前的early stopping 算法中用到的predicate是：</p>
+
+    <p><em>nbr<sub>i</sub>[r] - nbr<sub>i</sub>[r - 1] = 0</em></p>
+
+    <p>我们这里称之为DIFF(i, r)</p>
+  </li>
+  <li>
+    <p>不妨令 faulty<sub>i</sub>[r] = n - nbr<sub>i</sub>[r]，即在第r轮，p<sub>i</sub>认为挂掉的process的数量。</p>
+  </li>
+  <li>
+    <p>则 COUNT(i,r) ≡ (faulty<sub>i</sub>[r] ≤ r) 也可以是一个正确的early decision predicate</p>
+
+    <p>因为：</p>
+
+    <p>当COUNT(i,r)被满足时，现在的轮数大于p<sub>i</sub>挂掉的process的个数，</p>
+
+    <p>也即在p<sub>i</sub>看来，存在这么一轮r’，1 ≤ r’ ≤ r，在该轮中没有process 挂掉。</p>
+
+    <p>那在该r’轮结束时，p<sub>i</sub>里的view<sub>i</sub>已经有当时能够知道的所有&lt;k,v&gt;元组并且由于不存在recover，以后也不会知道更多的&lt;k,v&gt;.</p>
+  </li>
+  <li>
+    <p>DIFF(i,r) 和 COUNT(i,r) 孰优孰劣？</p>
+
+    <p>可以证明：</p>
+
+    <ul>
+      <li>
+        <p>给定一个execution，不妨令 r ≥ 2是满足COUNT(i,r)的第一轮。则存在COUNT(i,r) ⇒ DIFF(i,r)</p>
+      </li>
+      <li>
+        <p>给定一个execution，不妨令 r ≥ 2是满足DIFF(i,r)的第一轮。则存在failure pattern，使得DIFF(i,r) ∧ ¬ COUNT(i,r)。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>第一条是因为当COUNT(i,r)满足时，也就是说foulty<sub>i</sub>[r] &lt; r 并且 faulty<sub>i</sub>[r - 1] ≥ r - 1。</p>
+
+    <p>则有faulty<sub>i</sub>[r] - faulty<sub>i</sub>[r - 1] &lt; 1</p>
+
+    <p>也即nbr<sub>i</sub>[r - 1] - nbr<sub>i</sub>[r] &lt; 1</p>
+
+    <p>又因为nbr<sub>i</sub>[r - 1] - nbr<sub>i</sub>[r] ≥ 0</p>
+
+    <p>所以 nbr<sub>i</sub>[r - 1] - nbr<sub>i</sub>[r] = 0。</p>
+
+    <p>也就是说COUNT(i,r) ⇒ DIFF(i,r)</p>
+  </li>
+  <li>
+    <p>第二条可以反证：</p>
+
+    <p>不妨令在某次execution中一开始就有2 ≤ x ≤ t个process 挂掉，之后没有一个process挂掉。</p>
+
+    <p>则COUNT(i,r)在第x + 1轮变为真。</p>
+
+    <p>而从第2轮起，nbr<sub>i</sub>[r - 1]和nbr<sub>i</sub>[r]之间的差即为0.</p>
+
+    <p>所以对于2到x中的任意轮，DIFF(i,r) ∧ ¬ COUNT(i,r)</p>
+  </li>
+  <li>
+    <p>上面两个定理说明：<strong>DIFF(i,r)优于COUNT(i,r)</strong>。</p>
+
+    <p>因为存在某些failure pattern使得用DIFF(i,r)的算法可以在min(f + 2, t + 1)轮之前就终止。</p>
+
+    <p>其根本原因是DIFF(i,r)可以把本轮中挂掉的process数也加入到考量中。</p>
+  </li>
+  <li>
+    <p>从CSMP<sub>n,t</sub>[∅]上的early stopping的interactive consistency算法可以很直接得到early stopping 的consensus算法。</p>
+
+    <p>因为是consensus，所以不需要view，只需要一个est.</p>
+
+    <p>此处略过不表。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/11/06/other-early-deciding-predicates.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
