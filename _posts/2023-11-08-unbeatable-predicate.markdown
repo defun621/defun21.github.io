@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  其他的early decision predicates
+title:  PREF0 和 CGM算法
 date:   2023-11-08 10:45:00 -0800
 categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 ---
