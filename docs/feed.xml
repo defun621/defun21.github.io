@@ -1,4 +1,118 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-09T18:49:19-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">最小高度树（下）</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/09/minimum-height-tree.html" rel="alternate" type="text/html" title="最小高度树（下）" /><published>2023-11-09T15:54:08-08:00</published><updated>2023-11-09T15:54:08-08:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/09/minimum-height-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/09/minimum-height-tree.html">&lt;ul&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-11T00:43:50-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">基于condition的CSMP[∅]的early stopping 算法中的概念</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html" rel="alternate" type="text/html" title="基于condition的CSMP[∅]的early stopping 算法中的概念" /><published>2023-11-10T22:45:00-08:00</published><updated>2023-11-10T22:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;I[1..n]代表每个process p&lt;sub&gt;i&lt;/sub&gt; propose 一个值I[i]&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于condition的CSMP[∅]的early stopping 算法思想：&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;是否存在方法可以描述一组输入向量，使得无论故障模式如何，进程始终可以在不到（t + 1）轮内做出决策？&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个condition就是一组input vector。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;不妨令C[x], 0 ≤ x ≤ t，是一组/类（class）condition，该组condition可以满足一下条件：&lt;/p&gt;
+
+    &lt;p&gt;在最多f&lt;sub&gt;t&lt;/sub&gt;(x)轮里可以完成consensus，其中f&lt;sub&gt;t&lt;/sub&gt;(x) ≤ t + 1 并且 f&lt;sub&gt;t&lt;/sub&gt;(x + 1) &amp;lt; f&lt;sub&gt;t&lt;/sub&gt;(x)&lt;/p&gt;
+
+    &lt;p&gt;x 被叫做该类condition的degree。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一些准备概念：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;V： 可以被proposed 的值的集合&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;equal(a, I): 在input vector I中值a出现的次数&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;dist(I&lt;sub&gt;1&lt;/sub&gt;, I&lt;sub&gt;2&lt;/sub&gt;)：I&lt;sub&gt;1&lt;/sub&gt;和I&lt;sub&gt;2&lt;/sub&gt;之间的Hamming distance&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;legality&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;一个condition C 如果满足条件：&lt;/p&gt;
+
+    &lt;p&gt;存在映射 h: C ↦ V ，并且该映射满足条件：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;∀ I ∈ C: #&lt;sub&gt;h(I)&lt;/sub&gt;(I) &amp;gt; x&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;∀ I1, I2 ∈ C: (h(I1) ≠ h(I2)) ⇒ (dist(I1, I2) &amp;gt; x)&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;则我们说condition C是x-legal。&lt;/p&gt;
+
+    &lt;p&gt;即函数h从input vector I中取出一个值，作为decided value。函数h代表了consensus。&lt;/p&gt;
+
+    &lt;p&gt;此时我们要求h满足一些条件：&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;h(I)得到的值v，要在原来的input vector中出现足够多次（即多余x次）&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;如果h从不同的input vector I1, I2得到不同的值时，这两个input vector必须区别足够大。这是为了防止不同的process对于同一input vector观测到不同view时得出不同decided value。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;所有x-legal的condition构成的类别即为C[x]&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;假设V中的值可以有一个全序关系。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;C&lt;sub&gt;max&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;表示对于给定的x，h函数总是会取proposed值中最大的那个的condition。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;max(I)代表input vector I中的最大值&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;则C&lt;sub&gt;max&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;可以按照下面方式被定义：&lt;/p&gt;
+
+    &lt;p&gt;C&lt;sub&gt;max&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt; ≝ {I | equal(a, I) &amp;gt; x where a = max(I)}&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以证明：&lt;strong&gt;C&lt;sub&gt;max&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;是一个x-legal condition&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;同理 &lt;strong&gt;C&lt;sub&gt;min&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;也是一个x-legal condition&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;一个x-legal condition C如果满足以下条件，则称C为maximal&lt;/strong&gt;:&lt;/p&gt;
+
+    &lt;p&gt;如果往C中加入一个input vector，则C不再是x-legal。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;C&lt;sub&gt;first&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;&lt;/p&gt;
+
+    &lt;p&gt;它是取input vector 中最frequent值为decided value的condition。&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;C&lt;sub&gt;first&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;也是x-legal的&lt;/strong&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;C&lt;sub&gt;first&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;不是maximal的，但是C&lt;sub&gt;min&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;和C&lt;sub&gt;max&lt;/sub&gt;&lt;sup&gt;x&lt;/sup&gt;是maximal。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">最小高度树（下）</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/09/minimum-height-tree.html" rel="alternate" type="text/html" title="最小高度树（下）" /><published>2023-11-09T15:54:08-08:00</published><updated>2023-11-09T15:54:08-08:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/09/minimum-height-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/09/minimum-height-tree.html">&lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;继续推理，为了能得到最优mct，我们先看第一个definition&lt;/p&gt;
 
@@ -1298,116 +1412,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">consensus和interactive consistency定义</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html" rel="alternate" type="text/html" title="consensus和interactive consistency定义" /><published>2023-10-27T21:45:00-07:00</published><updated>2023-10-27T21:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/27/consensus-interactive-consistency.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;consensus问题在process crash failure模型里可以定义为一个distributed agreement abstraction&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;propose()操作&lt;/p&gt;
-
-        &lt;p&gt;如果一个process p&lt;sub&gt;i&lt;/sub&gt; 调用了propose(v&lt;sub&gt;i&lt;/sub&gt;)，最后propose(v&lt;sub&gt;i&lt;/sub&gt;)返回了w&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;我们说p&lt;sub&gt;i&lt;/sub&gt; propose了v&lt;sub&gt;i&lt;/sub&gt;，p&lt;sub&gt;i&lt;/sub&gt; decide了w&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;性质：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;CC-validity&lt;/strong&gt;：一个被decide的值肯定是一个被某个process proposed的值&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;CC-agreement&lt;/strong&gt;：不存在两个decide出不同值的process。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;CC-termination&lt;/strong&gt;：每个正确的process都能decide 一个值出来。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;p&gt;其中CC表示在crash failure model下的consensus。&lt;/p&gt;
-
-        &lt;p&gt;CC-validity和CC-agreement保证了safety。&lt;/p&gt;
-
-        &lt;p&gt;CC-validity说明decided value是从proposed value中选出的。&lt;/p&gt;
-
-        &lt;p&gt;CC-agreement保证了最后会只有一个值。&lt;/p&gt;
-
-        &lt;p&gt;CC-termination体现了liveness。没挂掉的process上的propose操作总会terminate。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;uniform consensus&lt;/p&gt;
-
-    &lt;p&gt;通过CC-agreement和CC-termination保证了如果一个process了一个值，再crash掉，他不会产生不同的值。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;non-uniform consensus&lt;/p&gt;
-
-    &lt;p&gt;是比uniform consensus更弱的模型。&lt;/p&gt;
-
-    &lt;p&gt;它有性质：&lt;strong&gt;Non-uniform CC-agreement&lt;/strong&gt;：不存在两个没挂的process会decide出不同的结果。&lt;/p&gt;
-
-    &lt;p&gt;也就是说，在non-uniform consensus里允许process挂掉并decide出和别的process不同的值。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;binary consensus 和 multivalued consensus&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;不妨令V是可以被proprose的值的集合。&lt;/p&gt;
-
-    &lt;p&gt;如果|V|=2，那么这个consensus是binary的，通常认为V = {0, 1}。&lt;/p&gt;
-
-    &lt;p&gt;如果|V| &amp;gt; 2，则这个consensus是multivalued。V可以是一个有限集合也可以是一个无限的集合。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;interactive consistency （也叫vector consensus）&lt;/p&gt;
-
-    &lt;p&gt;和consensus不同，interactive consistency不是只得到一个decided value，而是得到一个decided vector。所以叫做vector consensus。&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;性质&lt;/strong&gt;：&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;ICC-validity&lt;/strong&gt;：&lt;/p&gt;
-
-            &lt;p&gt;不妨令D&lt;sub&gt;i&lt;/sub&gt;[1..n]是由p&lt;sub&gt;i&lt;/sub&gt; decide出的vector。&lt;/p&gt;
-
-            &lt;p&gt;则有 ∀ j ∈ [1..n]: D&lt;sub&gt;i&lt;/sub&gt;[j] ∈ {v&lt;sub&gt;j&lt;/sub&gt;, ⊥}，&lt;/p&gt;
-
-            &lt;p&gt;其中v&lt;sub&gt;j&lt;/sub&gt;是由p&lt;sub&gt;j&lt;/sub&gt;propose的值。&lt;/p&gt;
-
-            &lt;p&gt;如果p&lt;sub&gt;j&lt;/sub&gt;没挂，则D&lt;sub&gt;i&lt;/sub&gt;[j] = v&lt;sub&gt;j&lt;/sub&gt;。&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;ICC-agreement&lt;/strong&gt;：不存在能decide出不同值的两个process&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;&lt;strong&gt;ICC-termination&lt;/strong&gt;： 每个没有挂掉正常运行的process都可以最后decide出同一个vector。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;值得注意的是：&lt;/p&gt;
-
-        &lt;p&gt;如果D&lt;sub&gt;i&lt;/sub&gt;[j] = ⊥，则说明p&lt;sub&gt;i&lt;/sub&gt;知道p&lt;sub&gt;j&lt;/sub&gt;挂了。&lt;/p&gt;
-
-        &lt;p&gt;反之，如果D&lt;sub&gt;i&lt;/sub&gt;[j] ≠ ⊥，则说明p&lt;sub&gt;i&lt;/sub&gt;并不能下判断p&lt;sub&gt;j&lt;/sub&gt;是否正常运行。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;由ICC 可以得到CC，而从CC不能得到ICC，所以ICC是在CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中比CC更强的抽象。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>

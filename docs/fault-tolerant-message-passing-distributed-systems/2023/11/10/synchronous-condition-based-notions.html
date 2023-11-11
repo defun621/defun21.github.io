@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>基于condition的CSMP[∅]的early stopping 算法中的概念 | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="基于condition的CSMP[∅]的early stopping 算法中的概念" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-10T22:45:00-08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="基于condition的CSMP[∅]的early stopping 算法中的概念" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-10T22:45:00-08:00","datePublished":"2023-11-10T22:45:00-08:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"基于condition的CSMP[∅]的early stopping 算法中的概念","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">基于condition的CSMP[∅]的early stopping 算法中的概念</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-10T22:45:00-08:00" itemprop="datePublished">Nov 10, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>I[1..n]代表每个process p<sub>i</sub> propose 一个值I[i]</p>
+  </li>
+  <li>
+    <p>基于condition的CSMP[∅]的early stopping 算法思想：</p>
+
+    <p><strong>是否存在方法可以描述一组输入向量，使得无论故障模式如何，进程始终可以在不到（t + 1）轮内做出决策？</strong></p>
+  </li>
+  <li>
+    <p>一个condition就是一组input vector。</p>
+  </li>
+  <li>
+    <p>不妨令C[x], 0 ≤ x ≤ t，是一组/类（class）condition，该组condition可以满足一下条件：</p>
+
+    <p>在最多f<sub>t</sub>(x)轮里可以完成consensus，其中f<sub>t</sub>(x) ≤ t + 1 并且 f<sub>t</sub>(x + 1) &lt; f<sub>t</sub>(x)</p>
+
+    <p>x 被叫做该类condition的degree。</p>
+  </li>
+  <li>
+    <p>一些准备概念：</p>
+
+    <ul>
+      <li>
+        <p>V： 可以被proposed 的值的集合</p>
+      </li>
+      <li>
+        <p>equal(a, I): 在input vector I中值a出现的次数</p>
+      </li>
+      <li>
+        <p>dist(I<sub>1</sub>, I<sub>2</sub>)：I<sub>1</sub>和I<sub>2</sub>之间的Hamming distance</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>legality</strong></p>
+
+    <p>一个condition C 如果满足条件：</p>
+
+    <p>存在映射 h: C ↦ V ，并且该映射满足条件：</p>
+
+    <ul>
+      <li>
+        <p>∀ I ∈ C: #<sub>h(I)</sub>(I) &gt; x</p>
+      </li>
+      <li>
+        <p>∀ I1, I2 ∈ C: (h(I1) ≠ h(I2)) ⇒ (dist(I1, I2) &gt; x)</p>
+      </li>
+    </ul>
+
+    <p>则我们说condition C是x-legal。</p>
+
+    <p>即函数h从input vector I中取出一个值，作为decided value。函数h代表了consensus。</p>
+
+    <p>此时我们要求h满足一些条件：</p>
+
+    <ol>
+      <li>
+        <p>h(I)得到的值v，要在原来的input vector中出现足够多次（即多余x次）</p>
+      </li>
+      <li>
+        <p>如果h从不同的input vector I1, I2得到不同的值时，这两个input vector必须区别足够大。这是为了防止不同的process对于同一input vector观测到不同view时得出不同decided value。</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p><strong>所有x-legal的condition构成的类别即为C[x]</strong></p>
+  </li>
+  <li>
+    <p>假设V中的值可以有一个全序关系。</p>
+
+    <ul>
+      <li>
+        <p>C<sub>max</sub><sup>x</sup>表示对于给定的x，h函数总是会取proposed值中最大的那个的condition。</p>
+      </li>
+      <li>
+        <p>max(I)代表input vector I中的最大值</p>
+      </li>
+    </ul>
+
+    <p>则C<sub>max</sub><sup>x</sup>可以按照下面方式被定义：</p>
+
+    <p>C<sub>max</sub><sup>x</sup> ≝ {I | equal(a, I) &gt; x where a = max(I)}</p>
+  </li>
+  <li>
+    <p>可以证明：<strong>C<sub>max</sub><sup>x</sup>是一个x-legal condition</strong></p>
+  </li>
+  <li>
+    <p>同理 <strong>C<sub>min</sub><sup>x</sup>也是一个x-legal condition</strong></p>
+  </li>
+  <li>
+    <p><strong>一个x-legal condition C如果满足以下条件，则称C为maximal</strong>:</p>
+
+    <p>如果往C中加入一个input vector，则C不再是x-legal。</p>
+  </li>
+  <li>
+    <p>C<sub>first</sub><sup>x</sup></p>
+
+    <p>它是取input vector 中最frequent值为decided value的condition。</p>
+
+    <p><strong>C<sub>first</sub><sup>x</sup>也是x-legal的</strong>。</p>
+  </li>
+  <li>
+    <p>C<sub>first</sub><sup>x</sup>不是maximal的，但是C<sub>min</sub><sup>x</sup>和C<sub>max</sub><sup>x</sup>是maximal。</p>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/11/10/synchronous-condition-based-notions.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
