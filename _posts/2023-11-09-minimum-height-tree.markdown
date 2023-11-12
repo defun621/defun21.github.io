@@ -5,6 +5,8 @@ date:   2023-11-09 15:54:08 -0800
 categories: [Algorithm-design-with-Haskell]
 ---
 
+教科书链接：<https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52>
+
 - 继续推理，为了能得到最优mct，我们先看第一个definition
 
     ```scala
