@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  最小高度树（上）
+title:  huffman树（上）
 date:   2023-11-11 22:54:08 -0800
 categories: [Algorithm-design-with-Haskell]
 ---

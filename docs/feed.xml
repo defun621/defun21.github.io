@@ -1,4 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-12T00:34:03-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">最小高度树（上）</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/11/huffman-tree.html" rel="alternate" type="text/html" title="最小高度树（上）" /><published>2023-11-11T22:54:08-08:00</published><updated>2023-11-11T22:54:08-08:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/11/huffman-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/11/huffman-tree.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-13T21:55:57-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">基于condition的CSMP[∅]的early stopping 算法实现简述</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/13/synchronous-condition-based-algorithm.html" rel="alternate" type="text/html" title="基于condition的CSMP[∅]的early stopping 算法实现简述" /><published>2023-11-13T20:45:00-08:00</published><updated>2023-11-13T20:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/13/synchronous-condition-based-algorithm</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/13/synchronous-condition-based-algorithm.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;不妨令input vector I是属于x-legal condition的某个input vector。&lt;/p&gt;
+
+    &lt;p&gt;我们称J是I的一个view，（即J是一个和I一样的vector，但是J中最多有x个element是⊥）。&lt;/p&gt;
+
+    &lt;p&gt;我们可以把J当作某个process 通过收到信息所构造出的本地input vector。&lt;/p&gt;
+
+    &lt;p&gt;表示为&lt;strong&gt;J ≤ I&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以通过反证法证明：&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;如果C是一个x-legal condition并且I&lt;sub&gt;1&lt;/sub&gt;和I&lt;sub&gt;2&lt;/sub&gt;是属于C的两个input vector。如果存在view J使得J ≤ I&lt;sub&gt;1&lt;/sub&gt;并且J ≤ I&lt;sub&gt;2&lt;/sub&gt;，则h(I&lt;sub&gt;1&lt;/sub&gt;)=h(I&lt;sub&gt;2&lt;/sub&gt;)&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于上述定理，可以推断出：&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;如果I是一个属于x-legal condition C的input vector，并且J是I的一个view，则h(J) = h(I)&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于condition的CSMP[∅]的early stopping 算法实现简述&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;本地变量：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;view&lt;sub&gt;i&lt;/sub&gt;，input vector的本地已知值&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;v_cond&lt;sub&gt;i&lt;/sub&gt;，用来保存h(I)(只要h(I)可以被知晓)&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;v_tmf&lt;sub&gt;i&lt;/sub&gt;，用来保存某个值，当系统挂太多process时，不再适用函数h来decide value时，该值被作为decided value&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;实现简介：&lt;/p&gt;
+
+        &lt;p&gt;process p&lt;sub&gt;i&lt;/sub&gt;的行为按照所在轮数分为两部分：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;在第一轮中：&lt;/p&gt;
+
+            &lt;p&gt;process p&lt;sub&gt;i&lt;/sub&gt;通过msg EST1(v&lt;sub&gt;i&lt;/sub&gt;)广播它propose的值v&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+            &lt;p&gt;然后在receive阶段构造view&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+            &lt;p&gt;如果本轮结束时&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;
+                &lt;p&gt;equal(⊥, view&lt;sub&gt;i&lt;/sub&gt;) ≤ x，这说明p&lt;sub&gt;i&lt;/sub&gt;已经有足够的信息，此时p&lt;sub&gt;i&lt;/sub&gt;用h函数计算h(view&lt;sub&gt;i&lt;/sub&gt;)，将结果存入v_cond&lt;sub&gt;i&lt;/sub&gt;中。&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;否则表明不适用函数h。p&lt;sub&gt;i&lt;/sub&gt;计算view&lt;sub&gt;i&lt;/sub&gt;中已知值的最大值，将其赋予v_tmf&lt;sub&gt;i&lt;/sub&gt;.&lt;/p&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;p&gt;如果x = t，此时可以直接返回v_cond&lt;sub&gt;i&lt;/sub&gt;。因为别的process已经都知道了信息了。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;在其他轮中：&lt;/p&gt;
+
+            &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;通过消息EST2(v_cond&lt;sub&gt;i&lt;/sub&gt;, v_tmf&lt;sub&gt;i&lt;/sub&gt;)来广播他的状态。&lt;/p&gt;
+
+            &lt;p&gt;广播完消息之后，&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;
+                &lt;p&gt;如果v_cond&lt;sub&gt;i&lt;/sub&gt;不为空，则直接返回v_cond&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;如果某个v_cond&lt;sub&gt;j&lt;/sub&gt;不为空，则置v_cond&lt;sub&gt;i&lt;/sub&gt;为该值。&lt;/p&gt;
+              &lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;取所有收到的v_tmf&lt;sub&gt;j&lt;/sub&gt;的最大值，将其赋予v_tmf&lt;sub&gt;i&lt;/sub&gt;.&lt;/p&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;p&gt;如果已经是执行了t + 1 - x 轮，&lt;/p&gt;
+
+            &lt;p&gt;则返回v_cond&lt;sub&gt;i&lt;/sub&gt;若其不为空，否则返回v_tmf&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以证明：&lt;/p&gt;
+
+    &lt;p&gt;上述算法可以在CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中实现consensus。并且每个process 都不超过t + 1 - x轮。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">huffman树（上）</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/11/huffman-tree.html" rel="alternate" type="text/html" title="huffman树（上）" /><published>2023-11-11T22:54:08-08:00</published><updated>2023-11-11T22:54:08-08:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/11/huffman-tree</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/11/huffman-tree.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1240,131 +1346,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">CSMP[∅]中的consensus algorithm</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html" rel="alternate" type="text/html" title="CSMP[∅]中的consensus algorithm" /><published>2023-10-30T22:45:00-07:00</published><updated>2023-10-30T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/10/30/simple-consensus-algorithm-csmp.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中consensus 算法实现一：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;思想：因为最多t个process会挂，所以任取一个大小为t+1的process集合，集合里总能找到一个process可以decide出一个value。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;propose实现简述：&lt;/p&gt;
-
-        &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;初始化本地变量est&lt;sub&gt;i&lt;/sub&gt;为v&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;然后所有process 同步执行t + 1轮如下操作，每一轮中有一个process作为coordinator。&lt;/p&gt;
-
-        &lt;p&gt;不妨令第r轮的coordinator是p&lt;sub&gt;r&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;如果在第r轮中，如果i == r，即自身是coordinator的话， 广播消息 EST(est&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
-
-        &lt;p&gt;如果在第r轮中，拿到了从coordinator发过来的EST消息，则把消息里的值赋予est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;t + 1轮结束之后，p&lt;sub&gt;i&lt;/sub&gt;返回本地的est&lt;sub&gt;i&lt;/sub&gt;为decide的值。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;从代码中我们可以直接看出上述实现满足CC-validity 和CC-termination。&lt;/p&gt;
-
-        &lt;p&gt;因为执行了t + 1轮， 所以总有一轮里面的coordinator是正常的process。&lt;/p&gt;
-
-        &lt;p&gt;broadcast后，没挂的process都会update 由该coordinator发出来的值。&lt;/p&gt;
-
-        &lt;p&gt;所以能得到CC-agreement。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;该实现是不公平的：&lt;/p&gt;
-
-        &lt;p&gt;因为v&lt;sub&gt;j&lt;/sub&gt;，其中j ∈ {t + 1, …, n}，根本没有机会参与到决策中。&lt;/p&gt;
-
-        &lt;p&gt;可以在所有轮之前加一轮随机shuffle process的propose value，这可以使得该算法公平。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]中consensus 算法实现二：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;思想：&lt;/p&gt;
-
-        &lt;p&gt;每个process存下每轮看到的value。在最后一轮之后，根据某个rule来返回最后decide了的value。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;propose实现简述：&lt;/p&gt;
-
-        &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;有两个本地变量：est&lt;sub&gt;i&lt;/sub&gt;和prev_est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;est&lt;sub&gt;i&lt;/sub&gt;初始化为v&lt;sub&gt;i&lt;/sub&gt;. prev_est&lt;sub&gt;i&lt;/sub&gt;初始化为⊥。&lt;/p&gt;
-
-        &lt;p&gt;算法一共t + 1轮，在每一轮中：&lt;/p&gt;
-
-        &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt;在上一轮中看到了更小的值（即est&lt;sub&gt;i&lt;/sub&gt; ≠ prev_est&lt;sub&gt;i&lt;/sub&gt;)，p&lt;sub&gt;i&lt;/sub&gt;广播 EST(est&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
-
-        &lt;p&gt;不妨令recval&lt;sub&gt;i&lt;/sub&gt;是p&lt;sub&gt;i&lt;/sub&gt;在某轮中收到的所有values组成的集合。&lt;/p&gt;
-
-        &lt;p&gt;先更新prev_est&lt;sub&gt;i&lt;/sub&gt;为est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;然后更新est&lt;sub&gt;i&lt;/sub&gt; 为 集合revcals&lt;sub&gt;i&lt;/sub&gt; ∪ {est&lt;sub&gt;i&lt;/sub&gt;} 中的最小值。&lt;/p&gt;
-
-        &lt;p&gt;t + 1轮之后，返回est&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;可以得到，上述算法也满足CC-validity、CC-termination和CC-agreement。&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;该实现是公平的&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;基于实现二，我们可以得到CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里vector consensus的算法&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;propose实现简述：&lt;/p&gt;
-
-        &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;有如下本地变量：&lt;/p&gt;
-
-        &lt;p&gt;view&lt;sub&gt;i&lt;/sub&gt;是一个array，其中view&lt;sub&gt;i&lt;/sub&gt;[k]表示p&lt;sub&gt;i&lt;/sub&gt;知道的p&lt;sub&gt;k&lt;/sub&gt; propose的值。&lt;/p&gt;
-
-        &lt;p&gt;也就是说如果view&lt;sub&gt;i&lt;/sub&gt;[k] = ⊥，则表示p&lt;sub&gt;i&lt;/sub&gt;还不知道p&lt;sub&gt;k&lt;/sub&gt; propose的值。&lt;/p&gt;
-
-        &lt;p&gt;如果view&lt;sub&gt;i&lt;/sub&gt;[k] = v，表示p&lt;sub&gt;i&lt;/sub&gt;已经知道p&lt;sub&gt;k&lt;/sub&gt; propose了v。&lt;/p&gt;
-
-        &lt;p&gt;算法中用两元组&amp;lt;k, v&amp;gt;表示p&lt;sub&gt;k&lt;/sub&gt; propose了值v。&lt;/p&gt;
-
-        &lt;p&gt;在某轮结束之后，本地变量new&lt;sub&gt;i&lt;/sub&gt;表示p&lt;sub&gt;i&lt;/sub&gt;在本轮新了解到的值。&lt;/p&gt;
-
-        &lt;p&gt;一开始new&lt;sub&gt;i&lt;/sub&gt;初始化为{&amp;lt;i, v&lt;sub&gt;i&lt;/sub&gt;&amp;gt;}。&lt;/p&gt;
-
-        &lt;p&gt;算法一共t + 1轮，每一轮总是先send，后receive，然后再计算：&lt;/p&gt;
-
-        &lt;p&gt;发的时候，在每一轮中，如果new&lt;sub&gt;i&lt;/sub&gt; 有值，则p&lt;sub&gt;i&lt;/sub&gt;广播消息EST(new&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
-
-        &lt;p&gt;收的时候，把从p&lt;sub&gt;j&lt;/sub&gt;那里收到的new&lt;sub&gt;j&lt;/sub&gt;赋予recfrom&lt;sub&gt;i&lt;/sub&gt;[j]，如果没有从p&lt;sub&gt;j&lt;/sub&gt;那里收到EST消息，recfrom&lt;sub&gt;i&lt;/sub&gt;[j]置为⊥。&lt;/p&gt;
-
-        &lt;p&gt;计算时，对于每个有值的recfrom&lt;sub&gt;i&lt;/sub&gt;[j]，对于该值集合中的每个二元组&amp;lt;k, v&amp;gt;，如果view&lt;sub&gt;i&lt;/sub&gt;[k]是空，&lt;/p&gt;
-
-        &lt;p&gt;则更新view&lt;sub&gt;i&lt;/sub&gt;[k] ← v，并且更新new&lt;sub&gt;i&lt;/sub&gt; ← new&lt;sub&gt;i&lt;/sub&gt; ∪ {&amp;lt;k, v&amp;gt;}。&lt;/p&gt;
-
-        &lt;p&gt;t + 1轮之后，返回view&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;可以证明上述算法实现满足ICC-validity、ICC-termination和ICC-agreement。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可以证明 t + 1是在CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里的consensus算法的最低轮数。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>
