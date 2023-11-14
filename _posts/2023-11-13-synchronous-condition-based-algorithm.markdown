@@ -72,6 +72,8 @@ categories: [Fault-Tolerant-Message-Passing-Distributed-Systems]
 
     上述算法可以在CSMP<sub>n,t</sub>[&empty;]中实现consensus。并且每个process 都不超过t + 1 - x轮。
 
+    
+
 ---
 本文章属于以下分类：
 {% for category in page.categories %}
