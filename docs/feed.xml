@@ -1,4 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-15T21:52:15-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">CSMP中基于global clock和fast failure detector的consensus算法</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/15/global-clock-ffd-consensus.html" rel="alternate" type="text/html" title="CSMP中基于global clock和fast failure detector的consensus算法" /><published>2023-11-15T20:45:00-08:00</published><updated>2023-11-15T20:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/15/global-clock-ffd-consensus</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/15/global-clock-ffd-consensus.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-27T22:41:19-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">consensus 的变体：simultaneous consensus</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html" rel="alternate" type="text/html" title="consensus 的变体：simultaneous consensus" /><published>2023-11-27T10:45:00-08:00</published><updated>2023-11-27T10:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;在CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里，simultaneous consensus （SC）的目标是：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;processes在同一轮中decide&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;该轮越早越好&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;无论有多少process crash&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SC要满足的性质有：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;SC validity：decide出来的值是某个被proposed的值&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;SC data agreement：不存在两个decide出不同value的process&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;SC round agreement：不存在两个在不同轮中完成decide的process&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;SC termination：每个正确运行的process都可以decide出值&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;之前的non early deciding consensus算法可以使得正确运行的process在第t + 1轮完成decide。&lt;/p&gt;
+
+    &lt;p&gt;但是他的问题在于不够efficient&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;思路： 当y个process在轮r中挂掉，则剩余的process可以在该轮结束时了解到这y个process 已经挂掉，则可以省下y - 1轮&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一些定义：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;failure pattern F：在SC的语境里，F是一个由最多t个三元组&amp;lt;j, k&lt;sub&gt;j&lt;/sub&gt;, b&lt;sub&gt;j&lt;/sub&gt;&amp;gt;构成的list。&lt;/p&gt;
+
+        &lt;p&gt;其中&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;j是process id，&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;k&lt;sub&gt;j&lt;/sub&gt;是某轮&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;b&lt;sub&gt;j&lt;/sub&gt;是一个process的集合。&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;该三元组可以表示p&lt;sub&gt;j&lt;/sub&gt;在k&lt;sub&gt;j&lt;/sub&gt;轮挂掉，b&lt;sub&gt;j&lt;/sub&gt;是在该轮中没有收到由p&lt;sub&gt;j&lt;/sub&gt;发出的消息的process的集合。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Failure discovery：我们说p&lt;sub&gt;j&lt;/sub&gt;的failure在第r轮发现当r是满足以下条件的首轮：&lt;/p&gt;
+
+        &lt;p&gt;有一个process p&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;没有在r轮中收到p&lt;sub&gt;j&lt;/sub&gt;的消息&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;并且在第r轮中没有挂掉&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;waste：&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;不妨令C[r,F]（或者缩写成C[r]，因为failure pattern F是implicit）是在第r轮结束时由没有挂掉的process观察到的挂掉的process的数量&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;对于任意轮r，不妨令d&lt;sub&gt;r&lt;/sub&gt; = max(0, |C[r]|-r)。则d&lt;sub&gt;r&lt;/sub&gt;代表着可以省下的轮数&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;给定某个failure pattern，不妨令D&lt;sub&gt;r&lt;/sub&gt; = max&lt;sub&gt;r≥0&lt;/sub&gt;(d&lt;sub&gt;r&lt;/sub&gt;)。这个值就对应了给定F的情况下，能省下的最多的轮数&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;clean round：&lt;/p&gt;
+
+        &lt;p&gt;如果在某轮r中没有process 被观察到首次为faulty，则该轮r被称为clean round。即C[r - 1] = C[r]&lt;/p&gt;
+
+        &lt;p&gt;如果令r是一个clean round，并且P是进到r+1轮时正确运行的process的集合。则在第r轮时P从某个集合Q中收到消息并且P⊆Q。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;horizon of a round：&lt;/p&gt;
+
+        &lt;p&gt;给定某个process p&lt;sub&gt;i&lt;/sub&gt;和某个轮数r ≥ 1，令x是p&lt;sub&gt;i&lt;/sub&gt;在第1轮和第r-1轮之间观察到的挂掉process的数量最大值（按照定义，当r为1时，x=1）。&lt;/p&gt;
+
+        &lt;p&gt;则我们称h&lt;sub&gt;i&lt;/sub&gt;(r)=r + t - x为轮r时p&lt;sub&gt;i&lt;/sub&gt;的horizon。按照定义有h&lt;sub&gt;i&lt;/sub&gt;(1) = t + 1。&lt;/p&gt;
+
+        &lt;p&gt;有以下定理成立：&lt;/p&gt;
+
+        &lt;p&gt;&lt;strong&gt;如果p&lt;sub&gt;i&lt;/sub&gt;完成轮r并且可以知道上述x值，则存在一个clean round y使得r ≤ y ≤ h&lt;sub&gt;i&lt;/sub&gt;(r)=r+t-x&lt;/strong&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">CSMP中基于global clock和fast failure detector的consensus算法</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/15/global-clock-ffd-consensus.html" rel="alternate" type="text/html" title="CSMP中基于global clock和fast failure detector的consensus算法" /><published>2023-11-15T20:45:00-08:00</published><updated>2023-11-15T20:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/15/global-clock-ffd-consensus</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/15/global-clock-ffd-consensus.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1158,132 +1281,4 @@
 
 &lt;ul&gt;
   &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">early deciding interactive consistency/consensus 算法</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html" rel="alternate" type="text/html" title="early deciding interactive consistency/consensus 算法" /><published>2023-11-01T22:45:00-07:00</published><updated>2023-11-01T22:45:00-07:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/01/early-deciding.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;early decision&lt;/p&gt;
-
-    &lt;p&gt;虽然 t + 1轮中最坏情况是达到interactive consistency的轮数，&lt;/p&gt;
-
-    &lt;p&gt;但当在execution中，挂掉的process数f相比模型CSMP&lt;sub&gt;n,t&lt;/sub&gt;[∅]里的t小的时候，需要的轮数也会相应的更小。&lt;/p&gt;
-
-    &lt;p&gt;当一个process decide了一个值，结束propose操作，也就是说不再往别的process广播message。&lt;/p&gt;
-
-    &lt;p&gt;这叫做early dicision/stopping。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;问题的关键还是分布式系统的老问题：&lt;/p&gt;
-
-    &lt;p&gt;如果p&lt;sub&gt;i&lt;/sub&gt;没有收到从p&lt;sub&gt;j&lt;/sub&gt;那里发来的消息，p&lt;sub&gt;i&lt;/sub&gt;无法判断p&lt;sub&gt;j&lt;/sub&gt;是挂了还是决定不发了。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;为了能early stopping，要求process遵循以下行动准则：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;process直到挂掉或者decide为止每轮都要发消息&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;每条消息都可以indicate发送者是否在该轮发送完之后就会decide 值&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;这样的话，假设p&lt;sub&gt;i&lt;/sub&gt;在第r轮第一次没有从p&lt;sub&gt;j&lt;/sub&gt;收到消息。&lt;/p&gt;
-
-    &lt;p&gt;说明p&lt;sub&gt;j&lt;/sub&gt;在第r - 1轮要么挂掉了，要么decide出value了，或者是在第r轮中往p&lt;sub&gt;i&lt;/sub&gt;发出消息之前挂掉。&lt;/p&gt;
-
-    &lt;p&gt;如果p&lt;sub&gt;j&lt;/sub&gt;成功decide出值来，则显然在r - 1轮之前的所有轮（包括r - 1）中都往p&lt;sub&gt;i&lt;/sub&gt;发送过 pair &amp;lt;k, v&amp;gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;不妨令：&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;UP&lt;sup&gt;r&lt;/sup&gt;是第r轮时活着的process&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;是第r轮中，p&lt;sub&gt;i&lt;/sub&gt;收到的所有消息的发送方构成的集合&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;不失一般性，令R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;0&lt;/sup&gt;是所有n个process构成的集合。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;如果process按照之前的行动规则执行并且process挂掉之后不会recover，则有&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;∀ r ≥ 1: R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt; ⊆ UP&lt;sup&gt;r&lt;/sup&gt; ⊆ R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r - 1&lt;/sup&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;当R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;=R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r-1&lt;/sup&gt;时&lt;/strong&gt; ，p&lt;sub&gt;i&lt;/sub&gt;可以early decision。&lt;/p&gt;
-
-    &lt;p&gt;因为此时已经知道r轮知道的新信息不会更多，未来只会更少。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;此外p&lt;sub&gt;i&lt;/sub&gt;还得通知别的process p&lt;sub&gt;j&lt;/sub&gt;它early decide了。&lt;/p&gt;
-
-    &lt;p&gt;所以假设在第r轮p&lt;sub&gt;i&lt;/sub&gt;已经可以early stopping，还需要额外一轮来forward自己在第r轮得到的所有&amp;lt;k,v&amp;gt;。&lt;/p&gt;
-
-    &lt;p&gt;而p&lt;sub&gt;j&lt;/sub&gt;可以在第r + 2轮decide，因为在第r + 1轮收到消息后还需要同样额外一轮来forward。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;early stopping算法&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;本地变量&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;view&lt;sub&gt;i&lt;/sub&gt;[1..n]，和interactive consistency的实现中的view&lt;sub&gt;i&lt;/sub&gt;一样&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;new&lt;sub&gt;i&lt;/sub&gt;，和interactive consistency的实现中的new&lt;sub&gt;i&lt;/sub&gt;一样&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;early&lt;sub&gt;i&lt;/sub&gt;，当local early decision predicate &lt;em&gt;R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;=R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r-1&lt;/sup&gt;&lt;/em&gt; 被满足时，该值被置为true&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;nbr&lt;sub&gt;i&lt;/sub&gt;[0..n]，其中nbr&lt;sub&gt;i&lt;/sub&gt;[r] 即为 |R&lt;sub&gt;i&lt;/sub&gt;&lt;sup&gt;r&lt;/sup&gt;|。&lt;/p&gt;
-
-            &lt;p&gt;所以local early decision predicate 即为 nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] = nbr&lt;sub&gt;i&lt;/sub&gt;[r]&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;decide&lt;sub&gt;i&lt;/sub&gt;，当从p&lt;sub&gt;j&lt;/sub&gt;收到消息知道early&lt;sub&gt;j&lt;/sub&gt;为true时，该值被置为true。&lt;/p&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;propose()实现简述&lt;/p&gt;
-
-        &lt;p&gt;首先初始化view&lt;sub&gt;i&lt;/sub&gt;，new&lt;sub&gt;i&lt;/sub&gt;，nbr&lt;sub&gt;i&lt;/sub&gt;和early&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;开始t + 1轮synchronous round，在每一轮中：&lt;/p&gt;
-
-        &lt;p&gt;先广播消息EST(new&lt;sub&gt;i&lt;/sub&gt;, early&lt;sub&gt;i&lt;/sub&gt;)。&lt;/p&gt;
-
-        &lt;p&gt;再把收到所有new&lt;sub&gt;j&lt;/sub&gt; (j ∈ {1,…,n} \ {i})，放入recfrom&lt;sub&gt;i&lt;/sub&gt;数组中。&lt;/p&gt;
-
-        &lt;p&gt;如果此时early&lt;sub&gt;i&lt;/sub&gt;为true，则直接返回view&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-        &lt;p&gt;否则计算nbr&lt;sub&gt;i&lt;/sub&gt;[r]，计算decide&lt;sub&gt;i&lt;/sub&gt; ← ⋁(early&lt;sub&gt;j&lt;/sub&gt;)，&lt;/p&gt;
-
-        &lt;p&gt;然后开始计算new&lt;sub&gt;i&lt;/sub&gt;，即recfrom&lt;sub&gt;i&lt;/sub&gt;[j]不为空并且如果view&lt;sub&gt;i&lt;/sub&gt;[k]为空值，则view&lt;sub&gt;i&lt;/sub&gt;[k] ← v并且 new&lt;sub&gt;i&lt;/sub&gt; ← new&lt;sub&gt;i&lt;/sub&gt; ∪ {&amp;lt;k,v&amp;gt;}。&lt;/p&gt;
-
-        &lt;p&gt;如果此时满足nbr&lt;sub&gt;i&lt;/sub&gt;[r - 1] = nbr&lt;sub&gt;i&lt;/sub&gt;[r]或者decide&lt;sub&gt;i&lt;/sub&gt;是true，则置early&lt;sub&gt;i&lt;/sub&gt;为true。&lt;/p&gt;
-
-        &lt;p&gt;最后如果已经是第t + 1轮， 则返回view&lt;sub&gt;i&lt;/sub&gt;.&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry></feed>

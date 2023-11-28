@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>consensus 的变体：simultaneous consensus | Yiqi读书</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="consensus 的变体：simultaneous consensus" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<meta property="og:description" content="教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7" />
+<link rel="canonical" href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html" />
+<meta property="og:url" content="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html" />
+<meta property="og:site_name" content="Yiqi读书" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-27T10:45:00-08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="consensus 的变体：simultaneous consensus" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-27T10:45:00-08:00","datePublished":"2023-11-27T10:45:00-08:00","description":"教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7","headline":"consensus 的变体：simultaneous consensus","mainEntityOfPage":{"@type":"WebPage","@id":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html"},"url":"https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://defun621.github.io/feed.xml" title="Yiqi读书" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Yiqi读书</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/category/fpformortals/">fpformortals</a><a class="page-link" href="/category/fault-tolerant-message-passing-distributed-systems/">Fault-Tolerant-Message-Passing-Distributed-Systems</a><a class="page-link" href="/category/algorithm-design-with-haskell/">Algorithm-design-with-Haskell</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">consensus 的变体：simultaneous consensus</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-27T10:45:00-08:00" itemprop="datePublished">Nov 27, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>教科书链接：<a href="https://link.springer.com/book/10.1007/978-3-319-94141-7">https://link.springer.com/book/10.1007/978-3-319-94141-7</a></p>
+
+<ul>
+  <li>
+    <p>在CSMP<sub>n,t</sub>[∅]里，simultaneous consensus （SC）的目标是：</p>
+
+    <ul>
+      <li>
+        <p>processes在同一轮中decide</p>
+      </li>
+      <li>
+        <p>该轮越早越好</p>
+      </li>
+      <li>
+        <p>无论有多少process crash</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>SC要满足的性质有：</p>
+
+    <ul>
+      <li>
+        <p>SC validity：decide出来的值是某个被proposed的值</p>
+      </li>
+      <li>
+        <p>SC data agreement：不存在两个decide出不同value的process</p>
+      </li>
+      <li>
+        <p>SC round agreement：不存在两个在不同轮中完成decide的process</p>
+      </li>
+      <li>
+        <p>SC termination：每个正确运行的process都可以decide出值</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>之前的non early deciding consensus算法可以使得正确运行的process在第t + 1轮完成decide。</p>
+
+    <p>但是他的问题在于不够efficient</p>
+  </li>
+  <li>
+    <p><strong>思路： 当y个process在轮r中挂掉，则剩余的process可以在该轮结束时了解到这y个process 已经挂掉，则可以省下y - 1轮</strong></p>
+  </li>
+  <li>
+    <p>一些定义：</p>
+
+    <ul>
+      <li>
+        <p>failure pattern F：在SC的语境里，F是一个由最多t个三元组&lt;j, k<sub>j</sub>, b<sub>j</sub>&gt;构成的list。</p>
+
+        <p>其中</p>
+
+        <ul>
+          <li>
+            <p>j是process id，</p>
+          </li>
+          <li>
+            <p>k<sub>j</sub>是某轮</p>
+          </li>
+          <li>
+            <p>b<sub>j</sub>是一个process的集合。</p>
+          </li>
+        </ul>
+
+        <p>该三元组可以表示p<sub>j</sub>在k<sub>j</sub>轮挂掉，b<sub>j</sub>是在该轮中没有收到由p<sub>j</sub>发出的消息的process的集合。</p>
+      </li>
+      <li>
+        <p>Failure discovery：我们说p<sub>j</sub>的failure在第r轮发现当r是满足以下条件的首轮：</p>
+
+        <p>有一个process p<sub>i</sub></p>
+
+        <ul>
+          <li>
+            <p>没有在r轮中收到p<sub>j</sub>的消息</p>
+          </li>
+          <li>
+            <p>并且在第r轮中没有挂掉</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>waste：</p>
+
+        <ul>
+          <li>
+            <p>不妨令C[r,F]（或者缩写成C[r]，因为failure pattern F是implicit）是在第r轮结束时由没有挂掉的process观察到的挂掉的process的数量</p>
+          </li>
+          <li>
+            <p>对于任意轮r，不妨令d<sub>r</sub> = max(0, |C[r]|-r)。则d<sub>r</sub>代表着可以省下的轮数</p>
+          </li>
+          <li>
+            <p>给定某个failure pattern，不妨令D<sub>r</sub> = max<sub>r≥0</sub>(d<sub>r</sub>)。这个值就对应了给定F的情况下，能省下的最多的轮数</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>clean round：</p>
+
+        <p>如果在某轮r中没有process 被观察到首次为faulty，则该轮r被称为clean round。即C[r - 1] = C[r]</p>
+
+        <p>如果令r是一个clean round，并且P是进到r+1轮时正确运行的process的集合。则在第r轮时P从某个集合Q中收到消息并且P⊆Q。</p>
+      </li>
+      <li>
+        <p>horizon of a round：</p>
+
+        <p>给定某个process p<sub>i</sub>和某个轮数r ≥ 1，令x是p<sub>i</sub>在第1轮和第r-1轮之间观察到的挂掉process的数量最大值（按照定义，当r为1时，x=1）。</p>
+
+        <p>则我们称h<sub>i</sub>(r)=r + t - x为轮r时p<sub>i</sub>的horizon。按照定义有h<sub>i</sub>(1) = t + 1。</p>
+
+        <p>有以下定理成立：</p>
+
+        <p><strong>如果p<sub>i</sub>完成轮r并且可以知道上述x值，则存在一个clean round y使得r ≤ y ≤ h<sub>i</sub>(r)=r+t-x</strong></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+<p>本文章属于以下分类：</p>
+
+<ul>
+  <li>Fault-Tolerant-Message-Passing-Distributed-Systems</li>
+</ul>
+
+  </div><a class="u-url" href="/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yiqi读书</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Yiqi读书</li><li><a class="u-email" href="mailto:luyiqi@gmail.com">luyiqi@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/defun621"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">defun621</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is where I do my reading notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
