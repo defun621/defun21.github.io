@@ -1,4 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-27T22:41:19-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">consensus 的变体：simultaneous consensus</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html" rel="alternate" type="text/html" title="consensus 的变体：simultaneous consensus" /><published>2023-11-27T10:45:00-08:00</published><updated>2023-11-27T10:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="https://defun621.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://defun621.github.io/" rel="alternate" type="text/html" /><updated>2023-11-29T21:13:36-08:00</updated><id>https://defun621.github.io/feed.xml</id><title type="html">Yiqi读书</title><subtitle>This is where I do my reading notes</subtitle><entry><title type="html">CSMP下最优simultaneous consensus算法实现简述</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/29/optimal-simultaneous-consensus-algorithm.html" rel="alternate" type="text/html" title="CSMP下最优simultaneous consensus算法实现简述" /><published>2023-11-29T20:45:00-08:00</published><updated>2023-11-29T20:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/29/optimal-simultaneous-consensus-algorithm</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/29/optimal-simultaneous-consensus-algorithm.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;每个process p&lt;sub&gt;i&lt;/sub&gt;本地变量：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;est&lt;sub&gt;i&lt;/sub&gt;，存着p&lt;sub&gt;i&lt;/sub&gt;在r轮结束时认为的可能的decision value。初始化为v&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;f&lt;sub&gt;i&lt;/sub&gt;[r]，表示p&lt;sub&gt;i&lt;/sub&gt;在r轮没有从其收到message的process集合。&lt;/p&gt;
+
+        &lt;p&gt;则&lt;text style=&quot;text-decoration:overline&quot;&gt;f&lt;sub&gt;i&lt;/sub&gt;[r]&lt;/text&gt; = Π \ f&lt;sub&gt;i&lt;/sub&gt;[r] 则表示f&lt;sub&gt;i&lt;/sub&gt;[r]的补集，也就是收到从其发来消息的process的集合。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;f’&lt;sub&gt;i&lt;/sub&gt;[r-1]，是一个p&lt;sub&gt;i&lt;/sub&gt;在第r轮计算出的一个值。&lt;/p&gt;
+
+        &lt;p&gt;它等于∪&lt;sub&gt;p&lt;sub&gt;j&lt;/sub&gt;∈&lt;text style=&quot;text-decoration:overline&quot;&gt;f&lt;sub&gt;i&lt;/sub&gt;[r]&lt;/text&gt;&lt;/sub&gt;f&lt;sub&gt;j&lt;/sub&gt;[r-1]&lt;/p&gt;
+
+        &lt;p&gt;从它的定义我们可以看到，它就是那些被p&lt;sub&gt;i&lt;/sub&gt;在第r轮收到从其发来的消息的中至少一个认为到r-1轮为止挂掉的process。&lt;/p&gt;
+
+        &lt;p&gt;因为p&lt;sub&gt;i&lt;/sub&gt;也会对自身发消息，所以有 f&lt;sub&gt;i&lt;/sub&gt;[r-1] ⊆ f’&lt;sub&gt;i&lt;/sub&gt;[r-1]&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;bh&lt;sub&gt;i&lt;/sub&gt;[r]，存的是p&lt;sub&gt;i&lt;/sub&gt;在r轮中得出的最小的horizon value。按照定义bh&lt;sub&gt;i&lt;/sub&gt;[0] = t + 1&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;算法实现简述：&lt;/p&gt;
+
+    &lt;p&gt;初始化est&lt;sub&gt;i&lt;/sub&gt;, bh&lt;sub&gt;i&lt;/sub&gt; 以及f&lt;sub&gt;i&lt;/sub&gt;[0]（置为∅).&lt;/p&gt;
+
+    &lt;p&gt;在每一轮synchronous 轮中：&lt;/p&gt;
+
+    &lt;p&gt;p&lt;sub&gt;i&lt;/sub&gt;首先广播消息EST(est&lt;sub&gt;i&lt;/sub&gt;，f&lt;sub&gt;i&lt;/sub&gt;[r-1])。&lt;/p&gt;
+
+    &lt;p&gt;然后根据收到的消息计算f’&lt;sub&gt;i&lt;sub&gt;[r-1]。&lt;/sub&gt;&lt;/sub&gt;&lt;/p&gt;
+
+    &lt;p&gt;收发消息阶段结束后，我们就可以得到f&lt;sub&gt;i&lt;/sub&gt;[r]。&lt;/p&gt;
+
+    &lt;p&gt;根据本轮收到的所有消息中的est，p&lt;sub&gt;i&lt;/sub&gt;取最小值赋予est&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
+
+    &lt;p&gt;然后计算h&lt;sub&gt;i&lt;/sub&gt;[r], 它的值为(r-1)+(t+1-|f’&lt;sub&gt;i&lt;/sub&gt;[r-1]|)，并且更新bh&lt;sub&gt;i&lt;/sub&gt;[r]，取h&lt;sub&gt;i&lt;/sub&gt;[r]与上一轮的bh值中较小者。&lt;/p&gt;
+
+    &lt;p&gt;最后如果r就是bh&lt;sub&gt;i&lt;/sub&gt;[r]，那说明我们已经得到了最小的horizon。&lt;/p&gt;
+
+    &lt;p&gt;算法终止。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以证明，上述算法满足所有SC性质。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fault-Tolerant-Message-Passing-Distributed-Systems&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="Fault-Tolerant-Message-Passing-Distributed-Systems" /><summary type="html">教科书链接：https://link.springer.com/book/10.1007/978-3-319-94141-7</summary></entry><entry><title type="html">consensus 的变体：simultaneous consensus</title><link href="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html" rel="alternate" type="text/html" title="consensus 的变体：simultaneous consensus" /><published>2023-11-27T10:45:00-08:00</published><updated>2023-11-27T10:45:00-08:00</updated><id>https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus</id><content type="html" xml:base="https://defun621.github.io/fault-tolerant-message-passing-distributed-systems/2023/11/27/simultaneous-consensus.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://link.springer.com/book/10.1007/978-3-319-94141-7&quot;&gt;https://link.springer.com/book/10.1007/978-3-319-94141-7&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1148,131 +1208,6 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
 
     &lt;p&gt;下一篇继续学习如何在上述两个定义下进行refine从而得到最终的贪婪算法&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;本文章属于以下分类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Algorithm-design-with-Haskell&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><category term="Algorithm-design-with-Haskell" /><summary type="html">教科书链接：https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52</summary></entry><entry><title type="html">list上greedy algorithm用refinement reasoning</title><link href="https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html" rel="alternate" type="text/html" title="list上greedy algorithm用refinement reasoning" /><published>2023-11-02T21:54:08-07:00</published><updated>2023-11-02T21:54:08-07:00</updated><id>https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement</id><content type="html" xml:base="https://defun621.github.io/algorithm-design-with-haskell/2023/11/02/greedy-refinement.html">&lt;p&gt;教科书链接：&lt;a href=&quot;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&quot;&gt;https://www.cambridge.org/core/books/algorithm-design-with-haskell/824BE0319E3762CE8BA5B1D91EEA3F52&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果minWith cost不能有unique candidate，要么换cost function，要么找方法使得greedy condition成立&lt;/p&gt;
-
-    &lt;div class=&quot;language-haskell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;gstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minWith&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;candidates&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;minWith&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;candidates&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果对于minimum cost存在多个candidate，&lt;/p&gt;
-
-    &lt;p&gt;必须要有如下性质：&lt;/p&gt;
-
-    &lt;p&gt;对于任意c 和c’，如果 cost c ≤ cost c’ ⇔ cost (gstep x c) ≤ cost (gstep x c’)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;该式问题在于，现实情况中很难保证它被满足&lt;/p&gt;
-
-    &lt;p&gt;我们需要一种别的方式使得我们在如下单调关系成立的时候可以使用fusion law&lt;/p&gt;
-
-    &lt;p&gt;cost c ≤ cost c’ ⇒ cost (gstep x c) ≤ cost (gstep x c’)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;书里引入了 ←&lt;/p&gt;
-
-    &lt;p&gt;x ← MinWith cost xs&lt;/p&gt;
-
-    &lt;p&gt;即从xs的cost最小的元素构成的集合中选取任意一个，&lt;/p&gt;
-
-    &lt;p&gt;用set membership代替了equation reasoning&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;更一般的，← 还可以表示集合包含&lt;/p&gt;
-
-    &lt;p&gt;即E&lt;sub&gt;1&lt;/sub&gt; ← E&lt;sub&gt;2&lt;/sub&gt;就是表示 v ← E&lt;sub&gt;1&lt;/sub&gt; ⇒ v ← E&lt;sub&gt;2&lt;/sub&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;此外，x ← E(E&lt;sub&gt;1&lt;/sub&gt;)表示 存在y，使得 y ← E&lt;sub&gt;1&lt;/sub&gt;并且 x ← E(y)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;通过上述3个定义，所有的expression在refinement的定义下是monotonic的。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如何证明 gstep x (MinWith cost (candidates xs)) ← MinWith cost (map (gstep x) (candidates xs))?&lt;/p&gt;
-
-    &lt;p&gt;左边即表示&lt;/p&gt;
-
-    &lt;p&gt;对于某个c’, c’ ← MinWith cost (candidates xs)，并且c = gstep x c’，则有 c ← gstep x (MinWith cost (candidates xs))&lt;/p&gt;
-
-    &lt;p&gt;因为cost c ≤ cost c’ ⇒ cost (gstep x c) ≤ cost (gstep x c’)&lt;/p&gt;
-
-    &lt;p&gt;所以c’ 作为candidates xs中cost最小的元素之一，也同样是MinWith cost (map (gstep x) (candidates xs))中的cost最小元素之一。&lt;/p&gt;
-
-    &lt;p&gt;所以c ← MinWith cost (map (gstep x) (candidates xs))&lt;/p&gt;
-
-    &lt;p&gt;所以gstep x (MinWith cost (candidates xs)) ← MinWith cost (map (gstep x) (candidates xs))&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如何证明 MinWith cost (concat xss) ← MinWith cost (map (MinWith cost) xss)?&lt;/p&gt;
-
-    &lt;p&gt;左边表示有 x ← MinWith cost (concat xss)&lt;/p&gt;
-
-    &lt;p&gt;不妨令xss = [xs&lt;sub&gt;1&lt;/sub&gt;, …, xs&lt;sub&gt;n&lt;/sub&gt;]&lt;/p&gt;
-
-    &lt;p&gt;是所有xss中cost最小的元素之一。&lt;/p&gt;
-
-    &lt;p&gt;同时，也存在某个i，使得x 是xs&lt;sub&gt;i&lt;/sub&gt;中的元素。&lt;/p&gt;
-
-    &lt;p&gt;不妨令y&lt;sub&gt;i&lt;/sub&gt; ← MinWith cost xs&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-    &lt;p&gt;则 [y1,.., y&lt;sub&gt;i-1&lt;/sub&gt;, x, y&lt;sub&gt;i+1&lt;/sub&gt;,.., yn] ← map (MinWith cost) xss&lt;/p&gt;
-
-    &lt;p&gt;又因为x是最小的之一，所以x ← [y1,.., y&lt;sub&gt;i-1&lt;/sub&gt;, x, y&lt;sub&gt;i+1&lt;/sub&gt;,.., yn]&lt;/p&gt;
-
-    &lt;p&gt;所以x ← MinWith cost (map (MinWith cost) xss)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如何证明 MinWith cost (map (MinWith cost) xss) ← MinWith cost (concat xss)?&lt;/p&gt;
-
-    &lt;p&gt;不妨令xs ← map (MinWith cost) xss， 其中xs = [x&lt;sub&gt;1&lt;/sub&gt;, .., x&lt;sub&gt;n&lt;/sub&gt;]&lt;/p&gt;
-
-    &lt;p&gt;也就是说对于任意i，有x&lt;sub&gt;i&lt;/sub&gt; ← MinWith cost xs&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-    &lt;p&gt;不妨令x&lt;sub&gt;k&lt;/sub&gt; ← MinWith cost xs&lt;/p&gt;
-
-    &lt;p&gt;所以对于任意i，有cost x&lt;sub&gt;k&lt;/sub&gt; ≤ cost x&lt;sub&gt;i&lt;/sub&gt;。&lt;/p&gt;
-
-    &lt;p&gt;又因为x&lt;sub&gt;i&lt;/sub&gt; ← MinWith cost xs&lt;sub&gt;i&lt;/sub&gt;&lt;/p&gt;
-
-    &lt;p&gt;所以x&lt;sub&gt;k&lt;/sub&gt; ← MinWith cost (concat xss)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;上面两个综合，我们有MinWith cost (map (MinWith cost) xss) = MinWith cost (concat xss)。&lt;/p&gt;
-
-    &lt;p&gt;也就是说我们从集合包含的角度证明了分布律&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如何证明 foldr gstep c&lt;sub&gt;0&lt;/sub&gt; xs ← MinWith cost (foldr fstep [c&lt;sub&gt;0&lt;/sub&gt;] xs)?&lt;/p&gt;
-
-    &lt;p&gt;induction part:&lt;/p&gt;
-    &lt;div class=&quot;language-haskell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;foldr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foldr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c0&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;-- foldr 定义&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;MinWith&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foldr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fstep&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- induction&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MinWith&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fstep&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foldr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fstep&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- fusion law&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MinWith&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foldr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fstep&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;综上&lt;/p&gt;
-
-    &lt;p&gt;我们可以得到&lt;/p&gt;
-
-    &lt;p&gt;mcc xs ← MinWith cost (candidates xs)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;所以，当我们从equality reasoning 做不了的时候，可以尝试从refinedment reasoning角度入手。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
